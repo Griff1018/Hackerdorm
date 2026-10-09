@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review Listing</title>
+<style>
+  :root { --bg:#f6f7f9; --card:#fff; --text:#1d2330; --muted:#5d6675; --line:#d9dde4; --accent:#1f6feb; --warn:#9a6700; --warn-bg:#fff8c5; --ok:#1a7f37; --ok-bg:#dafbe1; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0f1218; --card:#171b22; --text:#e6e9ef; --muted:#9aa4b2; --line:#2c333d; --accent:#4c8dff; --warn:#e3b341; --warn-bg:#3a2f12; --ok:#3fb950; --ok-bg:#12301d; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:24px 16px 64px; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  .sub { color:var(--muted); margin:0 0 20px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; }
+  label { display:block; font-weight:600; margin:16px 0 6px; }
+  label:first-child { margin-top:0; }
+  input[type=text], select, textarea { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--text); font:inherit; }
+  textarea { min-height:70px; resize:vertical; }
+  .flag { border-color:var(--warn); background:var(--warn-bg); }
+  .banner { padding:12px 14px; border-radius:8px; margin-bottom:16px; }
+  .banner.ok { background:var(--ok-bg); color:var(--ok); }
+  .banner.warn { background:var(--warn-bg); color:var(--warn); }
+  .actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:24px; align-items:center; }
+  button { padding:11px 18px; border-radius:8px; border:1px solid var(--line); background:var(--card); color:var(--text); font:inherit; font-weight:600; cursor:pointer; }
+  button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  a { color:var(--accent); }
+  .status { display:inline-block; font-size:12px; font-weight:700; padding:2px 8px; border-radius:99px; border:1px solid var(--line); color:var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Review listing #{{ listing.id }}</h1>
+  <p class="sub">
+    <span class="status">{{ listing.status }}</span>
+    {% if listing.contract_file %} · <a href="../contract/{{ listing.review_token }}" target="_blank" rel="noopener">Contract of Sale (PDF)</a>{% endif %}
+    {% if listing.listing_url %} · <a href="{{ listing.listing_url }}" target="_blank" rel="noopener">Online listing</a>{% endif %}
+  </p>
+
+  {% if saved == "approved" %}<div class="banner ok">Approved. The listing is now live for Alex.</div>
+  {% elif saved == "saved" %}<div class="banner ok">Changes saved.</div>{% endif %}
+  {% if listing.status == "DRAFT" %}<div class="banner warn">Check every field — highlighted ones need your input. Alex only uses the listing once you approve it.</div>{% endif %}
+
+  <form method="post" class="card">
+    {% for f in fields %}
+      {% set value = listing[f] or "" %}
+      {% set flagged = "⚠️" in value or value == "" %}
+      <label for="{{ f }}">{{ labels[f] }}</label>
+      {% if f in choices %}
+        <select id="{{ f }}" name="{{ f }}" class="{{ 'flag' if flagged }}">
+          {% if value not in choices[f] %}<option value="{{ value }}" selected>{{ value or "— choose —" }}</option>{% endif %}
+          {% for c in choices[f] %}<option value="{{ c }}" {{ 'selected' if c == value }}>{{ c }}</option>{% endfor %}
+        </select>
+      {% elif f in ("inclusions", "upgrades", "vendor_terms", "zoning", "tenancy_income") %}
+        <textarea id="{{ f }}" name="{{ f }}" class="{{ 'flag' if flagged }}">{{ value }}</textarea>
+      {% else %}
+        <input type="text" id="{{ f }}" name="{{ f }}" value="{{ value }}" class="{{ 'flag' if flagged }}">
+      {% endif %}
+    {% endfor %}
+    <div class="actions">
+      {% if listing.status == "DRAFT" %}
+        <button type="submit" name="approve" value="yes" class="primary">Approve listing</button>
+        <button type="submit" name="approve" value="no">Save draft</button>
+      {% else %}
+        <button type="submit" name="approve" value="no" class="primary">Save changes</button>
+      {% endif %}
+    </div>
+  </form>
+</main>
+</body>
+</html>
