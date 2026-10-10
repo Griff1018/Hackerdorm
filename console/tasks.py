@@ -3,6 +3,9 @@
 Each task has a title and an editable prompt, and is either AI-automated (BizFlow runs the prompt through the
 WorkBuddy CLI with read-only toolkit tools) or manual (the owner ticks it off). "Execute all AI-automated tasks"
 runs every AI task, three at a time, and stores each result on its card.
+
+Daily list: once a day (or on demand) BizFlow turns these routine cards plus the business's current state into today's
+concrete checklist. The routine cards are the standing instructions for that generation.
 """
 from __future__ import annotations
 
@@ -131,3 +134,58 @@ def run(bid: str, ids: list[str], runner) -> int:
     for t in rows:
         POOL.submit(work, t)
     return len(rows)
+
+
+# ---------------------------------------------------------------- daily list (generated from the routine cards)
+
+def today() -> str:
+    return datetime.now(TZ).date().isoformat()
+
+
+def daily(bid: str) -> dict:
+    return _all().get("_daily", {}).get(bid) or {"date": None, "status": "idle", "items": []}
+
+
+def _set_daily(bid: str, **kv) -> dict:
+    with LOCK:
+        d = _all()
+        cur = d.setdefault("_daily", {}).setdefault(bid, {"date": None, "status": "idle", "items": []})
+        cur.update(kv)
+        _save(d)
+        return cur
+
+
+def generate_daily(bid: str, runner) -> bool:
+    """Start generating today's list in the background; runner(prev_daily) -> list of task dicts. False if already running."""
+    with LOCK:
+        cur = daily(bid)
+        if cur.get("status") == "running":
+            return False
+        _set_daily(bid, status="running", error="")
+
+    def work():
+        try:
+            items = runner(cur)
+        except Exception as exc:
+            _set_daily(bid, status="error", error=str(exc)[:300], failed_on=today())
+            return
+        rows = [{"id": "Y" + uuid.uuid4().hex[:6], "title": str(t.get("title") or "")[:160], "detail": str(t.get("detail") or "")[:400],
+                 "routine": str(t.get("routine") or "")[:80], "priority": "high" if t.get("priority") == "high" else "normal",
+                 "ask": str(t.get("ask") or "")[:400], "done": False}
+                for t in items if isinstance(t, dict) and t.get("title")][:12]
+        if not rows:
+            _set_daily(bid, status="error", error="The agent returned no tasks — press Regenerate to try again.", failed_on=today())
+        else:
+            _set_daily(bid, status="done", date=today(), items=rows, generated_at=now(), error="")
+
+    POOL.submit(work)
+    return True
+
+
+def toggle_daily(bid: str, item_id: str, done: bool):
+    with LOCK:
+        d = _all()
+        for t in d.get("_daily", {}).get(bid, {}).get("items", []):
+            if t["id"] == item_id:
+                t["done"] = bool(done)
+        _save(d)

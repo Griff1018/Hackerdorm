@@ -101,7 +101,7 @@ def add_todos(bid: str, cid: str, items: list[dict]) -> list[dict]:
             continue
         rows.append({"id": "D" + uuid.uuid4().hex[:6], "business_id": bid, "conversation_id": cid, "run_id": it.get("run_id"),
                      "item_id": it.get("item_id"), "title": str(it.get("title", ""))[:200], "details": str(it.get("details", ""))[:600],
-                     "department": str(it.get("department", ""))[:40], "guide_ids": it.get("guide_ids") or [], "done": False, "created_at": now()})
+                     "department": str(it.get("department", ""))[:40], "category": str(it.get("category") or "")[:20], "guide_ids": it.get("guide_ids") or [], "done": False, "created_at": now()})
     _write(TODOS, rows)
     return todos(bid)
 
@@ -139,6 +139,28 @@ def set_selling_profile(bid: str, prof: dict) -> dict | None:
         if b["id"] == bid:
             b["selling_profile"] = {k: str(prof.get(k) or "")[:300] for k in SELL_FIELDS} | {"updated_at": now()}
             hit = b
+    _write(BUSINESSES, rows)
+    return hit
+
+
+def remember(bid: str, answers: dict) -> dict | None:
+    """Save answers the owner gave to the agent's questions: owner_type, goal, or selling-profile fields (merged)."""
+    rows = businesses()
+    hit = None
+    for b in rows:
+        if b["id"] != bid:
+            continue
+        hit = b
+        for key, value in answers.items():
+            value = str(value or "").strip()[:300]
+            if not value:
+                continue
+            if key == "owner_type" and value in ("student", "small_business"):
+                b["owner_type"] = value
+            elif key == "goal":
+                b["goal"], b["goal_asked"] = value, True
+            elif key in SELL_FIELDS:
+                b["selling_profile"] = (b.get("selling_profile") or {}) | {key: value, "updated_at": now()}
     _write(BUSINESSES, rows)
     return hit
 
@@ -199,6 +221,12 @@ def business_context(bid: str) -> str:
     if b.get("owner_type") == "small_business":
         ctx.append("The owner runs this as a SMALL BUSINESS (their main work). Plan for steady operations: cash flow, "
                    "supplier reliability, staff, compliance and growth.")
+    unknown = [label for key, label in (("owner_type", "whether the owner is a student or a small business"), ("goal", "the owner's goal"))
+               if not b.get(key)]
+    if not b.get("uses_sample_data") and not (b.get("selling_profile") or {}).get("product"):
+        unknown.append("exactly what they will sell")
+    if unknown:
+        ctx.append("NOT KNOWN YET: " + "; ".join(unknown) + ". Ask about these ONLY if the current request needs them (see Step 0).")
     if b.get("uses_sample_data"):
         ctx.append("This is the business whose data the toolkit commands brief/stock/po list/suppliers/verify read.")
     else:
@@ -375,4 +403,6 @@ def history_text(cid: str, runs: dict, limit=4) -> str:
             lines.append(f"  BizFlow answered: {(r.get('answer') or plan.get('understanding'))[:600]}")
         if items:
             lines.append(f"  Plan items: {items}")
+        if plan.get("questions"):
+            lines.append("  BizFlow asked the owner: " + "; ".join(q["question"] for q in plan["questions"]))
     return "\n".join(lines)

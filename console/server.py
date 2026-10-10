@@ -33,6 +33,7 @@ import automations as auto  # noqa: E402
 import inbox  # noqa: E402
 import tasks as tk  # noqa: E402
 import base64  # noqa: E402
+import hashlib  # noqa: E402
 import csv  # noqa: E402
 import urllib.parse  # noqa: E402
 CONSOLE = ROOT / "console"
@@ -45,7 +46,7 @@ TZ = timezone(timedelta(hours=8))
 PORT = int(os.environ.get("BIZFLOW_CONSOLE_PORT", "8090"))
 TIMEOUT_S = int(os.environ.get("BIZFLOW_AGENT_TIMEOUT", "300"))
 MAX_TURNS = os.environ.get("BIZFLOW_AGENT_MAX_TURNS", "30")
-CLI = shutil.which("codebuddy") or shutil.which("cbc")
+CLI = os.environ.get("BIZFLOW_AGENT_CLI") or shutil.which("codebuddy") or shutil.which("cbc")
 TOOLKIT = "python -m app.bizflow_cli"
 
 # Files the console may change through approved actions; restored by "Reset demo state".
@@ -215,12 +216,31 @@ def enrich_plan(run, raw: dict) -> dict:
         "verifier_checks": checks,
         "general_advice": [dict(a, label="general advice — not verified by BizFlow tools") for a in (raw.get("general_advice") or []) if isinstance(a, dict)],
         "open_questions": raw.get("open_questions") or [],
+        "questions": clean_questions(raw) if not items else [],
         "guide_ids": match_guides(run["request"] + " " + " ".join(a.get("text", "") for a in (raw.get("general_advice") or []) if isinstance(a, dict))),
         "injection_attempt": injection, "synthetic": True, "created_at": now(),
     }
     PLANS.mkdir(parents=True, exist_ok=True)
     (PLANS / f"PLAN-{run['run_id']}.json").write_text(json.dumps(plan, indent=2, ensure_ascii=False), encoding="utf-8")
     return plan
+
+
+REMEMBER_KEYS = {"owner_type", "goal", *ws.SELL_FIELDS}
+
+
+def clean_questions(raw: dict) -> list[dict]:
+    """The agent's clarifying questions (needs_input), trimmed to the shape the choice panel renders."""
+    out = []
+    for i, q in enumerate(raw.get("questions") or [], 1):
+        if not isinstance(q, dict) or not str(q.get("question") or "").strip():
+            continue
+        opts = [{"label": str(o.get("label"))[:60], "description": str(o.get("description") or "")[:160],
+                 **({"value": str(o["value"])[:60]} if o.get("value") else {})}
+                for o in (q.get("options") or []) if isinstance(o, dict) and o.get("label")][:4]
+        out.append({"id": str(q.get("id") or f"Q{i}")[:8], "header": str(q.get("header") or f"Question {i}")[:16],
+                    "question": str(q["question"])[:300], "multi_select": bool(q.get("multi_select")), "options": opts,
+                    "remember": q.get("remember") if q.get("remember") in REMEMBER_KEYS else None})
+    return out[:4]
 
 
 def validate_command(cmd: str):
@@ -360,6 +380,9 @@ def run_agent(run):
     run["plan"] = plan
     run["answer"] = extract_answer("\n".join(texts)) or plan.get("understanding", "")
     collect(run)
+    if plan["questions"]:
+        push(run, "ask", f"Needs {len(plan['questions'])} detail(s) from you before planning ({time.time() - t0:.0f} s)")
+        return finish(run)
     push(run, "verifier", f"Console verifier: {plan['verifier']}", checks=plan["verifier_checks"])
     push(run, "plan", f"Plan ready: {len(plan['plan_items'])} item(s) awaiting your decision ({time.time() - t0:.0f} s)")
     finish(run)
@@ -506,10 +529,15 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/businesses":
             return self.send_json({"businesses": [overview(b) for b in ws.businesses()]})
         if path == "/api/inbox":
-            return self.send_json(inbox.threads(qs.get("business_id", "campus-crumb")))
+            out = inbox.threads(qs.get("business_id", "campus-crumb"))
+            for t in out["threads"]:
+                t["auto_state"] = AUTO_STATUS.get(t["id"])
+            return self.send_json(out)
         m7 = re.fullmatch(r"/api/inbox/(T[\w]+)", path)
         if m7:
             th = inbox.thread(m7.group(1))
+            if th:
+                th["auto_state"] = AUTO_STATUS.get(th["id"])
             return self.send_json(th or {"error": "unknown thread"}, 200 if th else 404)
         m8 = re.fullmatch(r"/api/channels/(\w+)/thread", path)
         if m8:
@@ -520,6 +548,10 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_json({"tasks": tk.tasks(bid, (ws.business(bid) or {}).get("owner_type"))})
         if path == "/api/todos":
             return self.send_json({"todos": ws.todos(qs.get("business_id", "campus-crumb"))})
+        if path == "/api/daily":
+            return self.send_json(dict(ensure_daily(qs.get("business_id", "campus-crumb")), today=tk.today(), cli=bool(CLI)))
+        if path == "/api/pulse":
+            return self.send_json(pulse(qs.get("business_id", "campus-crumb")))
         if path == "/api/orders":
             return self.send_json({"orders": inbox.orders(qs.get("business_id", "campus-crumb"), None if qs.get("all") else "pending")})
         if path in ("/linkedin", "/linkedin/", "/linkedin/index.html"):
@@ -719,8 +751,8 @@ class Handler(BaseHTTPRequestHandler):
                 th = inbox.incoming(m9.group(1), body.get("contact") or {}, body.get("text", ""), str(body.get("business_id") or "campus-crumb"))
             except ValueError as exc:
                 return self.send_json({"error": str(exc)}, 400)
-            if th.get("auto_reply") and th["channel"] != "linkedin":
-                threading.Thread(target=auto_respond, args=(th["id"],), daemon=True).start()
+            if shops_turn(th):
+                kick_auto(th["id"])
             return self.send_json({"thread_id": th["id"], "messages": th["messages"]})
         if path == "/api/channels/linkedin/candidates":
             items = body if isinstance(body, list) else body.get("candidates", [])
@@ -745,9 +777,9 @@ class Handler(BaseHTTPRequestHandler):
                 th = inbox.set_auto(m14.group(1), bool(body.get("on")))
             except ValueError as exc:
                 return self.send_json({"error": str(exc)}, 404)
-            if th["auto_reply"] and th["messages"] and th["messages"][-1]["from"] == "them":
-                threading.Thread(target=auto_respond, args=(th["id"],), daemon=True).start()
-            return self.send_json({"auto_reply": th["auto_reply"]})
+            if shops_turn(th):
+                kick_auto(th["id"])
+            return self.send_json({"auto_reply": th["auto_reply"], "auto_state": AUTO_STATUS.get(th["id"])})
         m15 = re.fullmatch(r"/api/orders/(O[\w]+)/status", path)
         if m15:
             try:
@@ -757,6 +789,10 @@ class Handler(BaseHTTPRequestHandler):
         m16 = re.fullmatch(r"/api/businesses/([\w-]+)/selling-profile", path)
         if m16:
             b = ws.set_selling_profile(m16.group(1), body)
+            return self.send_json(b or {"error": "unknown business"}, 200 if b else 404)
+        m16b = re.fullmatch(r"/api/businesses/([\w-]+)/remember", path)
+        if m16b:
+            b = ws.remember(m16b.group(1), body.get("answers") or {})
             return self.send_json(b or {"error": "unknown business"}, 200 if b else 404)
         if path == "/api/linkedin/apply":
             c = {"handle": re.sub(r"[^a-z0-9]+", "-", str(body.get("email") or body.get("name") or "applicant").lower()).strip("-")[:40],
@@ -819,6 +855,15 @@ class Handler(BaseHTTPRequestHandler):
         if m13:
             tk.delete(str(body.get("business_id") or "campus-crumb"), m13.group(1))
             return self.send_json({"ok": True})
+        if path == "/api/daily/regenerate":
+            bid = str(body.get("business_id") or "campus-crumb")
+            if not CLI:
+                return self.send_json({"error": "WorkBuddy CLI not found"}, 503)
+            return self.send_json(ensure_daily(bid, force=True))
+        if path == "/api/daily/toggle":
+            bid = str(body.get("business_id") or "campus-crumb")
+            tk.toggle_daily(bid, str(body.get("id")), bool(body.get("done")))
+            return self.send_json(tk.daily(bid))
         if path == "/api/tasks/run":
             bid = str(body.get("business_id") or "campus-crumb")
             rows = tk.tasks(bid, (ws.business(bid) or {}).get("owner_type"))
@@ -1035,10 +1080,54 @@ def activity(bid: str) -> list[dict]:
             rows.append({"t": e["t"], "kind": e["kind"], "department": e.get("department", ""), "text": e["text"][:4000],
                          "evidence": e.get("evidence", []), "run_id": r["run_id"], "conversation_id": r.get("conversation_id"),
                          "request": r.get("request", "")[:80]})
-    for lg in auto.load().get("log", []):
-        rows.append({"t": lg["at"], "kind": "automation", "department": "Automations", "text": lg["text"], "evidence": [], "run_id": "", "request": ""})
     rows.sort(key=lambda x: x["t"], reverse=True)
     return rows[:800]
+
+
+def automation_log(bid: str, a: dict) -> list[dict]:
+    """Automation log entries for one business (matched through the rule / order / post they mention)."""
+    owner = {x["id"]: x.get("business_id", "campus-crumb") for k in ("rules", "orders", "posts") for x in a.get(k, [])}
+    out = []
+    for lg in a.get("log", []):
+        ref = lg.get("rule_id") or lg.get("order_id") or lg.get("post_id")
+        if bid == ws.ALL or owner.get(ref, "campus-crumb") == bid:
+            out.append(lg)
+    return out[::-1][:300]
+
+
+def _sig(x) -> str:
+    return hashlib.md5(json.dumps(x, sort_keys=True, default=str).encode()).hexdigest()[:12]
+
+
+def pulse(bid: str) -> dict:
+    """A cheap fingerprint per menu page, so the page can show a notification when something changed there.
+    n = things waiting for the owner (shown as a count); sig changes whenever the page's content changes."""
+    runs = [r for r in STATE["runs"].values() if bid == ws.ALL or r.get("business_id") == bid]
+    latest = {}
+    for r in runs:
+        if r.get("created_at", "") >= latest.get(r.get("conversation_id"), {}).get("created_at", ""):
+            latest[r.get("conversation_id")] = r
+    # plans waiting for review, and questions the agent asked that are still the last turn of their chat
+    waiting = [r for r in runs if r.get("state") == "planned" and r.get("plan")
+               and (r["plan"].get("plan_items") or (r["plan"].get("questions") and latest.get(r.get("conversation_id")) is r))]
+    box = inbox.threads(bid)
+    a = auto.load()
+    av = automations_view(bid)
+    pend = [o for o in av["orders"] if o.get("status") == "awaiting_approval"]
+    out = {
+        "chat": {"sig": _sig([(r["run_id"], r.get("state")) for r in runs]), "n": len(waiting)},
+        "requests": {"sig": _sig([(t["id"], t["updated_at"]) for t in box["threads"]]), "n": box["unread"]},
+        "automations": {"sig": _sig([automation_log(bid, a)[:1], [(o["id"], o["status"]) for o in av["orders"]], [(p["id"], p["status"]) for p in av["posts"]]]), "n": len(pend)},
+        "activity": {"sig": _sig(max((e["t"] for r in runs for e in r.get("events", [])[-1:]), default=""))},
+    }
+    if bid != ws.ALL:
+        d = tk.daily(bid)
+        out["daily"] = {"sig": _sig([d.get("date"), d.get("status"), d.get("generated_at")]),
+                        "n": sum(1 for t in d.get("items", []) if not t.get("done")) if d.get("date") == tk.today() else 0}
+        rm = roadmap_with_auto(bid)
+        out["roadmap"] = {"sig": _sig([[(s["id"], s["status"]) for s in rm["steps"]], [(t["id"], t.get("done")) for t in ws.todos(bid)],
+                                       [r["enabled"] for r in av["rules"]]])}
+    return out
 
 
 def automations_view(bid: str) -> dict:
@@ -1057,6 +1146,7 @@ def automations_view(bid: str) -> dict:
     return {"rules": rules, "orders": [o for o in a["orders"] if keep(o)][::-1],
             "outbox": [m for m in a["outbox"] if m.get("order_id") in order_ids][::-1],
             "posts": [x for x in a["posts"] if keep(x)][::-1], "media": [m for m in a.get("media", []) if keep(m)][::-1],
+            "log": automation_log(bid, a),
             "last_check": a.get("last_check"), "telegram_configured": bool(os.environ.get("TELEGRAM_BOT_TOKEN") and os.environ.get("TELEGRAM_CHAT_ID"))}
 
 
@@ -1362,18 +1452,14 @@ def set_ingredient(bid: str, body: dict) -> dict:
     return st
 
 
-def run_task(bid: str, t: dict):
-    """Run one repetitive task through the WorkBuddy CLI with read-only toolkit tools."""
-    prompt = (ws.business_context(bid) + "\n\nYou are doing a REPETITIVE TASK for the owner. Use the BizFlow toolkit for every number "
-              "(python -m app.bizflow_cli brief | stock | po list | prices | verify | suppliers \"<material>\" | faq \"<q>\" | nearby \"<area>\" | guide \"<topic>\"), "
-              "run commands exactly as written (no cd, no &&), and you may Read files under data/. Never invent numbers. "
-              "NEVER do arithmetic over raw rows (e.g. adding up sales.csv) — quote totals that a toolkit command or an output file already states; if none does, write 'not computed by BizFlow'. "
-              "Your FINAL message must contain only the answer (no 'Let me…' or working notes): at most 120 words, short bullets, plain words, then a last line 'Evidence: <file paths>'. "
-              "No plan JSON. Do not pay, post, order or message anyone.\n\nTask: " + t["title"] + "\n<task_prompt>\n" + t["prompt"] + "\n</task_prompt>\n")
+def run_cli_tools(prompt: str, max_turns=14, timeout=240) -> str:
+    """One WorkBuddy CLI answer with the read-only toolkit tools (no web); returns the final result text."""
+    if not CLI:
+        raise RuntimeError("WorkBuddy CLI (codebuddy) not found")
     cmd = [CLI, "-p", "--output-format", "stream-json", "--tools", "Bash,Read,Glob,Grep", "--permission-mode", "dontAsk",
-           "--max-turns", "14", "--no-session-persistence", "--allowedTools", *[x for x in PLAN_TOOLS if not x.startswith("Web")]]
+           "--max-turns", str(max_turns), "--no-session-persistence", "--allowedTools", *[x for x in PLAN_TOOLS if not x.startswith("Web")]]
     env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUTF8="1")
-    p = subprocess.run(cmd, input=prompt, cwd=ROOT, env=env, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=240)
+    p = subprocess.run(cmd, input=prompt, cwd=ROOT, env=env, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=timeout)
     out = ""
     for line in p.stdout.splitlines():
         try:
@@ -1382,6 +1468,72 @@ def run_task(bid: str, t: dict):
             continue
         if ev.get("type") == "result" and ev.get("result"):
             out = ev["result"]
+    return out
+
+
+def daily_facts(bid: str, prev: dict) -> str:
+    """Today's live state for the daily-list generator (counts and titles only, no money arithmetic)."""
+    lines = []
+    waiting = [t for t in inbox.load()["threads"] if t["business_id"] == bid and t["messages"] and t["messages"][-1]["from"] == "them"]
+    lines.append(f"- Customer chats waiting for a reply: {len(waiting)}" + (" (" + ", ".join(f"{t['contact']['name']} on {t['channel']}" + (" — auto-reply ON" if t.get("auto_reply") else "") for t in waiting[:6]) + ")" if waiting else ""))
+    orders = inbox.orders(bid, "pending")
+    lines.append(f"- Pending customer orders to fulfil: {len(orders)}" + (" (" + "; ".join(f"{o.get('customer')}: " + ", ".join(f"{i['qty']}x {i['item']}" for i in o.get('items', [])) + f" at {o.get('when') or 'time not set'}" for o in orders[:6]) + ")" if orders else ""))
+    a = automations_view(bid)
+    pend = [o for o in a["orders"] if o.get("status") == "awaiting_approval"]
+    lines.append(f"- Supplier orders waiting for the owner's payment approval: {len(pend)}" + (" (" + ", ".join(o.get("material", o["id"]) for o in pend[:6]) + ")" if pend else ""))
+    sched = [x for x in a["posts"] if x.get("status") == "scheduled" and str(x.get("scheduled_for", "")).startswith(tk.today())]
+    lines.append(f"- Social posts scheduled for today: {len(sched)}")
+    todo = [t["title"] for t in ws.todos(bid) if not t.get("done")]
+    lines.append("- Open approved plan steps (Roadmap): " + ("; ".join(todo[:10]) if todo else "none"))
+    left = [t["title"] for t in prev.get("items", []) if not t.get("done")]
+    if left and prev.get("date") != tk.today():
+        lines.append(f"- Unfinished from the last daily list ({prev.get('date')}): " + "; ".join(left[:8]))
+    return "\n".join(lines)
+
+
+def daily_runner(bid: str, prev: dict) -> list[dict]:
+    b = ws.business(bid) or {}
+    routines = tk.tasks(bid, b.get("owner_type"))
+    rt = "\n".join(f"- [{t['mode']}] {t['title']}: {t['prompt']}" for t in routines) or "- (none)"
+    prompt = (ws.business_context(bid) + f"\n\nToday is {tk.today()}. You are writing the owner's DAILY TASK LIST for today.\n"
+              "ROUTINES the owner wants covered (their standing instructions — turn each into today's concrete task(s) when it applies today; "
+              "skip a routine only if it clearly does not apply today, e.g. a weekly one):\n" + rt +
+              "\n\nLIVE STATE right now:\n" + daily_facts(bid, prev) +
+              "\n\nYou may run the read-only toolkit commands (python -m app.bizflow_cli brief | stock | po list | prices | verify) "
+              "exactly as written and Read files under data/ to make tasks specific. Never invent numbers; quote figures only from tool output. "
+              "Make 4–10 short, concrete tasks for TODAY, most urgent first (customers waiting and orders due come first). "
+              "Each: title (a plain action, e.g. 'Reply to Aisyah about her 3pm pickup'), detail (1–2 sentences: why today and how), "
+              "routine (the routine title it comes from, or empty), priority (high|normal), ask (optional: a request the owner can send to "
+              "BizFlow chat to get help with it, or empty). Do not pay, post, order or message anyone.\n"
+              'Your FINAL message must be ONLY JSON: {"tasks": [{"title": "", "detail": "", "routine": "", "priority": "normal", "ask": ""}]}')
+    text = run_cli_tools(prompt, max_turns=12, timeout=300)
+    m = re.search(r"\{.*\}", text, re.S)
+    try:
+        out = json.loads(m.group(0)) if m else {}
+    except json.JSONDecodeError:
+        out = {}
+    audit({"action": "daily_generated", "business_id": bid, "count": len(out.get("tasks") or [])})
+    return out.get("tasks") or []
+
+
+def ensure_daily(bid: str, force=False) -> dict:
+    """Regenerate the daily list when the day has changed (or on request)."""
+    cur = tk.daily(bid)
+    if CLI and bid != ws.ALL and ws.business(bid) and (force or (cur.get("date") != tk.today() and cur.get("status") != "running"
+                                                                  and not (cur.get("status") == "error" and cur.get("failed_on") == tk.today()))):
+        tk.generate_daily(bid, lambda prev: daily_runner(bid, prev))
+    return tk.daily(bid)
+
+
+def run_task(bid: str, t: dict):
+    """Run one repetitive task through the WorkBuddy CLI with read-only toolkit tools."""
+    prompt = (ws.business_context(bid) + "\n\nYou are doing a REPETITIVE TASK for the owner. Use the BizFlow toolkit for every number "
+              "(python -m app.bizflow_cli brief | stock | po list | prices | verify | suppliers \"<material>\" | faq \"<q>\" | nearby \"<area>\" | guide \"<topic>\"), "
+              "run commands exactly as written (no cd, no &&), and you may Read files under data/. Never invent numbers. "
+              "NEVER do arithmetic over raw rows (e.g. adding up sales.csv) — quote totals that a toolkit command or an output file already states; if none does, write 'not computed by BizFlow'. "
+              "Your FINAL message must contain only the answer (no 'Let me…' or working notes): at most 120 words, short bullets, plain words, then a last line 'Evidence: <file paths>'. "
+              "No plan JSON. Do not pay, post, order or message anyone.\n\nTask: " + t["title"] + "\n<task_prompt>\n" + t["prompt"] + "\n</task_prompt>\n")
+    out = run_cli_tools(prompt)
     # drop "Let me…/Now I…" working notes some answers start with: keep from the last bold summary heading
     lines = out.strip().splitlines()
     heads = [i for i, ln in enumerate(lines) if re.match(r"^\s*\*\*[^*]{4,}(\*\*:?|:\*\*)\s*$", ln)]
@@ -1446,11 +1598,66 @@ def pending_text(bid: str) -> str:
         f" — {o.get('fulfilment') or '?'} {o.get('when') or ''}" for o in rows[:8])
 
 
-def auto_respond(tid: str):
+# Auto-reply watcher: whenever a thread with auto-reply ON ends with a customer message, it is the shop's turn and
+# BizFlow answers — on toggle, on a new message, after a server restart, and again (with backoff) if a reply failed.
+AUTO_LOCK = threading.Lock()
+AUTO_BUSY: set[str] = set()
+AUTO_FAIL: dict[str, tuple[int, float]] = {}   # thread -> (failures in a row, earliest next try)
+AUTO_STATUS: dict[str, dict] = {}              # thread -> {"state": "replying" | "error", "detail", "at"}
+
+
+def shops_turn(th: dict) -> bool:
+    return bool(th.get("auto_reply")) and th.get("channel") != "linkedin" and bool(th.get("messages")) and th["messages"][-1]["from"] == "them"
+
+
+def kick_auto(tid: str):
+    with AUTO_LOCK:
+        if tid in AUTO_BUSY:
+            return
+        AUTO_BUSY.add(tid)
+    threading.Thread(target=_auto_job, args=(tid,), daemon=True).start()
+
+
+def _auto_job(tid: str):
+    AUTO_STATUS[tid] = {"state": "replying", "at": now()}
+    try:
+        ok, detail = auto_respond(tid), "the agent returned no usable reply"
+    except Exception as exc:  # CLI missing, timeout, bad output
+        ok, detail = False, str(exc)[:200]
+    finally:
+        with AUTO_LOCK:
+            AUTO_BUSY.discard(tid)
+    if ok:
+        AUTO_FAIL.pop(tid, None)
+        AUTO_STATUS.pop(tid, None)
+        return
+    n = AUTO_FAIL.get(tid, (0, 0))[0] + 1
+    wait = min(300, 15 * 2 ** (n - 1))
+    AUTO_FAIL[tid] = (n, time.time() + wait)
+    AUTO_STATUS[tid] = {"state": "error", "detail": f"{detail} — retrying in {wait} s", "at": now()}
+
+
+def auto_reply_loop(every=4):
+    while True:
+        time.sleep(every)
+        try:
+            for th in inbox.load()["threads"]:
+                if not th.get("auto_reply"):
+                    AUTO_FAIL.pop(th["id"], None)
+                    AUTO_STATUS.pop(th["id"], None)
+                elif shops_turn(th) and time.time() >= AUTO_FAIL.get(th["id"], (0, 0))[1]:
+                    kick_auto(th["id"])
+        except Exception:
+            pass
+
+
+def auto_respond(tid: str) -> bool:
     """Order-taking auto reply: collect the order, upsell gently once, confirm, then file it as a pending order."""
     th = inbox.thread(tid, mark_read=False)
-    if not th or not th.get("auto_reply") or th["channel"] == "linkedin":
-        return
+    if not shops_turn(th or {}):
+        return True
+    if not CLI:
+        raise RuntimeError("WorkBuddy CLI (codebuddy) not found")
     bid = th["business_id"]
     menu = menu_rows() if (ws.business(bid) or {}).get("uses_sample_data") else []
     menu_txt = "; ".join(f"{m['item_name']} MYR {m['price']}" for m in menu) or "no menu on file — take the order details and say the owner will confirm the price"
@@ -1478,7 +1685,7 @@ def auto_respond(tid: str):
         out = {}
     reply = (out.get("reply") or "").strip()
     if not reply:
-        return
+        return False
     o = out.get("order") or {}
     items, total, unknown = price_items(o.get("items"), bid)
     inbox.reply(tid, reply, by="auto")
@@ -1489,6 +1696,7 @@ def auto_respond(tid: str):
                          "items": items, "total": total, "fulfilment": o.get("fulfilment"), "address": o.get("address"),
                          "when": o.get("when"), "notes": o.get("notes"), "source": "auto-reply"})
     audit({"action": "auto_reply", "thread": tid, "complete": bool(out.get("complete"))})
+    return True
 
 
 def li_post_for(job: dict) -> dict:
@@ -1576,6 +1784,17 @@ def main():
             except Exception:
                 pass
     threading.Thread(target=recruit_loop, daemon=True).start()
+    threading.Thread(target=auto_reply_loop, daemon=True).start()
+
+    def daily_loop():  # a fresh daily list for every business each new day, even if the page stays open
+        while True:
+            for b in ws.businesses():
+                try:
+                    ensure_daily(b["id"])
+                except Exception:
+                    pass
+            time.sleep(600)
+    threading.Thread(target=daily_loop, daemon=True).start()
     srv = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
     srv.daemon_threads = True
     print(f"BizFlow Agent Console on http://127.0.0.1:{PORT}  (WorkBuddy CLI: {CLI or 'NOT FOUND'})")

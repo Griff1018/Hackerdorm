@@ -49,9 +49,31 @@ a{color:var(--blue)}
 .top .who .em{font-size:30px}
 .top .who b{font-size:19px;display:block}
 .top .who span{font-size:13px;color:var(--muted)}
-.tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
-.tabs button{background:transparent;color:var(--muted);padding:8px 13px}
-.tabs button.on{background:var(--green2);color:var(--green)}
+/* page menu (one dropdown for every page) */
+.navmenu{position:relative;margin-left:auto}
+.navbtn{background:var(--green2);color:var(--green);display:flex;align-items:center;gap:8px;padding:8px 14px}
+.navbtn .caret{font-size:12px;opacity:.7}
+.navlist{position:absolute;right:0;top:calc(100% + 6px);z-index:60;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.14);padding:6px;min-width:250px;display:flex;flex-direction:column;gap:2px}
+.navlist button{display:flex;align-items:center;gap:10px;background:transparent;color:var(--ink);text-align:left;font-weight:600;padding:9px 12px}
+.navlist button:hover{background:#f4f1ea}.navlist button.on{background:var(--green2);color:var(--green)}
+.navlist .lab{flex:1}
+.ndot{width:9px;height:9px;border-radius:50%;background:#d93838;display:inline-block;flex:none}
+.navbtn .ndot{margin-left:2px}
+/* roadmap sections */
+.rmsec{background:var(--panel);border:1.5px solid var(--line);border-radius:16px;padding:10px 14px;margin-bottom:10px}
+.rmsec>summary{cursor:pointer;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:17px;list-style:none}
+.rmsec>summary::-webkit-details-marker{display:none}
+.rmsec>summary::before{content:"▸";color:var(--muted);transition:transform .15s}.rmsec[open]>summary::before{transform:rotate(90deg)}
+.rmsec>summary .small{font-weight:500}
+.rmsec .sbar{flex:1;min-width:90px;max-width:200px;height:7px;background:#eee7da;border-radius:99px;overflow:hidden}.rmsec .sbar i{display:block;height:100%;background:#3c8a5d}
+.rmsec .step{border-width:1px;margin:8px 0 0}
+.rmsec .new{background:var(--warnbg);color:var(--warn)}
+/* daily list */
+.dyitem{display:flex;gap:10px;align-items:flex-start;background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:11px 12px;margin-bottom:8px}
+.dyitem input{margin-top:5px;width:19px;height:19px;flex:none}.dyitem.done{opacity:.6}.dyitem.done b{text-decoration:line-through}
+.dyitem.high{border-color:#e7b54a}
+.dyitem .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.autost{text-align:center;padding:6px;color:var(--muted)}
 .sim{font-size:12px;font-weight:800;background:#f5d76e;color:#3a2c06;padding:4px 10px;border-radius:999px}
 .view{display:none;flex:1;min-height:0}
 .view.on{display:flex;flex-direction:column}
@@ -182,6 +204,8 @@ dialog pre{white-space:pre-wrap;word-break:break-word;font-size:14px;margin:0}
 .rvopt:hover,.rvopt.on{border-color:var(--green);background:var(--green2)}
 .rvn{width:22px;height:22px;border-radius:6px;background:#eee;font-size:12px;display:flex;align-items:center;justify-content:center;color:#555}
 .rvi{width:24px;text-align:center}
+.rvtxt{display:flex;flex-direction:column;gap:1px}.rvtxt .small{font-weight:500}
+.asks{background:#faf8f3;border-radius:12px;padding:8px 12px;margin-top:6px}.asks h3{margin:0 0 4px;font-size:15px}.asks ol{margin:0;padding-left:20px}
 .rvq{display:flex;gap:8px;align-items:flex-end}.rvq textarea{flex:1}
 .rvfinal{display:flex;flex-direction:column;gap:8px}
 .rvtag{margin:8px 0 0 44px;font-size:13px;font-weight:800}.rvtag.approve{color:var(--ok)}.rvtag.ignore{color:#888}.rvtag.question,.rvtag.alt{color:var(--warn)}
@@ -200,8 +224,6 @@ dialog pre{white-space:pre-wrap;word-break:break-word;font-size:14px;margin:0}
 .askreply{display:block;margin-top:4px;color:var(--blue);font-size:13.5px}
 .ubq{font-size:12.5px;opacity:.8;margin-bottom:4px}
 
-.sellform{max-width:720px}.sellgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.sellgrid label{display:grid;gap:4px;font-weight:700;font-size:14px}.sellgrid .full{grid-column:1/-1}
-@media(max-width:700px){.sellgrid{grid-template-columns:1fr}}
 .ctx{position:fixed;z-index:100;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px #0002;padding:6px;display:flex;flex-direction:column;min-width:240px}
 .ctx button{background:transparent;color:var(--ink);text-align:left;font-weight:600;font-size:15px;padding:9px 12px}.ctx button:hover{background:var(--green2)}
 .autob{font-size:11px;font-weight:800;background:var(--okbg);color:var(--ok);border-radius:999px;padding:1px 7px;margin-left:6px}
@@ -338,7 +360,7 @@ details.fold ol{font-size:14.5px;padding-left:20px}
 @media (max-width:1000px),(max-height:720px){
   .side{width:220px}.brand{padding:10px 12px 4px}.scope button{font-size:13px;padding:6px 4px}
   .top{padding:6px 12px;gap:8px}.top .who .em{font-size:22px}.top .who b{font-size:16px}.top .who span{display:none}
-  .tabs{margin-left:0}.tabs button{padding:5px 9px;font-size:14.5px}.sim{display:none}
+  .navmenu{margin-left:0}.navlist{left:0;right:auto}.sim{display:none}
   .composer{padding:8px 12px}.cbox textarea{min-height:42px}.crow .hint{display:none}
   .inner{padding:14px}.desc,.facts,.visual,.cardacts,details.more{margin-left:0}
 }
@@ -360,7 +382,7 @@ details.fold ol{font-size:14.5px;padding-left:20px}
 <div class="main">
   <div class="top">
     <div class="who"><span class="em" id="wemoji">🌱</span><div><b id="wname"></b><span id="wsub"></span></div><button class="sm soft" id="otchip" hidden></button><button class="sm soft" id="goalchip" hidden></button></div>
-    <nav class="tabs" id="tabs"></nav>
+    <nav class="navmenu" id="navmenu"><button class="navbtn" id="navbtn" aria-haspopup="true" aria-expanded="false"></button><div class="navlist" id="navlist" role="menu" hidden></div></nav>
     <span class="sim">SIMULATED · no real money</span>
   </div>
 
@@ -372,24 +394,11 @@ details.fold ol{font-size:14.5px;padding-left:20px}
 
   <section class="view" id="v-chat" style="position:relative">
     <button class="sm soft pinopen" id="pinbtn">📌 Notes</button>
-    <button class="sm soft pinopen" id="taskbtn" style="top:50px">🔁 Tasks</button>
-    <button class="sm soft pinopen" id="ordbtn" style="top:90px">📦 Pending orders</button>
-    <button class="sm soft pinopen" id="todobtn" style="top:130px">✅ To-do</button>
-    <aside class="pins tasksd" id="todod" hidden>
-      <div class="row" style="justify-content:space-between"><b>✅ To-do — your approved plan steps</b><button class="sm ghost" id="todox">✕</button></div>
-      <div id="todolist"></div>
-    </aside>
+    <button class="sm soft pinopen" id="ordbtn" style="top:50px">📦 Pending orders</button>
     <aside class="pins tasksd" id="ordd" hidden>
       <div class="row" style="justify-content:space-between"><b>📦 Pending orders</b><button class="sm ghost" id="ordx">✕</button></div>
       <div class="small">Orders taken by auto-reply or "Turn into order". Complete them, then tick them off.</div>
       <div id="ordlist"></div>
-    </aside>
-    <aside class="pins tasksd" id="tasksd" hidden>
-      <div class="row" style="justify-content:space-between"><b>🔁 Repetitive tasks</b><button class="sm ghost" id="taskx">✕</button></div>
-      <button class="bigrun" id="runall">▶ Execute all AI-automated tasks</button>
-      <div class="small" id="taskprog"></div>
-      <div id="tasklist"></div>
-      <button class="sm soft" id="taskadd" style="margin-top:10px">＋ Add a task</button>
     </aside>
     <aside class="pins" id="pins" hidden><div class="row" style="justify-content:space-between"><b>📌 Pinned notes</b><button class="sm ghost" id="pinx">✕</button></div><div id="pinlist"></div></aside>
     <div class="scroll" id="thread"><div class="inner" id="threadInner"></div></div>
@@ -426,20 +435,37 @@ details.fold ol{font-size:14.5px;padding-left:20px}
     <h3>Your buying choices</h3><div id="choices" class="empty">None yet.</div>
   </div></div></section>
 
+  <section class="view" id="v-daily"><div class="scroll"><div class="inner">
+    <div class="row" style="justify-content:space-between;align-items:flex-start">
+      <div><h2 style="margin:0 0 4px" id="dytitle">📅 Today</h2><div class="small" id="dysub"></div></div>
+      <button class="sm soft" id="dyregen">↻ Regenerate today's list</button>
+    </div>
+    <div class="bar" style="height:10px;margin-top:10px"><i id="dybar" style="background:#3c8a5d;width:0"></i></div>
+    <div id="dylist" style="margin-top:12px"></div>
+    <details class="rmsec" id="dyroutines" style="margin-top:22px">
+      <summary><b>🔁 Routines</b> <span class="small">— what BizFlow includes when it writes your daily list</span></summary>
+      <div class="small" style="margin:6px 0 8px">Edit, add or remove routines; tomorrow's list (or Regenerate) follows them. AI routines can also be run on their own for a full report.</div>
+      <div class="small" id="taskprog"></div>
+      <div id="tasklist"></div>
+      <div class="row" style="margin-top:10px"><button class="sm soft" id="taskadd">＋ Add a routine</button><button class="sm soft" id="runall">▶ Run all AI routines now</button></div>
+    </details>
+  </div></div></section>
+
   <section class="view" id="v-roadmap"><div class="scroll"><div class="inner">
     <h2 style="margin:0 0 4px" id="rmtitle">Your roadmap</h2>
-    <p class="empty">Every step in order. Steps tick themselves when BizFlow sees the work done (map research, supplier choice, first order, posts, auto-reorder) — or tick them yourself.</p>
+    <p class="empty">Your milestones, every plan step you approved (grouped by area) and what your automations are doing. Steps tick themselves when BizFlow sees the work done — or tick them yourself.</p>
     <div class="bar" style="height:14px"><i id="rmbar" style="background:#3c8a5d;width:0"></i></div>
     <div class="small" id="rmcount" style="margin:4px 0 14px"></div>
-    <div id="rmlist"></div>
+    <div id="rmsecs"></div>
   </div></div></section>
 
   <section class="view" id="v-automations"><div class="scroll"><div class="inner" style="max-width:1200px">
     <div class="tiles" id="autiles"></div>
-    <div class="subtabs"><button data-sub="reorder" class="on">🧺 Ingredients &amp; orders</button><button data-sub="social">📣 Social posts</button><button data-sub="recruit">👥 Recruiting</button></div>
+    <div class="subtabs"><button data-sub="reorder" class="on">🧺 Ingredients &amp; orders</button><button data-sub="social">📣 Social posts</button><button data-sub="recruit">👥 Recruiting</button><button data-sub="log">🧾 Log</button></div>
     <div id="au-reorder"></div>
     <div id="au-social" hidden></div>
     <div id="au-recruit" hidden></div>
+    <div id="au-log" hidden></div>
   </div></div></section>
 
 <section class="view" id="v-requests"><div class="rqwrap">
@@ -448,8 +474,9 @@ details.fold ol{font-size:14.5px;padding-left:20px}
   </div></section>
 
   <section class="view" id="v-activity"><div class="scroll"><div class="inner" style="max-width:1200px">
-    <h2 style="margin:0 0 4px">🧠 Activity — everything the agent did</h2>
-    <div class="row"><select id="acfilter"><option value="">All chats + automations</option></select><label class="small"><input type="checkbox" id="accmd"> commands only</label><button class="sm soft" id="acrefresh">Refresh</button></div>
+    <h2 style="margin:0 0 4px">🧠 Activity — everything the agent did in your chats</h2>
+    <div class="small">Automation events are in ⚙️ Automations → 🧾 Log.</div>
+    <div class="row"><select id="acfilter"><option value="">All chats</option></select><label class="small"><input type="checkbox" id="accmd"> commands only</label><button class="sm soft" id="acrefresh">Refresh</button></div>
     <div id="aclist" style="margin-top:10px"></div>
   </div></div></section>
 
@@ -527,13 +554,71 @@ function renderSide() {
   $("#otchip").hidden = all;
   if (!all) { const t = biz().owner_type; $("#otchip").textContent = t === "student" ? "🎓 Student" : t === "small_business" ? "🏪 Small business" : "❓ Student or business?"; }
   $("#goalchip").hidden = all; if (!all) { const g = biz().goal; $("#goalchip").textContent = g ? "🎯 " + (g.length > 34 ? g.slice(0, 34) + "…" : g) : "🎯 Set a goal"; $("#goalchip").title = g || "Your goal shapes every plan"; }
-  const tabs = all ? [["overview", "🏢 Overview"], ["chat", "💬 Chat"], ["requests", "📥 Online Requests"], ["automations", "⚙️ Automations"], ["map", "🗺️ Market map"], ["suppliers", "📦 Suppliers"], ["guides", "📋 Guides"], ["activity", "🧠 Activity"]]
-                   : [["chat", "💬 Chat"], ["requests", "📥 Online Requests"], ["roadmap", "🧭 Roadmap"], ["automations", "⚙️ Automations"], ["guides", "📋 Guides"], ["activity", "🧠 Activity"]];
-  if (!tabs.some(t => t[0] === S.tab)) S.tab = tabs[0][0];
-  const nav = $("#tabs"); nav.replaceChildren();
-  tabs.forEach(([id, label]) => { const b = el("button", S.tab === id ? "on" : "", label); b.dataset.tab = id; b.onclick = () => showTab(id); nav.append(b); });
-  refreshBadge(); loadPins(); loadOrders(); loadTodos();
+  TABS = all ? [["overview", "🏢", "Overview"], ["chat", "💬", "Chat"], ["requests", "📥", "Online Requests"], ["automations", "⚙️", "Automations"], ["map", "🗺️", "Market map"], ["suppliers", "📦", "Suppliers"], ["guides", "📋", "Guides"], ["activity", "🧠", "Activity"]]
+             : [["chat", "💬", "Chat"], ["daily", "📅", "Daily"], ["requests", "📥", "Online Requests"], ["roadmap", "🧭", "Roadmap"], ["automations", "⚙️", "Automations"], ["guides", "📋", "Guides"], ["activity", "🧠", "Activity"]];
+  if (!TABS.some(t => t[0] === S.tab)) S.tab = TABS[0][0];
+  PULSE = null; renderNav(); pollPulse();
+  loadPins(); loadOrders();
   loadConvs();
+}
+
+// ================================================================ page menu + notifications
+// Every page sits in one dropdown. A red dot marks pages whose content changed since you last opened them;
+// a number counts things waiting for you (unread messages, plans to review, orders to approve, today's tasks).
+let TABS = [], PULSE = null;
+const seenKey = () => "seen." + curBid();
+function changed(id) {
+  const p = PULSE && PULSE[id]; if (!p) return false;
+  const seen = store.get(seenKey(), {});
+  return id !== S.tab && seen[id] !== undefined && seen[id] !== p.sig;
+}
+function markSeen(id) {
+  if (!PULSE || !PULSE[id]) return;
+  const seen = store.get(seenKey(), {}); seen[id] = PULSE[id].sig; store.set(seenKey(), seen);
+}
+function navMark(id) {
+  const p = (PULSE && PULSE[id]) || {}, f = document.createDocumentFragment();
+  if (p.n) f.append(el("span", "badge2" + (id === "daily" ? " ok" : ""), String(p.n)));
+  else if (changed(id)) { const d = el("span", "ndot"); d.title = "Something changed here"; f.append(d); }
+  return f;
+}
+function renderNav() {
+  const cur = TABS.find(t => t[0] === S.tab) || TABS[0];
+  const btn = $("#navbtn"); btn.replaceChildren(el("span", null, cur[1]), el("span", null, cur[2]));
+  const others = TABS.filter(t => t[0] !== S.tab);
+  const waiting = others.reduce((n, t) => n + (((PULSE || {})[t[0]] || {}).n || 0), 0);
+  if (waiting) btn.append(el("span", "badge2", String(waiting)));
+  else if (others.some(t => changed(t[0]))) btn.append(el("span", "ndot"));
+  btn.append(el("span", "caret", "▾"));
+  const list = $("#navlist"); list.replaceChildren();
+  TABS.forEach(([id, ic, label]) => {
+    const b = el("button", id === S.tab ? "on" : ""); b.dataset.tab = id; b.setAttribute("role", "menuitem");
+    b.append(el("span", null, ic), el("span", "lab", label), navMark(id));
+    b.onclick = () => { closeNav(); showTab(id); }; list.append(b);
+  });
+}
+function closeNav() { $("#navlist").hidden = true; $("#navbtn").setAttribute("aria-expanded", "false"); }
+$("#navbtn").onclick = e => { e.stopPropagation(); const open = $("#navlist").hidden; $("#navlist").hidden = !open; $("#navbtn").setAttribute("aria-expanded", String(open)); };
+document.addEventListener("click", e => { if (!e.target.closest("#navmenu")) closeNav(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeNav(); });
+async function pollPulse() {
+  const bid = curBid();
+  try {
+    const p = await api("/api/pulse?business_id=" + encodeURIComponent(bid)); if (bid !== curBid()) return;
+    const seen = store.get(seenKey(), {});
+    Object.keys(p).forEach(id => { if (seen[id] === undefined) seen[id] = p[id].sig; });  // first visit: nothing is "new" yet
+    store.set(seenKey(), seen);
+    const prev = PULSE; PULSE = p; markSeen(S.tab); renderNav();
+    if (prev && prev[S.tab] && prev[S.tab].sig !== p[S.tab].sig) refreshCurrent();
+  } catch {}
+}
+setInterval(pollPulse, 6000);
+// the page you are looking at refreshes itself when its content changes
+function refreshCurrent() {
+  if (S.tab === "roadmap") renderRoadmap();
+  else if (S.tab === "daily") renderDaily();
+  else if (S.tab === "automations" && AU_SUB === "log") renderAuLog();
+  else if (S.tab === "activity") renderActivity();
 }
 
 async function loadConvs() {
@@ -556,13 +641,14 @@ async function loadConvs() {
 
 function showTab(id) {
   S.tab = id;
-  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.tab === id));
+  markSeen(id); renderNav();
   document.querySelectorAll(".view").forEach(v => v.classList.toggle("on", v.id === "v-" + id));
   if (id === "roadmap") renderRoadmap();
+  if (id === "daily") renderDaily();
   if (id === "automations") renderAutomations();
   if (id === "activity") renderActivity();
   if (id === "requests") renderRequests();
-  if (id !== "chat") { $("#pins").hidden = true; $("#tasksd").hidden = true; $("#ordd").hidden = true; $("#todod").hidden = true; }
+  if (id !== "chat") { $("#pins").hidden = true; $("#ordd").hidden = true; }
   maybeReview();
   if (id === "overview") renderOverview();
   if (id === "map") openMapTab();
@@ -572,7 +658,7 @@ function showTab(id) {
 }
 
 document.querySelectorAll(".scope button").forEach(b => b.onclick = () => { S.scope = b.dataset.scope; store.set("scope", S.scope); S.cid = null; S.tab = S.scope === "all" ? "overview" : "chat"; renderSide(); showTab(S.tab); });
-$("#bizpick").onchange = () => { $("#tasksd").hidden = true; S.bid = $("#bizpick").value; store.set("bid", S.bid); S.cid = null; renderSide(); showTab(S.tab === "overview" ? "chat" : S.tab); };
+$("#bizpick").onchange = () => { S.bid = $("#bizpick").value; store.set("bid", S.bid); S.cid = null; renderSide(); showTab(S.tab === "overview" ? "chat" : S.tab); };
 $("#newchat").onclick = () => { S.cid = null; loadConvs(); showTab("chat"); renderThread(null); $("#q").focus(); };
 $("#addbiz").onclick = addBusinessDialog;
 $("#otchip").onclick = () => askOwnerType().then(() => { TASKS_LOADED = null; });
@@ -653,8 +739,8 @@ function scrollDown() { const t = $("#thread"); t.scrollTop = t.scrollHeight; }
 function renderTurn(run) {
   const t = el("div", "turn"); t.id = "turn-" + run.run_id;
   const m = (run.request || "").match(/^([\s\S]*?)\n\n\(About (.+?) from my earlier request/);
-  const isRev = /^REVISE PLAN/.test(run.request || "");
-  const ub = el("div", "ubub", isRev ? "📝 My review: " + (run.request.match(/Please change:\n([\s\S]*)/) || [, ""])[1].replace(/\n/g, "  ") : m ? m[1] : run.request); if (m && !isRev) ub.prepend(el("div", "ubq", "↪ about " + m[2]));
+  const isRev = /^REVISE PLAN/.test(run.request || ""), isAns = /^ANSWERS TO YOUR QUESTIONS/.test(run.request || "");
+  const ub = el("div", "ubub", isAns ? "📝 My answers: " + run.request.split("\n").slice(1).map(l => l.replace(/^- .*?→ /, "")).join(" · ") : isRev ? "📝 My review: " + (run.request.match(/Please change:\n([\s\S]*)/) || [, ""])[1].replace(/\n/g, "  ") : m ? m[1] : run.request); if (m && !isRev && !isAns) ub.prepend(el("div", "ubq", "↪ about " + m[2]));
   t.append(ub);
   const a = el("div", "abox"); a.append(el("div", "av", "🌱"));
   const body = el("div", "abody"); a.append(body); t.append(a);
@@ -692,7 +778,13 @@ function fillTurn(run, body) {
   const st = el("div", "steps"); planEvents.forEach(e => addStep(st, e)); th.append(st); body.append(th);
   if (run.answer) { const ans = el("div", "answer"); ans.append(pinBtn(run, "reply", run.request, run.answer), md(run.answer));
     const q = el("button", "sm ghost askreply", "💬 Ask about this reply"); q.onclick = () => askAbout(run, "your reply", run.answer.slice(0, 400)); ans.append(q); body.append(ans); }
-  if (run.plan) body.append(renderPlan(run));
+  if (run.plan && (run.plan.questions || []).length) {
+    const box = el("div", "asks"), answered = questionsAnswered(run);
+    box.append(el("h3", null, answered ? "❓ I asked you a few details — answered below" : "❓ I need a few details first — answer in the panel below"));
+    const ol = el("ol"); run.plan.questions.forEach(q => ol.append(el("li", null, q.question))); box.append(ol);
+    if (!answered && ASK.hidden[run.run_id]) { const b = el("button", "sm", "Answer now"); b.onclick = () => { delete ASK.hidden[run.run_id]; maybeReview(); }; box.append(b); }
+    body.append(box);
+  } else if (run.plan) body.append(renderPlan(run));
   if (execEvents.length) {
     const ex = el("details", "think"); ex.open = run.state === "executing";
     const s2 = el("summary"); if (run.state === "executing") s2.append(el("span", "spin"));
@@ -723,7 +815,7 @@ async function retryRun(run) {
 function addStep(box, e) {
   if (e.kind === "done" || e.kind === "status") return;
   const row = el("div", "st " + e.kind);
-  const ic = { say: "💭", tool: icon(e.department), result: "↳", denied: "⛔", error: "⚠️", verifier: "✅", adapt: "🔁", plan: "📋", phase: "⚙️", skip: "⏭️", log: "·" }[e.kind] || "•";
+  const ic = { say: "💭", tool: icon(e.department), result: "↳", denied: "⛔", error: "⚠️", verifier: "✅", adapt: "🔁", plan: "📋", ask: "❓", phase: "⚙️", skip: "⏭️", log: "·" }[e.kind] || "•";
   row.append(el("span", "ic", ic));
   const tx = el("div", "tx");
   if (e.kind === "tool") { tx.append(el("span", "dpt", e.department || ""), e.text); }
@@ -915,56 +1007,14 @@ function askOwnerType() {
     dialog("Student or small business?", w);
   });
 }
-const SELL_RE = /\b(want to (sell|start|open)|start(ing)? (a |my )?(business|selling|shop|stall)|sell(ing)? (my |some |a |an )|open (a|my) (shop|stall|store|business)|nak jual|mahu jual|business idea)\b/i;
-const SELL_CATS = ["Food & drinks", "Traditional / cultural items", "Fashion & clothing", "Handmade & crafts", "Beauty & personal care", "Electronics & accessories", "Books & stationery", "Services", "Other"];
-function sellForm(text) {
-  return new Promise(resolve => {
-    const b = biz(), prev = b.selling_profile || {};
-    const f = el("div", "form sellform");
-    f.append(el("p", "small", "A few details make the plan specific — e.g. 'traditional costume' means BizFlow looks for songket/batik fabric shops, not general clothing stores. Leave anything blank."));
-    const g = el("div", "sellgrid"); const F = {};
-    const fld = (k, label, inp, full) => { inp.value = prev[k] || ""; const l = el("label", full ? "full" : null, label); l.append(inp); g.append(l); F[k] = inp; return inp; };
-    fld("product", "What will you sell? *", el("input"), true).placeholder = "e.g. Baju kurung and kebaya for Raya";
-    const cat = el("select"); SELL_CATS.forEach(c => { const o = el("option", null, c); o.value = c; cat.append(o); }); fld("category", "Category", cat); if (!prev.category) cat.value = "";
-    fld("style", "Style / genre / type", el("input")).placeholder = "e.g. traditional Malay, songket, modern batik";
-    fld("customers", "Who will buy it?", el("input")).placeholder = "e.g. university students, office workers";
-    const ch = el("select"); ["", "Offline (stall / shop)", "Online (Instagram, Shopee…)", "Both online and offline"].forEach(c => { const o = el("option", null, c || "—"); o.value = c; ch.append(o); }); fld("channel", "Sell online or offline?", ch);
-    fld("area", "Where?", el("input")).placeholder = b.area || "Area or campus";
-    fld("budget", "Starting budget (MYR)", el("input")).placeholder = "e.g. 500";
-    fld("price_range", "Price you have in mind", el("input")).placeholder = "e.g. RM 80–150 per set";
-    fld("quantity", "How many per week / month?", el("input")).placeholder = "e.g. 20 sets a month";
-    fld("start_when", "When do you want to start?", el("input")).placeholder = "e.g. 3 weeks before Raya";
-    fld("experience", "Your skills / experience", el("input")).placeholder = "e.g. can sew, no business experience";
-    fld("special", "Anything special?", el("input"), true).placeholder = "e.g. halal, handmade, custom sizes, no shipping outside KL";
-    if (!F.product.value) F.product.value = text.length < 120 ? text.replace(/^(i |we )?(want|wanna|plan) to (sell|start|open)\s*/i, "") : "";
-    f.append(g);
-    const row = el("div", "row"); row.style.justifyContent = "flex-end";
-    const skip = el("button", "soft", "Skip — just send"), go = el("button", null, "Make my plan ➤");
-    let done = false;
-    skip.onclick = () => { done = true; $("#dlg").close(); resolve(text); };
-    go.onclick = async () => {
-      if (!F.product.value.trim()) { F.product.focus(); return; }
-      const prof = {}; Object.keys(F).forEach(k => prof[k] = F[k].value.trim());
-      await api("/api/businesses/" + b.id + "/selling-profile", prof); await loadBusinesses();
-      done = true; $("#dlg").close();
-      const lines = Object.entries(prof).filter(([, v]) => v).map(([k, v]) => "- " + ({ product: "What", category: "Category", style: "Style/genre", customers: "Customers", channel: "Channel", area: "Where", budget: "Budget MYR", price_range: "Price in mind", quantity: "Quantity", start_when: "Start", experience: "Experience", special: "Special" }[k]) + ": " + v);
-      resolve(text + "\n\nDetails from my selling form:\n" + lines.join("\n"));
-    };
-    row.append(skip, go); f.append(row);
-    $("#dlg").addEventListener("close", () => { if (!done) resolve(null); }, { once: true });
-    dialog("Tell BizFlow what you want to sell", f);
-  });
-}
 async function send() {
   let text = $("#q").value.trim(); if (!text) return;
   if (S.bypass) { S.bypass = false; }
   else {
-  if (S.scope === "single" && !biz().owner_type) { const t = await askOwnerType(); if (!t) return; }
-  if (S.scope === "single" && !biz().goal_asked) { const g = await askGoal(); if (g === null) return; }
   if (S.replyTo) {
     const r = S.replyTo; S.replyTo = null; $("#replychip").hidden = true; $("#q").placeholder = "Ask BizFlow anything about your business…";
     text = text + "\n\n(About " + r.label + ' from my earlier request "' + r.request.slice(0, 160) + '": ' + r.context.slice(0, 600) + ")";
-  } else if (S.scope === "single" && SELL_RE.test(text) && !/Details from my selling form/.test(text)) { const t = await sellForm(text); if (t === null) return; text = t; }
+  }
   }
   $("#send").disabled = true;
   try {
@@ -1247,14 +1297,54 @@ async function offlineFlow(l, area) {
 }
 
 // ================================================================ roadmap
+// Roadmap = milestones + every approved plan step (grouped by area) + what the automations are doing, as dropdown sections.
+const CATS = [["plan", "📋", "Plan"], ["product", "🍪", "Product refine"], ["marketing", "📣", "Marketing"], ["stock", "📦", "Stock & suppliers"],
+              ["customers", "💬", "Customers"], ["permits", "🧾", "Permits & setup"], ["team", "👥", "Team"]];
+function catOf(t) {
+  if (CATS.some(c => c[0] === t.category) || t.category === "automation") return t.category;
+  const s = (t.title + " " + (t.details || "")).toLowerCase(), d = (t.department || "").toLowerCase();
+  if (/auto-?reorder|automat|schedul/.test(s)) return "automation";
+  if (/menu|recipe|pric|packag|product|flavou?r|taste|portion/.test(s)) return "product";
+  if (d === "marketing" || /post|campaign|instagram|tiktok|promo|social/.test(s)) return "marketing";
+  if (d === "operations" || /supplier|stock|restock|purchase|ingredient/.test(s)) return "stock";
+  if (d.startsWith("customer") || /customer|order|review|reply|refund/.test(s)) return "customers";
+  if (d === "guides" || /permit|licen[cs]e|ssm|regist|halal|food handler|typhoid|certif/.test(s)) return "permits";
+  if (d === "people" || /hire|helper|staff|job ad/.test(s)) return "team";
+  return "plan";
+}
+function rmSection(key, title, done, total, sub) {
+  const open = store.get("rmopen." + curBid(), { journey: true, plan: true });
+  const d = el("details", "rmsec"); d.open = !!open[key];
+  d.ontoggle = () => { const o = store.get("rmopen." + curBid(), { journey: true, plan: true }); o[key] = d.open; store.set("rmopen." + curBid(), o); };
+  const s = el("summary"); s.append(el("b", null, title));
+  if (total) { s.append(el("span", "small", done + " of " + total + " done")); const bar = el("span", "sbar"); const i = el("i"); i.style.width = (done / total * 100) + "%"; bar.append(i); s.append(bar); }
+  if (sub) s.append(el("span", "small", sub));
+  d.append(s); return d;
+}
+function todoRow(t) {
+  const c = el("div", "todo" + (t.done ? " done" : ""));
+  const cb = el("input"); cb.type = "checkbox"; cb.checked = t.done;
+  cb.onchange = async () => { await api("/api/todos/" + t.id + "/toggle", { done: cb.checked }); renderRoadmap(); };
+  const tx = el("div"); tx.style.flex = "1"; tx.append(el("b", null, t.title)); if (t.details) tx.append(el("div", "tiny", t.details.slice(0, 200)));
+  const go = el("button", "sm ghost", "↗"); go.title = "Go to the chat"; go.onclick = () => jumpTo({ conversation_id: t.conversation_id, run_id: t.run_id, item_id: t.item_id, kind: "item" });
+  const del = el("button", "sm ghost", "🗑"); del.title = "Remove"; del.onclick = async () => { await api("/api/todos/" + t.id + "/delete", {}); renderRoadmap(); };
+  c.append(cb, tx, go, del); return c;
+}
 async function renderRoadmap() {
   if (S.scope === "all") return;
-  const rm = await api("/api/roadmap?business_id=" + encodeURIComponent(curBid()));
+  const bid = curBid();
+  const [rm, td, au, G] = await Promise.all([api("/api/roadmap?business_id=" + encodeURIComponent(bid)), api("/api/todos?business_id=" + encodeURIComponent(bid)),
+                                             api("/api/automations?business_id=" + encodeURIComponent(bid)), guides()]);
+  if (bid !== curBid()) return;
+  const todos = td.todos, tdone = todos.filter(t => t.done).length;
   $("#rmtitle").textContent = "🧭 " + rm.journey + " — " + biz().name;
-  $("#rmbar").style.width = (rm.steps.length ? rm.done / rm.steps.length * 100 : 0) + "%";
-  $("#rmcount").textContent = rm.done + " of " + rm.steps.length + " steps done" + (rm.done === rm.steps.length ? " 🎉" : " · next: " + ((rm.steps.find(s => s.status !== "done") || {}).title || ""));
-  const box = $("#rmlist"); box.replaceChildren();
-  const G = await guides();
+  const total = rm.steps.length + todos.length, done = rm.done + tdone;
+  $("#rmbar").style.width = (total ? done / total * 100 : 0) + "%";
+  $("#rmcount").textContent = done + " of " + total + " done (milestones + approved plan steps)" + (done === total && total ? " 🎉" : " · next: " + ((rm.steps.find(s => s.status !== "done") || todos.find(t => !t.done) || {}).title || ""));
+  const secs = $("#rmsecs"); secs.replaceChildren();
+  // 1. milestones
+  const journey = rmSection("journey", "🧭 Milestones", rm.done, rm.steps.length); secs.append(journey);
+  const box = el("div"); journey.append(box);
   rm.steps.forEach((s, i) => {
     const d = el("div", "step " + s.status);
     d.append(el("div", "n", s.status === "done" ? "✓" : (s.icon || String(i + 1))));
@@ -1278,6 +1368,33 @@ async function renderRoadmap() {
     if (gs.length) { const m = el("details", "more"); m.style.marginLeft = "0"; m.append(el("summary", null, "📋 How to do it")); gs.forEach(g => m.append(renderGuideEl(g))); b.append(m); }
     d.append(b); box.append(d);
   });
+  // 2. approved plan steps, one dropdown per area (Plan and Product refine always shown)
+  const by = {}; todos.forEach(t => (by[catOf(t)] = by[catOf(t)] || []).push(t));
+  CATS.forEach(([k, ic, label]) => {
+    const rows = by[k] || [];
+    if (!rows.length && k !== "plan" && k !== "product") return;
+    const sec = rmSection(k, ic + " " + label, rows.filter(t => t.done).length, rows.length, rows.length ? "" : k === "plan" && todos.length ? "general steps" : "nothing approved yet"); secs.append(sec);
+    if (!rows.length) sec.append(el("div", "empty", k !== "plan" ? "Steps about your menu, recipes, prices and packaging land here."
+      : todos.length ? "General strategy steps land here; your other approved steps are grouped by area below." : "Approve a plan in 💬 Chat and its steps land here, grouped by area."));
+    [...rows.filter(t => !t.done), ...rows.filter(t => t.done)].forEach(t => sec.append(todoRow(t)));
+    if (k === "plan" && todos.length) {
+      const g = el("button", "sm soft", tdone === todos.length ? "🎉 All done — ideas to grow further" : "🚀 Ideas to grow further"); g.style.marginTop = "10px";
+      const out = el("div"); g.onclick = () => { g.remove(); out.append(el("span", "spin"), " thinking…"); growInto(out); }; sec.append(g, out);
+    }
+  });
+  // 3. automations: approved automation steps + what is switched on right now
+  const autoRows = by.automation || [];
+  const on = au.rules.filter(r => r.enabled), pend = au.orders.filter(o => o.status === "awaiting_approval"), sched = au.posts.filter(p => p.status === "scheduled");
+  const asec = rmSection("automation", "⚙️ Automation", autoRows.filter(t => t.done).length, autoRows.length,
+    on.length + " auto-reorder" + (on.length === 1 ? "" : "s") + " on · " + sched.length + " post" + (sched.length === 1 ? "" : "s") + " scheduled" + (pend.length ? " · " + pend.length + " waiting for your OK" : ""));
+  secs.append(asec);
+  autoRows.forEach(t => asec.append(todoRow(t)));
+  const live = el("div", "small"); live.style.marginTop = "8px";
+  if (pend.length) live.append(el("div", null, "✋ Waiting for your OK: " + pend.map(o => o.material || o.id).join(", ")));
+  live.append(el("div", null, "🔁 Auto-reorder on: " + (on.length ? on.map(r => r.name + " (" + trigShort(r.trigger) + ")").join(", ") : "none yet")));
+  live.append(el("div", null, "⏰ Scheduled posts: " + (sched.length ? sched.map(p => (p.scheduled_for || "").slice(5, 16).replace("T", " ")).join(", ") : "none")));
+  const open = el("button", "sm soft", "Open ⚙️ Automations"); open.style.marginTop = "8px"; open.onclick = () => showTab("automations");
+  asec.append(live, open);
 }
 
 // ================================================================ automations
@@ -1286,8 +1403,25 @@ const PRODUCT_NAMES = { P001: "cookies", P002: "lemon tea", P003: "muffins", P00
 document.querySelectorAll("[data-sub]").forEach(b => b.onclick = () => { AU_SUB = b.dataset.sub; showSub(); });
 function showSub() {
   document.querySelectorAll("[data-sub]").forEach(x => x.classList.toggle("on", x.dataset.sub === AU_SUB));
-  $("#au-reorder").hidden = AU_SUB !== "reorder"; $("#au-social").hidden = AU_SUB !== "social"; $("#au-recruit").hidden = AU_SUB !== "recruit";
+  $("#au-reorder").hidden = AU_SUB !== "reorder"; $("#au-social").hidden = AU_SUB !== "social"; $("#au-recruit").hidden = AU_SUB !== "recruit"; $("#au-log").hidden = AU_SUB !== "log";
   if (AU_SUB === "recruit") renderRecruit();
+  if (AU_SUB === "log") drawAuLog();
+}
+// 🧾 Log: everything the automations did (reorders fired, approvals, posts, errors)
+async function renderAuLog() { AUTO = await api("/api/automations?business_id=" + encodeURIComponent(curBid())); drawAuLog(); }
+function drawAuLog() {
+  const box = $("#au-log"); box.replaceChildren();
+  const rows = (AUTO && AUTO.log) || [];
+  box.append(el("div", "small", "Last engine check: " + (AUTO && AUTO.last_check ? AUTO.last_check.slice(5, 16).replace("T", " ") : "not yet") + " · newest first"));
+  if (!rows.length) { box.append(el("div", "empty", "No automation events yet. They appear here when an auto-reorder fires, you approve or reject an order, or a post is published.")); return; }
+  const ic = { error: "⚠️", paid: "💸", reject: "✗", post: "📣", order: "🛒", info: "•" };
+  const list = el("div"); list.style.marginTop = "8px";
+  rows.forEach(r => {
+    const d = el("div", "arow automation" + (r.kind === "error" ? " error" : ""));
+    d.append(el("span", "small", (r.at || "").slice(5, 16).replace("T", " ")), el("span", null, (ic[r.kind] || "⚙️") + " " + (r.kind || "info")), el("div", "tx", r.text));
+    list.append(d);
+  });
+  box.append(list);
 }
 async function renderAutomations() {
   [AUTO, ING] = await Promise.all([api("/api/automations?business_id=" + encodeURIComponent(curBid())), S.scope === "all" ? { ingredients: [] } : api("/api/ingredients?business_id=" + encodeURIComponent(curBid()))]);
@@ -1539,14 +1673,8 @@ function postRow(p) {
 const CH = { whatsapp: ["🟢", "WhatsApp"], instagram: ["📸", "Instagram"], linkedin: ["💼", "LinkedIn"] };
 let REQ = { filter: "", tid: null, timer: null };
 async function refreshBadge() {
-  try {
-    const r = await api("/api/inbox?business_id=" + encodeURIComponent(curBid()));
-    const b = document.querySelector('#tabs button[data-tab="requests"]');
-    if (b) { b.querySelector(".badge2")?.remove(); if (r.unread) b.append(el("span", "badge2", String(r.unread))); }
-    return r;
-  } catch { return null; }
+  try { return await api("/api/inbox?business_id=" + encodeURIComponent(curBid())); } catch { return null; }
 }
-setInterval(() => { if (S.tab !== "requests") refreshBadge(); }, 8000);
 async function renderRequests() {
   clearInterval(REQ.timer);
   REQ.timer = setInterval(() => { if (S.tab === "requests") drawRequests(true); else clearInterval(REQ.timer); }, 4000);
@@ -1567,7 +1695,7 @@ async function drawRequests(quiet) {
     const m = el("div"); m.style.minWidth = "0"; m.style.flex = "1";
     m.append(el("b", null, t.contact.name), el("div", "small rqlast", t.last ? (t.last.from === "me" ? "You: " : "") + t.last.text : ""));
     d.append(m); if (t.unread) d.append(el("span", "badge2", String(t.unread)));
-    if (t.auto_reply) d.querySelector("b").append(el("span", "autob", "🤖 auto"));
+    if (t.auto_reply) d.querySelector("b").append(el("span", "autob", t.auto_state ? (t.auto_state.state === "replying" ? "🤖 replying…" : "⚠ auto-reply retrying") : "🤖 auto"));
     d.onclick = () => { REQ.tid = t.id; drawRequests(); };
     d.oncontextmenu = e => { e.preventDefault(); ctxMenu(e.clientX, e.clientY, t.channel === "linkedin" ? [] : [[t.auto_reply ? "⏸ Turn off auto-reply" : "🤖 Turn on auto-reply (take orders)", () => toggleAuto(t.id, !t.auto_reply)]],
       [["📂 Open chat", () => { REQ.tid = t.id; drawRequests(); }]]); };
@@ -1579,9 +1707,10 @@ async function drawRequests(quiet) {
 async function drawThread(quiet) {
   const th = await api("/api/inbox/" + REQ.tid).catch(() => null); if (!th) return;
   const pane = $("#rqpane");
-  if (quiet && pane.dataset.tid === th.id && +pane.dataset.n === th.messages.length) return;
+  const as = th.auto_state ? th.auto_state.state + th.auto_state.at : "";
+  if (quiet && pane.dataset.tid === th.id && +pane.dataset.n === th.messages.length && pane.dataset.as === as) return;
   const keep = pane.querySelector("textarea")?.value || "";
-  pane.dataset.tid = th.id; pane.dataset.n = th.messages.length; pane.replaceChildren();
+  pane.dataset.tid = th.id; pane.dataset.n = th.messages.length; pane.dataset.as = as; pane.replaceChildren();
   const h = el("div", "rqhead"); h.append(el("span", "rqch", CH[th.channel][0]), el("b", null, th.contact.name), el("span", "small", " · " + CH[th.channel][1] + " · @" + th.contact.handle));
   if (th.channel !== "linkedin") { const ab = el("button", "sm " + (th.auto_reply ? "" : "soft"), th.auto_reply ? "🤖 Auto-reply ON" : "🤖 Auto-reply off"); ab.title = "Right-click any chat in the list to switch this too"; ab.onclick = () => toggleAuto(th.id, !th.auto_reply); h.append(ab); }
   if (th.channel === "linkedin") h.append(ext("Open LinkedIn ↗", "/linkedin/?business_id=" + encodeURIComponent(th.business_id) + "#talent"));
@@ -1589,6 +1718,8 @@ async function drawThread(quiet) {
   pane.append(h);
   const msgs = el("div", "rqmsgs");
   th.messages.forEach(m => { const b = el("div", "bub " + (m.from === "me" ? "me" : "them")); b.append(el("div", null, m.text), el("div", "small", (m.at || "").slice(11, 16))); msgs.append(b); });
+  if (th.auto_reply && th.auto_state) msgs.append(el("div", "small autost", th.auto_state.state === "replying" ? "🤖 BizFlow is writing a reply…" : "⚠ Auto-reply could not answer: " + th.auto_state.detail));
+  else if (th.auto_reply && th.messages.length && th.messages[th.messages.length - 1].from === "them") msgs.append(el("div", "small autost", "🤖 Your turn — BizFlow will reply in a few seconds…"));
   pane.append(msgs);
   if (th.order_draft && (th.order_draft.items || []).length) {
     const od = th.order_draft, r = od.raw || {}, box = el("div", "odraft");
@@ -1702,7 +1833,7 @@ async function pin(run, kind, title, excerpt, itemId) {
 }
 function pinBtn(run, kind, title, excerpt, itemId) { const b = el("button", "sm ghost pinb", "📌"); b.title = "Pin to notes"; b.onclick = e => { e.stopPropagation(); pin(run, kind, title, excerpt, itemId); }; return b; }
 function openPins() {
-  $("#tasksd").hidden = true; $("#ordd").hidden = true; $("#todod").hidden = true;
+  $("#ordd").hidden = true;
   const d = $("#pins"); d.hidden = false; const list = $("#pinlist"); list.replaceChildren();
   if (!PINS.length) list.append(el("div", "empty", "Pin a reply, a plan or a plan item with 📌 to keep it here."));
   PINS.forEach(p => {
@@ -1762,7 +1893,113 @@ function reviewCandidate() {
   runs.sort((a, b) => (a.created_at || "").localeCompare(b.created_at || ""));
   return runs.pop() || null;
 }
+function convRuns() {
+  return Object.values(RUNS).filter(r => r.conversation_id === S.cid).sort((a, b) => (a.created_at || "").localeCompare(b.created_at || ""));
+}
+// the agent's clarifying questions wait for an answer only while they are the latest turn of the chat
+function askCandidate() {
+  if (!S.cid) return null;
+  const last = convRuns().pop();
+  return last && last.state === "planned" && last.plan && (last.plan.questions || []).length && !ASK.hidden[last.run_id] ? last : null;
+}
+function questionsAnswered(run) { return convRuns().some(r => (r.created_at || "") > (run.created_at || "")); }
+
+// ================================================================ question panel (agent asks → owner picks, Claude-style choices)
+let ASK = { rid: null, idx: 0, ans: {}, extra: "", typing: null, hidden: {} };
+function ansText(q, a) { return a ? [...(a.picks || []), a.other].filter(Boolean).join(", ") : ""; }
+function drawAsk() {
+  const run = RUNS[ASK.rid]; if (!run) return;
+  const qs = run.plan.questions, box = $("#review");
+  box.hidden = false; $("#cbox").hidden = true; box.replaceChildren();
+  const done = qs.filter(q => ansText(q, ASK.ans[q.id])).length;
+  const head = el("div", "rvhead");
+  head.append(el("b", null, "❓ BizFlow needs a few details"), el("span", "small", " · " + done + " of " + qs.length + " answered"));
+  const later = el("button", "sm ghost", "Answer later ↓"); later.onclick = () => { ASK.hidden[run.run_id] = true; maybeReview(); }; head.append(later);
+  box.append(head);
+  const chips = el("div", "rvsteps");
+  qs.forEach((q, i) => { const has = !!ansText(q, ASK.ans[q.id]);
+    const c = el("button", "rvchip" + (i === ASK.idx ? " cur" : "") + (has ? " approve" : ""), (has ? "✓ " : "○ ") + q.header + (has ? ": " + ansText(q, ASK.ans[q.id]).slice(0, 26) : ""));
+    c.onclick = () => { ASK.idx = i; ASK.typing = null; drawAsk(); }; chips.append(c); });
+  const fin = el("button", "rvchip" + (ASK.idx >= qs.length ? " cur" : ""), "➤ Send"); fin.onclick = () => { ASK.idx = qs.length; drawAsk(); }; chips.append(fin);
+  box.append(chips);
+  if (ASK.idx < qs.length) {
+    const q = qs[ASK.idx], a = ASK.ans[q.id] || { picks: [], values: [], other: "" };
+    const card = el("div", "rvcard");
+    card.append(el("div", "small", "Question " + (ASK.idx + 1) + " of " + qs.length + " · " + q.header + (q.multi_select ? " · pick any" : "")), el("h4", null, q.question));
+    box.append(card);
+    const opts = el("div", "rvopts");
+    q.options.forEach((o, n) => {
+      const on = a.picks.includes(o.label);
+      const b = el("button", "rvopt" + (on ? " on" : ""));
+      const txt = el("span", "rvtxt"); txt.append(el("span", null, o.label)); if (o.description) txt.append(el("span", "small", o.description));
+      b.append(el("span", "rvn", String(n + 1)), el("span", "rvi", q.multi_select ? (on ? "☑" : "☐") : (on ? "●" : "○")), txt);
+      b.onclick = () => pickOption(q, o); opts.append(b);
+    });
+    const own = el("button", "rvopt" + (a.other ? " on" : ""));
+    own.append(el("span", "rvn", String(q.options.length + 1)), el("span", "rvi", "✏️"), el("span", null, a.other ? "My answer: " + a.other : "Type my own answer…"));
+    own.onclick = () => { ASK.typing = q.id; drawAsk(); }; opts.append(own);
+    box.append(opts);
+    if (ASK.typing === q.id) {
+      const w = el("div", "rvq"); const ta = el("textarea"); ta.rows = 2; ta.placeholder = "Your answer…"; ta.value = a.other || "";
+      const ok = el("button", "sm", "Save & next ➤");
+      const save = () => { a.other = ta.value.trim(); if (!q.multi_select && a.other) { a.picks = []; a.values = []; } ASK.ans[q.id] = a; ASK.typing = null; nextAsk(); };
+      ok.onclick = save; ta.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); save(); } });
+      w.append(ta, ok); box.append(w); setTimeout(() => ta.focus(), 0);
+    } else if (q.multi_select) {
+      const nx = el("button", "sm", "Next ➤"); nx.onclick = nextAsk; const r = el("div", "row"); r.style.justifyContent = "flex-end"; r.append(nx); box.append(r);
+    }
+  } else {
+    const f = el("div", "rvfinal");
+    const list = el("div", "small");
+    qs.forEach(q => list.append(el("div", null, "• " + q.question + " → " + (ansText(q, ASK.ans[q.id]) || "(no answer — use your judgement)"))));
+    const ta = el("textarea"); ta.rows = 2; ta.placeholder = "Anything else BizFlow should know? (optional)"; ta.value = ASK.extra; ta.oninput = () => ASK.extra = ta.value;
+    const go = el("button", null, "Send answers — make my plan ➤"); go.onclick = () => sendAnswers(run);
+    f.append(list, ta, go); box.append(f);
+  }
+}
+function pickOption(q, o) {
+  const a = ASK.ans[q.id] || { picks: [], values: [], other: "" };
+  if (q.multi_select) {
+    const i = a.picks.indexOf(o.label);
+    if (i >= 0) { a.picks.splice(i, 1); a.values.splice(i, 1); } else { a.picks.push(o.label); a.values.push(o.value || o.label); }
+    ASK.ans[q.id] = a; drawAsk();
+  } else { ASK.ans[q.id] = { picks: [o.label], values: [o.value || o.label], other: "" }; nextAsk(); }
+}
+function nextAsk() {
+  const qs = RUNS[ASK.rid].plan.questions;
+  const n = qs.findIndex((q, j) => j > ASK.idx && !ansText(q, ASK.ans[q.id]));
+  ASK.idx = n >= 0 ? n : qs.length; drawAsk();
+}
+async function sendAnswers(run) {
+  const qs = run.plan.questions, remember = {};
+  const lines = ["ANSWERS TO YOUR QUESTIONS (for: \"" + run.request.split("\n")[0].slice(0, 140) + "\")"];
+  qs.forEach(q => {
+    const a = ASK.ans[q.id], t = ansText(q, a);
+    lines.push("- " + q.question + " → " + (t || "no answer — use your judgement"));
+    if (t && q.remember) remember[q.remember] = q.remember === "owner_type" ? (a.values || [])[0] || "" : t;
+  });
+  if (ASK.extra.trim()) lines.push("Anything else: " + ASK.extra.trim());
+  try { if (Object.keys(remember).length) { await api("/api/businesses/" + curBid() + "/remember", { answers: remember }); await loadBusinesses(); renderSide(); } } catch {}
+  ASK = { rid: null, idx: 0, ans: {}, extra: "", typing: null, hidden: ASK.hidden };
+  $("#review").hidden = true; $("#cbox").hidden = false;
+  S.bypass = true; $("#q").value = lines.join("\n"); await send();
+  refreshTurn(run.run_id);
+}
+document.addEventListener("keydown", e => {
+  if ($("#review").hidden || !ASK.rid || /TEXTAREA|INPUT|SELECT/.test(document.activeElement.tagName) || $("#dlg").open) return;
+  const run = RUNS[ASK.rid]; if (!run || ASK.idx >= run.plan.questions.length) return;
+  const q = run.plan.questions[ASK.idx], n = parseInt(e.key, 10);
+  if (n >= 1 && n <= q.options.length) { e.preventDefault(); pickOption(q, q.options[n - 1]); }
+  else if (n === q.options.length + 1) { e.preventDefault(); ASK.typing = q.id; drawAsk(); }
+});
+
 function maybeReview() {
+  const ask = S.tab === "chat" ? askCandidate() : null;
+  if (ask) {
+    if (ASK.rid !== ask.run_id) ASK = { rid: ask.run_id, idx: 0, ans: {}, extra: "", typing: null, hidden: ASK.hidden };
+    REV.rid = null; return drawAsk();
+  }
+  ASK.rid = null;
   const run = S.tab === "chat" ? reviewCandidate() : null;
   if (!run) { $("#review").hidden = true; $("#cbox").hidden = false; return; }
   if (REV.rid !== run.run_id) REV = { rid: run.run_id, idx: 0, dec: {}, final: "", hidden: REV.hidden, todos: null };
@@ -1851,11 +2088,11 @@ async function finishReview(run) {
   $("#review").replaceChildren(el("div", "rvhead", "⏳ Saving your decisions…"));
   try {
     await api("/api/approve", { run_id: run.run_id, decisions, edits });
-    if (approved.length) await api("/api/todos/add", { business_id: curBid(), conversation_id: S.cid, items: approved.map(i => ({ run_id: run.run_id, item_id: i.item_id, title: i.title, details: i.details, department: i.department, guide_ids: i.guide_ids })) });
+    if (approved.length) await api("/api/todos/add", { business_id: curBid(), conversation_id: S.cid, items: approved.map(i => ({ run_id: run.run_id, item_id: i.item_id, title: i.title, details: i.details, department: i.department, category: i.category, guide_ids: i.guide_ids })) });
     for (let k = 0; k < 60; k++) { const st = await api("/api/status"); if (!st.busy) break; await new Promise(r => setTimeout(r, 1000)); }
     RUNS[run.run_id] = Object.assign(await api("/api/run/" + run.run_id), {}); refreshTurn(run.run_id);
   } catch (e) { alert(e.message); }
-  REV = { rid: null, idx: 0, dec: {}, final: "", hidden: REV.hidden }; loadTodos();
+  REV = { rid: null, idx: 0, dec: {}, final: "", hidden: REV.hidden }; pollPulse();
   if (changes.length || final) {
     const lines = ["REVISE PLAN (I reviewed your plan for: \"" + run.request.split("\n")[0].slice(0, 140) + "\")"];
     if (approved.length) lines.push("Approved — keep, do not repeat: " + approved.map(i => i.item_id + " " + i.title).join("; "));
@@ -1869,8 +2106,8 @@ async function finishReview(run) {
 }
 async function celebrate(n) {
   const box = el("div", "growcard"); box.id = "grow-" + Date.now();
-  box.append(el("h3", null, "✅ Plan approved" + (n ? " — " + n + " step" + (n > 1 ? "s" : "") + " added to your To-do list" : "")),
-    el("div", "small", "Tick them off in ✅ To-do (top right). Meanwhile, here's how to push the business further:"));
+  box.append(el("h3", null, "✅ Plan approved" + (n ? " — " + n + " step" + (n > 1 ? "s" : "") + " added to your Roadmap" : "")),
+    el("div", "small", "Find them in 🧭 Roadmap, grouped by area — tick them off there. Meanwhile, here's how to push the business further:"));
   const list = el("div"); list.append(el("span", "spin"), " thinking of your next moves…"); box.append(list);
   $("#threadInner").append(box); scrollDown();
   growInto(list);
@@ -1881,43 +2118,12 @@ async function growInto(list) {
     r.ideas.forEach(i => {
       const c = el("div", "idea"); c.append(el("b", null, "🚀 " + i.title), el("div", "small", i.why || ""));
       if (i.feature) c.append(el("span", "pill todo", i.feature));
-      const go = el("button", "sm", "Plan this ➤"); go.onclick = () => { showTab("chat"); S.bypass = true; $("#q").value = i.prompt || i.title; send(); $("#todod").hidden = true; };
+      const go = el("button", "sm", "Plan this ➤"); go.onclick = () => { showTab("chat"); S.bypass = true; $("#q").value = i.prompt || i.title; send(); };
       c.append(go); list.append(c);
     });
   } catch (e) { list.replaceChildren(el("span", "err", "Couldn't get ideas right now: " + e.message)); }
 }
 
-// ================================================================ ✅ To-do list (approved plan steps)
-let TODOS = [];
-async function loadTodos() {
-  try { TODOS = (await api("/api/todos?business_id=" + encodeURIComponent(curBid()))).todos; } catch { TODOS = []; }
-  const open = TODOS.filter(t => !t.done).length, b = $("#todobtn"); b.replaceChildren("✅ To-do"); if (open) b.append(el("span", "badge2 ok", String(open)));
-}
-function drawTodos() {
-  const list = $("#todolist"); list.replaceChildren();
-  if (!TODOS.length) { list.append(el("div", "empty", "Approve a plan in chat and its steps land here.")); return; }
-  const open = TODOS.filter(t => !t.done), done = TODOS.filter(t => t.done);
-  const bar = el("div", "bar"); const f = el("i"); f.style.width = (done.length / TODOS.length * 100) + "%"; f.style.background = "#3c8a5d"; bar.append(f);
-  list.append(el("div", "small", done.length + " of " + TODOS.length + " done"), bar);
-  [...open, ...done].forEach(t => {
-    const c = el("div", "todo" + (t.done ? " done" : ""));
-    const cb = el("input"); cb.type = "checkbox"; cb.checked = t.done;
-    cb.onchange = async () => { await api("/api/todos/" + t.id + "/toggle", { done: cb.checked }); await loadTodos(); drawTodos(); if (TODOS.length && TODOS.every(x => x.done)) growPanel(); };
-    const tx = el("div"); tx.style.flex = "1"; tx.append(el("b", null, t.title)); if (t.details) tx.append(el("div", "tiny", t.details.slice(0, 160)));
-    const go = el("button", "sm ghost", "↗"); go.title = "Go to the chat"; go.onclick = () => jumpTo({ conversation_id: t.conversation_id, run_id: t.run_id, item_id: t.item_id, kind: "item" });
-    const del = el("button", "sm ghost", "🗑"); del.onclick = async () => { await api("/api/todos/" + t.id + "/delete", {}); await loadTodos(); drawTodos(); };
-    c.append(cb, tx, go, del); list.append(c);
-  });
-  if (TODOS.every(t => t.done)) growPanel();
-  else { const g = el("button", "sm soft", "🚀 Ideas to grow further"); g.style.marginTop = "10px"; g.onclick = () => growPanel(); list.append(g); }
-}
-function growPanel() {
-  const list = $("#todolist"); if (list.querySelector(".growin")) return;
-  const box = el("div", "growin"); box.append(el("b", null, TODOS.every(t => t.done) ? "🎉 All done! Next moves to push the business further:" : "🚀 Next moves to push the business further:"));
-  const l = el("div"); l.append(el("span", "spin"), " thinking…"); box.append(l); list.append(box); growInto(l);
-}
-$("#todobtn").onclick = async () => { if (!$("#todod").hidden) { $("#todod").hidden = true; return; } ["#pins", "#tasksd", "#ordd"].forEach(x => $(x).hidden = true); await loadTodos(); $("#todod").hidden = false; drawTodos(); };
-$("#todox").onclick = () => $("#todod").hidden = true;
 
 // ================================================================ pending orders
 let ORDERS = [];
@@ -1942,16 +2148,56 @@ function drawOrders() {
     r.append(done, chat, cancel); c.append(r); list.append(c);
   });
 }
-$("#ordbtn").onclick = async () => { if (!$("#ordd").hidden) { $("#ordd").hidden = true; return; } $("#pins").hidden = true; $("#tasksd").hidden = true; $("#todod").hidden = true; await loadOrders(); $("#ordd").hidden = false; drawOrders(); };
+$("#ordbtn").onclick = async () => { if (!$("#ordd").hidden) { $("#ordd").hidden = true; return; } $("#pins").hidden = true; await loadOrders(); $("#ordd").hidden = false; drawOrders(); };
 $("#ordx").onclick = () => $("#ordd").hidden = true;
 
-// ================================================================ repetitive tasks
+// ================================================================ 📅 Daily: today's generated list + the routines it follows
+let DAILY = null, dailyTimer = null;
+async function renderDaily() {
+  if (S.scope === "all") return;
+  const bid = curBid();
+  const [d] = await Promise.all([api("/api/daily?business_id=" + encodeURIComponent(bid)), loadTasks()]);
+  if (bid !== curBid()) return;
+  DAILY = d; drawDaily(); drawTasks();
+}
+function drawDaily() {
+  const d = DAILY, list = $("#dylist"); list.replaceChildren();
+  const fresh = d.date === d.today, items = fresh ? d.items : [], done = items.filter(t => t.done).length;
+  const when = new Date(d.today + "T00:00:00").toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
+  $("#dytitle").textContent = "📅 Today — " + when;
+  $("#dybar").style.width = (items.length ? done / items.length * 100 : 0) + "%";
+  const running = d.status === "running";
+  $("#dysub").textContent = running ? "BizFlow is writing today's list from your routines, messages, orders and plan…"
+    : fresh ? done + " of " + items.length + " done · written " + (d.generated_at || "").slice(11, 16) + " from your routines and today's state · a new list comes every day"
+    : "A new list is written every day from your routines and what is happening in the business.";
+  $("#dyregen").disabled = running || !d.cli;
+  if (running) list.append(el("div", "empty", "⏳ Writing today's list… (usually under a minute)"), el("span", "spin"));
+  else if (d.status === "error") list.append(el("div", "interrupted", "⚠ " + (d.error || "Could not write today's list.") + " Press ↻ Regenerate to try again."));
+  if (!running && !d.cli) list.append(el("div", "empty", "The WorkBuddy CLI is not connected, so BizFlow cannot write the daily list."));
+  if (!running && !fresh && d.items && d.items.length) list.append(el("div", "small", "Showing the last list (" + d.date + ") until today's is ready:"));
+  const show = fresh ? items : (running ? [] : d.items || []);
+  [...show.filter(t => !t.done), ...show.filter(t => t.done)].forEach(t => {
+    const c = el("div", "dyitem" + (t.done ? " done" : "") + (t.priority === "high" && !t.done ? " high" : ""));
+    const cb = el("input"); cb.type = "checkbox"; cb.checked = t.done; cb.disabled = !fresh;
+    cb.onchange = async () => { DAILY = Object.assign(await api("/api/daily/toggle", { business_id: curBid(), id: t.id, done: cb.checked }), { today: DAILY.today, cli: DAILY.cli }); drawDaily(); pollPulse(); };
+    const tx = el("div"); tx.style.flex = "1"; tx.append(el("b", null, t.title)); if (t.detail) tx.append(el("div", "small", t.detail));
+    const meta = el("div", "meta");
+    if (t.priority === "high") meta.append(el("span", "pill need", "do first"));
+    if (t.routine) meta.append(el("span", "pill", "🔁 " + t.routine));
+    if (t.ask) { const a = el("button", "sm soft", "💬 Ask BizFlow"); a.onclick = () => { S.cid = null; showTab("chat"); renderThread(null); $("#q").value = t.ask; send(); }; meta.append(a); }
+    tx.append(meta); c.append(cb, tx); list.append(c);
+  });
+  clearTimeout(dailyTimer);
+  if (running && S.tab === "daily") dailyTimer = setTimeout(renderDaily, 3000);
+}
+$("#dyregen").onclick = async () => {
+  if (DAILY && DAILY.date === DAILY.today && DAILY.items.some(t => t.done) && !confirm("Write a new list for today? Ticks on the current list are cleared.")) return;
+  try { await api("/api/daily/regenerate", { business_id: curBid() }); } catch (e) { alert(e.message); }
+  renderDaily();
+};
+
 let TASKS = [], TASKS_LOADED = null, taskTimer = null;
 async function loadTasks() { TASKS = (await api("/api/tasks?business_id=" + encodeURIComponent(curBid()))).tasks; TASKS_LOADED = curBid(); }
-async function openTasks() {
-  $("#pins").hidden = true; $("#ordd").hidden = true; $("#todod").hidden = true; $("#tasksd").hidden = false;
-  await loadTasks(); drawTasks();
-}
 function drawTasks() {
   const list = $("#tasklist"); list.replaceChildren();
   const ai = TASKS.filter(t => t.mode === "ai"), busy = TASKS.filter(t => t.status === "running" || t.status === "queued");
@@ -1979,28 +2225,26 @@ function drawTasks() {
     list.append(c);
   });
   clearTimeout(taskTimer);
-  if (busy.length && !$("#tasksd").hidden) taskTimer = setTimeout(async () => { await loadTasks(); drawTasks(); }, 3000);
+  if (busy.length && S.tab === "daily") taskTimer = setTimeout(async () => { await loadTasks(); drawTasks(); }, 3000);
 }
 async function saveTask(t) { await api("/api/tasks", Object.assign({ business_id: curBid() }, t)); await loadTasks(); drawTasks(); }
 async function runTasks(ids) {
   try { await api("/api/tasks/run", ids ? { business_id: curBid(), ids } : { business_id: curBid(), all: true }); } catch (e) { alert(e.message); }
   await loadTasks(); drawTasks();
 }
-$("#taskbtn").onclick = () => { if (!$("#tasksd").hidden) { $("#tasksd").hidden = true; return; } openTasks(); };
-$("#taskx").onclick = () => $("#tasksd").hidden = true;
 $("#runall").onclick = () => runTasks(null);
-$("#taskadd").onclick = () => saveTask({ title: "New task", prompt: "Describe what BizFlow should check or report…", mode: "ai" });
+$("#taskadd").onclick = () => saveTask({ title: "New routine", prompt: "Describe what BizFlow should check or include every day…", mode: "ai" });
 
 // ================================================================ activity
 async function renderActivity() {
   const rows = (await api("/api/activity?business_id=" + encodeURIComponent(curBid()))).rows;
-  const sel = $("#acfilter"), cur = sel.value; sel.replaceChildren(el("option", null, "All chats + automations")); sel.firstChild.value = "";
+  const sel = $("#acfilter"), cur = sel.value; sel.replaceChildren(el("option", null, "All chats")); sel.firstChild.value = "";
   const reqs = [...new Map(rows.filter(r => r.run_id).map(r => [r.run_id, r.request])).entries()];
   reqs.forEach(([id, rq]) => { const o = el("option", null, "💬 " + rq); o.value = id; sel.append(o); });
-  const a = el("option", null, "⚙️ Automations only"); a.value = "auto"; sel.append(a); sel.value = cur;
+  sel.value = reqs.some(([id]) => id === cur) ? cur : "";
   const box = $("#aclist"); box.replaceChildren();
   const f = sel.value, cmdOnly = $("#accmd").checked;
-  rows.filter(r => (!f || (f === "auto" ? r.kind === "automation" : r.run_id === f)) && (!cmdOnly || r.kind === "tool")).forEach(r => {
+  rows.filter(r => (!f || r.run_id === f) && (!cmdOnly || r.kind === "tool")).forEach(r => {
     const d = el("div", "arow " + r.kind);
     d.append(el("span", "small", r.t.slice(5, 16).replace("T", " ")), el("span", null, icon(r.department) + " " + (r.department || r.kind)));
     const tx = el("div", "tx");
