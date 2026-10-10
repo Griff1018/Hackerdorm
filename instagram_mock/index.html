@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instagram Clone</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React & ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <!-- Babel for JSX compilation -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Hide scrollbars while retaining scroll functionality */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    body { background-color: #000000; color: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    /* New post pop-in */
+    @keyframes popIn { 0% { opacity: 0; transform: translateY(-24px) scale(0.92); } 60% { opacity: 1; transform: translateY(0) scale(1.02); } 100% { transform: scale(1); } }
+    @keyframes glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); } 50% { box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.7); } }
+    .pop-in { animation: popIn 0.7s cubic-bezier(.2,.9,.3,1.2), glow 1.6s ease-in-out 0.7s 2; }
+    @keyframes toastIn { from { opacity: 0; transform: translate(-50%, -20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+    .toast-in { animation: toastIn 0.4s ease-out; }
+  </style>
+</head>
+<body class="bg-black text-neutral-100 antialiased selection:bg-neutral-800">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // --- MOCK INITIAL DATA ---
+    const INITIAL_SELLER = {
+      username: "vintage_vault_my",
+      name: "Vintage Vault Malaysia",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+      postsCount: 18,
+      followersCount: "12.4K",
+      followingCount: 342,
+      bio: "Curated 90s archive & bespoke accessories 🇲🇾\n📦 Worldwide shipping | Ships in 24h\n📩 DM to purchase or inquire availability",
+      verified: true
+    };
+
+    const INITIAL_POSTS = [
+      {
+        id: 1,
+        author: "vintage_vault_my",
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+        image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&q=80",
+        caption: "Restocked the 1994 Polaroid 600 series! Tested, fully functional, and ready to shoot. Only 2 units left in mint condition. DM for bundle pricing.",
+        likes: 284,
+        isLiked: false,
+        isSaved: false,
+        timeAgo: "2 HOURS AGO",
+        commentsCount: 14
+      },
+      {
+        id: 2,
+        author: "vintage_vault_my",
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80",
+        caption: "Minimalist stainless steel chronograph. Waterproof up to 50m, genuine calfskin leather strap included.",
+        likes: 512,
+        isLiked: false,
+        isSaved: false,
+        timeAgo: "6 HOURS AGO",
+        commentsCount: 31
+      },
+      {
+        id: 3,
+        author: "vintage_vault_my",
+        avatar: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80",
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
+        caption: "Studio monitoring headphones with custom copper-braided cabling. Crisp highs and punchy bass for production & listening sessions.",
+        likes: 418,
+        isLiked: false,
+        isSaved: false,
+        timeAgo: "1 DAY AGO",
+        commentsCount: 22
+      }
+    ];
+
+    const INITIAL_CONVERSATIONS = [
+      {
+        id: "chat_seller",
+        user: {
+          username: "vintage_vault_my",
+          name: "Vintage Vault Malaysia",
+          avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+          status: "Active now"
+        },
+        messages: [
+          { id: 1, sender: "them", text: "Hello! Welcome to Vintage Vault. How can I assist your order today?", timestamp: "10:14 AM" },
+          { id: 2, sender: "me", text: "Hi! Is the Polaroid 600 camera from your latest post still available?", timestamp: "10:15 AM" },
+          { id: 3, sender: "them", text: "Yes, both units are currently in stock! Would you like local courier delivery or self-pickup?", timestamp: "10:16 AM" }
+        ]
+      },
+      {
+        id: "chat_customer_support",
+        user: {
+          username: "order_tracking_my",
+          name: "Delivery Express Hub",
+          avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80",
+          status: "Active 1h ago"
+        },
+        messages: [
+          { id: 1, sender: "them", text: "Your parcel #MY894819 has been dispatched via NinjaVan.", timestamp: "Yesterday" }
+        ]
+      }
+    ];
+
+    // --- POSTS PUBLISHED BY THE AI AGENTS (written by create.html) ---
+    const LS_PUBLISHED = "ig_mock_published";
+    const LS_NEW_POST = "ig_mock_new_post";
+
+    function loadPublished() {
+      try { return JSON.parse(localStorage.getItem(LS_PUBLISHED)) || []; } catch { return []; }
+    }
+
+    // Keep existing state (likes/saves) for posts already on screen
+    function mergePublished(prev, published) {
+      return [
+        ...published.map(p => prev.find(x => x.id === p.id) || p),
+        ...prev.filter(x => INITIAL_POSTS.some(i => i.id === x.id))
+      ];
+    }
+
+    // --- MAIN APP COMPONENT ---
+    function App() {
+      const [currentTab, setCurrentTab] = useState(() => {
+        const hash = window.location.hash.slice(1);
+        return ["feed", "messages", "profile"].includes(hash) ? hash : "feed";
+      }); // 'feed' | 'messages' | 'profile'
+      // Posts come from BizFlow (served by console/server.py at /instagram/); likes/saves stay local
+      const [posts, setPosts] = useState([]);
+      const [seller, setSeller] = useState(INITIAL_SELLER);
+      const [newPostId, setNewPostId] = useState(null);
+      const mainRef = useRef(null);
+
+      // Pull BizFlow's published posts every 3 s and pop up any new one
+      useEffect(() => {
+        let known = null;
+        const wanted = new URLSearchParams(location.search).get("new");
+        const pop = (id) => {
+          setCurrentTab("feed");
+          setNewPostId(id);
+          mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+          setTimeout(() => setNewPostId(cur => (cur === id ? null : cur)), 6000);
+        };
+        const pull = async () => {
+          try {
+            const r = await fetch("/api/instagram/feed" + location.search).then(res => res.json());
+            if (r.seller) setSeller(s => ({ ...s, ...r.seller }));
+            setPosts(prev => r.posts.map(p => {
+              const old = prev.find(x => x.id === p.id);
+              return old ? { ...p, likes: old.likes, isLiked: old.isLiked, isSaved: old.isSaved } : p;
+            }));
+            const ids = r.posts.map(p => p.id);
+            if (known === null && wanted && ids.includes(wanted)) pop(wanted);
+            if (known) { const fresh = ids.find(id => !known.has(id)); if (fresh) pop(fresh); }
+            known = new Set(ids);
+          } catch { /* BizFlow server not reachable */ }
+        };
+        pull();
+        const t = setInterval(pull, 3000);
+        return () => clearInterval(t);
+      }, []);
+
+      // Direct messages: this mock is the CUSTOMER's view. DMs go to BizFlow's Online Requests inbox,
+      // and the shop owner's replies (sent from BizFlow) come back here.
+      const qp = new URLSearchParams(location.search);
+      const ME = { handle: qp.get("as") || "aisyah.um", name: qp.get("name") || "Aisyah (demo customer)" };
+      const BIZ = qp.get("business_id") || "campus-crumb";
+      const shopChat = (msgs) => [{
+        id: "chat_seller",
+        user: { username: seller.username, name: seller.name, avatar: seller.avatar, status: "Replies via BizFlow" },
+        messages: msgs
+      }];
+      const [conversations, setConversations] = useState(() => shopChat([]));
+      const [activeChatId, setActiveChatId] = useState("chat_seller");
+      const [inputMessage, setInputMessage] = useState("");
+      const chatEndRef = useRef(null);
+
+      const toMock = (th) => (th.messages || []).map(m => ({
+        id: m.id, sender: m.from === "them" ? "me" : "them", text: m.text,
+        timestamp: new Date(m.at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      }));
+      useEffect(() => {
+        const pull = async () => {
+          try {
+            const th = await fetch(`/api/channels/instagram/thread?handle=${encodeURIComponent(ME.handle)}&business_id=${BIZ}`).then(r => r.json());
+            setConversations(shopChat(toMock(th)));
+          } catch { /* BizFlow not reachable */ }
+        };
+        pull();
+        const t = setInterval(pull, 3000);
+        return () => clearInterval(t);
+      }, [seller.username]);
+
+      // Scroll to bottom when message arrives
+      useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, [conversations, activeChatId]);
+
+      // Like toggle handler
+      const toggleLike = (postId) => {
+        setPosts(posts.map(p => {
+          if (p.id === postId) {
+            return {
+              ...p,
+              isLiked: !p.isLiked,
+              likes: p.isLiked ? p.likes - 1 : p.likes + 1
+            };
+          }
+          return p;
+        }));
+      };
+
+      // Bookmark toggle handler
+      const toggleSave = (postId) => {
+        setPosts(posts.map(p => p.id === postId ? { ...p, isSaved: !p.isSaved } : p));
+      };
+
+      // Message sending logic
+      const handleSendMessage = (e) => {
+        e?.preventDefault();
+        if (!inputMessage.trim()) return;
+
+        const newMsg = {
+          id: Date.now(),
+          sender: "me",
+          text: inputMessage.trim(),
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+
+        setConversations(prev => prev.map(c => c.id === activeChatId ? { ...c, messages: [...c.messages, newMsg] } : c));
+        setInputMessage("");
+
+        // Deliver to the shop's BizFlow inbox; the owner replies from BizFlow
+        fetch("/api/channels/instagram/incoming", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contact: ME, text: newMsg.text, business_id: BIZ })
+        }).then(r => r.json()).then(th => th.messages && setConversations(shopChat(toMock(th)))).catch(() => {});
+      };
+
+      const activeChat = conversations.find(c => c.id === activeChatId) || conversations[0];
+
+      return (
+        <div className="flex h-screen w-full bg-black text-neutral-100 overflow-hidden">
+          {/* --- LEFT DESKTOP SIDEBAR --- */}
+          <aside className="w-16 md:w-64 border-r border-neutral-800 flex flex-col justify-between p-3 md:px-5 md:py-6 select-none shrink-0">
+            <div className="space-y-6">
+              {/* Logo */}
+              <div className="hidden md:flex items-center gap-2 px-2 cursor-pointer" onClick={() => setCurrentTab("feed")}>
+                <h1 className="text-2xl font-serif font-bold tracking-tight">Instagram</h1>
+              </div>
+              <div className="md:hidden flex justify-center py-2" onClick={() => setCurrentTab("feed")}>
+                <span className="font-bold text-xl">IG</span>
+              </div>
+
+              {/* Navigation Items */}
+              <nav className="space-y-1">
+                <button
+                  onClick={() => setCurrentTab("feed")}
+                  className={`w-full flex items-center gap-4 px-3 py-3 rounded-lg text-sm font-medium transition ${
+                    currentTab === "feed" ? "bg-neutral-900 font-bold" : "hover:bg-neutral-900/60"
+                  }`}
+                >
+                  <svg className="w-6 h-6" fill={currentTab === "feed" ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span className="hidden md:inline">Home / Feed</span>
+                </button>
+
+                <button
+                  onClick={() => setCurrentTab("messages")}
+                  className={`w-full flex items-center justify-between px-3 py-3 rounded-lg text-sm font-medium transition ${
+                    currentTab === "messages" ? "bg-neutral-900 font-bold" : "hover:bg-neutral-900/60"
+                  }`}
+                >
+                  <div className="flex items-center gap-4">
+                    <svg className="w-6 h-6" fill={currentTab === "messages" ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    <span className="hidden md:inline">Messages</span>
+                  </div>
+                  <span className="hidden md:flex text-xs bg-red-600 text-white font-semibold rounded-full px-1.5 py-0.5">2</span>
+                </button>
+
+                <button
+                  onClick={() => setCurrentTab("profile")}
+                  className={`w-full flex items-center gap-4 px-3 py-3 rounded-lg text-sm font-medium transition ${
+                    currentTab === "profile" ? "bg-neutral-900 font-bold" : "hover:bg-neutral-900/60"
+                  }`}
+                >
+                  <img src={seller.avatar} alt="Profile" className={`w-6 h-6 rounded-full object-cover ${currentTab === "profile" ? "ring-2 ring-white" : ""}`} />
+                  <span className="hidden md:inline">Seller Profile</span>
+                </button>
+              </nav>
+            </div>
+
+            <div className="text-xs text-neutral-500 hidden md:block px-3">
+              Prototype Mode • Real-Time State
+            </div>
+          </aside>
+
+          {/* --- MAIN CONTENT AREA --- */}
+          <main ref={mainRef} className="flex-1 h-full overflow-y-auto no-scrollbar relative">
+            {/* NEW POST TOAST */}
+            {newPostId && (
+              <button
+                key={newPostId}
+                onClick={() => { setCurrentTab("feed"); mainRef.current?.scrollTo({ top: 0, behavior: "smooth" }); }}
+                className="toast-in fixed top-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2.5 bg-white text-black text-sm font-semibold pl-1.5 pr-4 py-1.5 rounded-full shadow-2xl"
+              >
+                <img src={seller.avatar} className="w-7 h-7 rounded-full object-cover" />
+                <span>{seller.username} shared a new post</span>
+              </button>
+            )}
+
+            {/* VIEW 1: FEED / SELLER POSTS */}
+            {currentTab === "feed" && (
+              <div className="max-w-xl mx-auto py-6 px-4 space-y-6">
+                {/* Stories Bar */}
+                <div className="flex items-center gap-4 p-3 bg-neutral-950 border border-neutral-900 rounded-xl overflow-x-auto no-scrollbar">
+                  <div className="flex flex-col items-center gap-1 cursor-pointer shrink-0">
+                    <div className="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-amber-500 via-rose-500 to-fuchsia-600">
+                      <img src={seller.avatar} alt="Story" className="w-full h-full rounded-full object-cover border-2 border-black" />
+                    </div>
+                    <span className="text-[11px] text-neutral-400 truncate w-16 text-center">New Drop</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-1 opacity-60 shrink-0">
+                    <div className="w-16 h-16 rounded-full p-[2px] border border-neutral-700">
+                      <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" className="w-full h-full rounded-full object-cover border-2 border-black" />
+                    </div>
+                    <span className="text-[11px] text-neutral-400 truncate w-16 text-center">Reviews</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-1 opacity-60 shrink-0">
+                    <div className="w-16 h-16 rounded-full p-[2px] border border-neutral-700">
+                      <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=200&q=80" className="w-full h-full rounded-full object-cover border-2 border-black" />
+                    </div>
+                    <span className="text-[11px] text-neutral-400 truncate w-16 text-center">Packaging</span>
+                  </div>
+                </div>
+
+                {/* Posts Stream */}
+                {posts.map(post => (
+                  <article key={post.id} className={`bg-neutral-950 border border-neutral-900 rounded-xl overflow-hidden ${post.id === newPostId ? "pop-in" : ""}`}>
+                    {/* Header */}
+                    <div className="flex items-center justify-between p-3.5">
+                      <div className="flex items-center gap-3">
+                        <img src={post.avatar} alt="Author" className="w-9 h-9 rounded-full object-cover ring-1 ring-neutral-800" />
+                        <div>
+                          <div className="flex items-center gap-1">
+                            <span className="font-semibold text-sm">{post.author}</span>
+                            <span className="text-blue-500 text-xs">●</span>
+                          </div>
+                          <span className="text-xs text-neutral-500">Kuala Lumpur • Original Stock</span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setActiveChatId("chat_seller");
+                          setCurrentTab("messages");
+                        }}
+                        className="text-xs font-semibold bg-neutral-800 hover:bg-neutral-700 text-neutral-200 px-3 py-1.5 rounded-md transition"
+                      >
+                        Inquire
+                      </button>
+                    </div>
+
+                    {/* Image */}
+                    <div className="w-full bg-neutral-900 aspect-square overflow-hidden select-none">
+                      <img src={post.image} alt="Post content" className="w-full h-full object-cover" />
+                    </div>
+
+                    {/* Action Bar */}
+                    <div className="p-3.5 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          {/* Heart */}
+                          <button onClick={() => toggleLike(post.id)} className="transition active:scale-125">
+                            <svg className={`w-6 h-6 ${post.isLiked ? "fill-red-500 text-red-500" : "text-neutral-200 hover:text-neutral-400"}`} viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                          </button>
+                          {/* Comment */}
+                          <button onClick={() => { setActiveChatId("chat_seller"); setCurrentTab("messages"); }}>
+                            <svg className="w-6 h-6 text-neutral-200 hover:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                            </svg>
+                          </button>
+                          {/* Share / Send */}
+                          <button onClick={() => { setActiveChatId("chat_seller"); setCurrentTab("messages"); }}>
+                            <svg className="w-6 h-6 text-neutral-200 hover:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
+                          </button>
+                        </div>
+
+                        {/* Save Bookmark */}
+                        <button onClick={() => toggleSave(post.id)}>
+                          <svg className={`w-6 h-6 ${post.isSaved ? "fill-white text-white" : "text-neutral-200 hover:text-neutral-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                          </svg>
+                        </button>
+                      </div>
+
+                      {/* Likes tally */}
+                      <p className="font-semibold text-xs tracking-wide">{post.likes.toLocaleString()} likes</p>
+
+                      {/* Caption */}
+                      <div className="text-sm space-x-1.5 leading-snug">
+                        <span className="font-semibold">{post.author}</span>
+                        <span className="text-neutral-300 whitespace-pre-line">{post.caption}</span>
+                      </div>
+
+                      <div className="text-xs text-neutral-500 pt-1">
+                        View all {post.commentsCount} inquiries • {post.timeAgo}
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+
+            {/* VIEW 2: DIRECT MESSAGING SYSTEM */}
+            {currentTab === "messages" && (
+              <div className="flex h-full w-full bg-black">
+                {/* Inbox Threads Sidebar */}
+                <div className="w-full md:w-80 border-r border-neutral-800 flex flex-col h-full bg-neutral-950">
+                  <div className="p-4 border-b border-neutral-800 flex items-center justify-between">
+                    <h2 className="text-lg font-bold">Direct Messages</h2>
+                    <span className="text-xs bg-neutral-800 text-neutral-300 px-2 py-0.5 rounded-full">Encrypted</span>
+                  </div>
+
+                  <div className="flex-1 overflow-y-auto no-scrollbar divide-y divide-neutral-900">
+                    {conversations.map(chat => {
+                      const lastMsg = chat.messages[chat.messages.length - 1];
+                      const isSelected = chat.id === activeChatId;
+                      return (
+                        <div
+                          key={chat.id}
+                          onClick={() => setActiveChatId(chat.id)}
+                          className={`flex items-center gap-3 p-3.5 cursor-pointer transition ${
+                            isSelected ? "bg-neutral-900" : "hover:bg-neutral-900/40"
+                          }`}
+                        >
+                          <img src={chat.user.avatar} className="w-12 h-12 rounded-full object-cover shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between">
+                              <span className="font-semibold text-sm truncate">{chat.user.name}</span>
+                              <span className="text-[10px] text-neutral-500">{lastMsg ? lastMsg.timestamp : ""}</span>
+                            </div>
+                            <p className="text-xs text-neutral-400 truncate mt-0.5">
+                              {lastMsg ? (lastMsg.sender === "me" ? `You: ${lastMsg.text}` : lastMsg.text) : "No messages yet"}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Active Chat Conversation Panel */}
+                <div className="hidden md:flex flex-1 flex-col h-full bg-black relative">
+                  {/* Chat Header */}
+                  <div className="h-16 px-6 border-b border-neutral-800 flex items-center justify-between bg-neutral-950 shrink-0">
+                    <div className="flex items-center gap-3">
+                      <img src={activeChat.user.avatar} className="w-10 h-10 rounded-full object-cover" />
+                      <div>
+                        <h3 className="font-semibold text-sm leading-none">{activeChat.user.name}</h3>
+                        <span className="text-xs text-neutral-400">@{activeChat.user.username} • {activeChat.user.status}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <button onClick={() => setCurrentTab("profile")} className="text-xs bg-neutral-800 hover:bg-neutral-700 px-3 py-1.5 rounded-lg text-neutral-200">
+                        View Store Profile
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Messages Bubble History */}
+                  <div className="flex-1 overflow-y-auto p-6 space-y-3 no-scrollbar">
+                    {activeChat.messages.map(msg => {
+                      const isMe = msg.sender === "me";
+                      return (
+                        <div key={msg.id} className={`flex flex-col ${isMe ? "items-end" : "items-start"}`}>
+                          <div
+                            className={`max-w-md px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
+                              isMe
+                                ? "bg-blue-600 text-white rounded-br-none"
+                                : "bg-neutral-800 text-neutral-100 rounded-bl-none"
+                            }`}
+                          >
+                            {msg.text}
+                          </div>
+                          <span className="text-[10px] text-neutral-500 mt-1 px-1">{msg.timestamp}</span>
+                        </div>
+                      );
+                    })}
+                    <div ref={chatEndRef} />
+                  </div>
+
+                  {/* Message Input Box (Sendable & Persistent) */}
+                  <form onSubmit={handleSendMessage} className="p-4 border-t border-neutral-800 bg-neutral-950 flex items-center gap-2 shrink-0">
+                    <input
+                      type="text"
+                      value={inputMessage}
+                      onChange={(e) => setInputMessage(e.target.value)}
+                      placeholder={`Message @${activeChat.user.username}...`}
+                      className="flex-1 bg-neutral-900 border border-neutral-800 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-600 text-neutral-100 placeholder-neutral-500"
+                    />
+                    <button
+                      type="submit"
+                      disabled={!inputMessage.trim()}
+                      className="bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:hover:bg-blue-600 text-white font-medium text-xs px-4 py-2.5 rounded-full transition"
+                    >
+                      Send
+                    </button>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {/* VIEW 3: SELLER PROFILE PAGE */}
+            {currentTab === "profile" && (
+              <div className="max-w-4xl mx-auto py-8 px-4 space-y-8">
+                {/* Profile Header */}
+                <header className="flex flex-col sm:flex-row items-center sm:items-start gap-8 border-b border-neutral-800 pb-8">
+                  <div className="relative">
+                    <div className="w-24 h-24 sm:w-36 sm:h-36 rounded-full p-[3px] bg-gradient-to-tr from-amber-500 via-rose-500 to-fuchsia-600">
+                      <img src={seller.avatar} alt="Profile" className="w-full h-full rounded-full object-cover border-4 border-black" />
+                    </div>
+                  </div>
+
+                  <div className="flex-1 space-y-4 text-center sm:text-left">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                      <h2 className="text-xl font-bold">{seller.username}</h2>
+                      <div className="flex items-center justify-center gap-2">
+                        <button
+                          onClick={() => { setActiveChatId("chat_seller"); setCurrentTab("messages"); }}
+                          className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-1.5 rounded-lg transition"
+                        >
+                          Send Message
+                        </button>
+                        <button className="bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-semibold px-4 py-1.5 rounded-lg transition">
+                          Contact
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Stats */}
+                    <div className="flex justify-center sm:justify-start gap-6 text-sm">
+                      <span><strong>{posts.length}</strong> posts</span>
+                      <span><strong>{seller.followersCount}</strong> followers</span>
+                      <span><strong>{seller.followingCount}</strong> following</span>
+                    </div>
+
+                    {/* Bio */}
+                    <div className="text-sm leading-relaxed whitespace-pre-line text-neutral-300">
+                      <p className="font-semibold text-neutral-100">{seller.name}</p>
+                      {seller.bio}
+                    </div>
+                  </div>
+                </header>
+
+                {/* Grid Tabs */}
+                <div className="flex justify-center border-t border-neutral-800 -mt-8">
+                  <div className="flex gap-12 text-xs font-semibold tracking-wider text-neutral-200">
+                    <button className="flex items-center gap-2 py-3 border-t-2 border-white -mt-[1px]">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                      POSTS
+                    </button>
+                    <button className="flex items-center gap-2 py-3 text-neutral-500 hover:text-neutral-300">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
+                      SAVED
+                    </button>
+                  </div>
+                </div>
+
+                {/* 3-Column Image Grid */}
+                <div className="grid grid-cols-3 gap-1 md:gap-4">
+                  {posts.map(post => (
+                    <div
+                      key={post.id}
+                      onClick={() => setCurrentTab("feed")}
+                      className={`relative aspect-square bg-neutral-900 group cursor-pointer overflow-hidden rounded-sm ${post.id === newPostId ? "pop-in" : ""}`}
+                    >
+                      <img src={post.image} alt="Grid thumbnail" className="w-full h-full object-cover transition group-hover:scale-105" />
+                      {/* Hover Overlay */}
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-6 text-white font-bold transition">
+                        <div className="flex items-center gap-1 text-sm">
+                          <span>❤️</span> {post.likes}
+                        </div>
+                        <div className="flex items-center gap-1 text-sm">
+                          <span>💬</span> {post.commentsCount}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </main>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

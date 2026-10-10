@@ -1,0 +1,20 @@
+{
+  "conversation_id": "CHAT-REQUEST-2026-10-10T160318097028+0800",
+  "messages": [
+    "A customer wants 2 cookies and a lemon tea for pickup at 3pm"
+  ],
+  "result": {
+    "status": "pending_customer_confirmation",
+    "items": {
+      "M001": 2,
+      "M002": 1
+    },
+    "subtotal": "16.50",
+    "discount": "0.00",
+    "total": "16.50",
+    "pickup_or_delivery": "pickup at requested time",
+    "special_requests": "",
+    "message": "Cart prepared from menu.csv; customer confirmation is still required."
+  },
+  "synthetic": true
+}

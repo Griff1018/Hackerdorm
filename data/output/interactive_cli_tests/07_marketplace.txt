@@ -1,0 +1,3 @@
+[department: Marketplace Seller Operations] Process synthetic marketplace inbox files, recompute totals, update status and fulfilment outputs.
+[result] processed 0 inbox order(s); status passed
+[evidence] data/output/marketplace_status

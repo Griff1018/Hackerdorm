@@ -1,0 +1,12 @@
+audit_id,action,actor,decision,reason,timestamp,order_id
+AUD-0001,create_cart,customer_agent,auto,items looked up in menu.csv,2026-10-10T15:31:15.265308+08:00,
+AUD-0002,offer_addon,customer_agent,needs customer confirm,one configured add-on offered,2026-10-10T15:31:15.265318+08:00,
+AUD-0003,confirm_order,customer_agent,needs customer confirm,customer confirmed cart and stock passed,2026-10-10T15:31:15.265334+08:00,ORD-CHAT-0001
+AUD-0004,update_stock,operations,auto,confirmed order written to stock ledger,2026-10-10T15:31:15.265341+08:00,ORD-CHAT-0001
+AUD-0005,update_stock,operations,auto,confirmed order written to stock ledger,2026-10-10T15:31:15.265346+08:00,ORD-CHAT-0001
+AUD-0006,allergy_escalation,customer_agent,blocked,allergy/food-safety mention; owner must decide,2026-10-10T15:31:15.265485+08:00,ORD-CHAT-0002
+AUD-0007,special_request,customer_agent,needs customer confirm,special request requires explicit reconfirmation,2026-10-10T15:31:15.265497+08:00,ORD-CHAT-0003
+AUD-0008,cancel_order,customer_agent,auto,cancelled before preparation; no stock deduction,2026-10-10T15:31:15.265499+08:00,ORD-CHAT-0003
+AUD-0009,faq_answer,customer_agent,auto,answer came from configured business_policies.md,2026-10-10T15:31:15.265901+08:00,
+AUD-0010,refund,transaction_controls,simulated,within owner limit; no money moved,2026-10-10T15:31:15.265912+08:00,ORD-CHAT-0001
+AUD-0011,refund,transaction_controls,needs owner approval,above owner limit; not issued,2026-10-10T15:31:15.265915+08:00,ORD-CHAT-0001

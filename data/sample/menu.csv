@@ -1,0 +1,6 @@
+﻿item_id,item_name,category,price,currency,available,product_id,addon_for,allergens_note
+M001,Chocolate Chip Cookies (6pcs),baked,6.00,MYR,yes,P001,M002,Contains wheat and dairy; synthetic note, not a safety guarantee
+M002,Iced Lemon Tea 500ml,drink,4.50,MYR,yes,P002,,No allergy guarantee; synthetic note
+M003,Banana Muffin,baked,5.00,MYR,yes,P003,M002,Contains wheat, egg and banana; synthetic note, not a safety guarantee
+M004,Spicy Chicken Bun,baked,5.50,MYR,yes,P004,M002,Contains wheat and chicken; synthetic note, not a safety guarantee
+M005,Granola Bar,baked,4.00,MYR,yes,P005,M002,Contains oats and peanut butter in recipe; allergy questions escalate

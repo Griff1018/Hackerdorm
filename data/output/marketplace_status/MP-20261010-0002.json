@@ -1,0 +1,19 @@
+{
+  "schema": "bizflow.marketplace_status.v1",
+  "external_order_id": "MP-20261010-0002",
+  "order_id": "ORD-MP-20261010-0002",
+  "status": "rejected_invalid",
+  "history": [
+    {
+      "status": "rejected_invalid",
+      "at": "2026-10-10T15:23:20.792789+08:00"
+    }
+  ],
+  "tracking_no": "SIM-TRK-0-0002",
+  "courier": "SimuExpress (simulated)",
+  "label_path": null,
+  "message_to_buyer": "Simulated status update only.",
+  "reason": "displayed_total 0.00 does not match BizFlow recomputed total 7.50",
+  "updated_at": "2026-10-10T15:23:20.792801+08:00",
+  "synthetic": true
+}

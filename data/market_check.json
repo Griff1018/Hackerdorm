@@ -1,0 +1,50 @@
+{
+  "question": "Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malaysian food outlets actually charge for iced lemon/lime tea, so we know whether the overstock is a demand problem or a purchasing-quantity problem?",
+  "generated_at": "2026-10-10T14:20:00+08:00",
+  "scope": "One focused question, public desk research only. No customer survey and no transaction data was used.",
+  "answer": "P002 sells at RM 4.50. Across five Malaysian outlet menus listed publicly on foodpanda on 2026-10-10, iced lemon/lime tea (Teh O Ais Limau / Air Limau / Iced Teh O Limau) sells between RM 2.40 and RM 4.70. RM 4.50 therefore sits in the upper part of the observed band, at the same level as the most expensive comparable drink found (Iced Teh O Limau, RM 4.70, Warung Selera Kak Sue). There is little headroom to raise the price.\n\nWorking hypothesis, not a proven causal conclusion: because P002 sold 206 units in the period, the most of any product, while holding 13.86 days of stock against a 10.00 day threshold, the overstock may be a purchasing-quantity problem rather than a demand problem. The next-order quantity (pack size 24, lead time 2 days) is therefore the first lever to test before discounting; this desk check does not establish customer demand or causality.",
+  "recommendation": "Hypothesis to test: reduce the next P002 order quantity rather than discounting. Re-check sales and stock after the next comparable period before treating this as a purchasing-quantity diagnosis.",
+  "sources": [
+    {
+      "title": "Restoran Kalpaka - Teh O Ais Limau RM 2.70, Ais Limau RM 2.40",
+      "url": "https://www.foodpanda.my/restaurant/u4hi/restoran-kalpaka",
+      "retrieved_at": "2026-10-10"
+    },
+    {
+      "title": "Restoran Azraa Maju (Shah Alam) - Teh O Limau from RM 2.40, Air Limau Ais RM 2.70",
+      "url": "https://www.foodpanda.my/restaurant/voqs/restoran-azraa-maju",
+      "retrieved_at": "2026-10-10"
+    },
+    {
+      "title": "Airis Thai - Teh O Ais Limau RM 3.31 (list RM 3.90), Teh O Ais Lemon RM 4.00 (list RM 4.70)",
+      "url": "https://www.foodpanda.my/zh/restaurant/llar/airis-thai",
+      "retrieved_at": "2026-10-10"
+    },
+    {
+      "title": "Nasi Bujang Malaya - Teh O Ais Limau RM 4.05 (list RM 4.50)",
+      "url": "https://www.foodpanda.my/zh/restaurant/n3ir/nasi-bujang-malaya/reviews?r=1",
+      "retrieved_at": "2026-10-10"
+    },
+    {
+      "title": "Warung Selera Kak Sue @ Suraya - Iced Teh O Limau RM 4.70",
+      "url": "https://www.foodpanda.my/zh/restaurant/ru2h/warung-selera-kak-sue-at-suraya",
+      "retrieved_at": "2026-10-10"
+    }
+  ],
+  "observed_price_band": {
+    "product_compared": "iced lemon / lime tea",
+    "low": "2.40",
+    "high": "4.70",
+    "currency": "MYR",
+    "outlet_count": 5,
+    "our_price": "4.50",
+    "position": "upper part of the band (83% of the way from low to high)"
+  },
+  "how_to_use": "Use this as a hypothesis for the next test: change the order quantity first and compare the next matching period; do not treat the desk check as proof of a demand diagnosis. Re-check before any actual price change - five delivery-platform menus are a snapshot, not a market study.",
+  "limits": [
+    "All five prices are food-delivery-platform menu prices, which usually carry a platform markup, so walk-up prices at the same outlets may be lower. The band is therefore an upper estimate.",
+    "Five outlets is a snapshot, not a representative sample of the Malaysian market.",
+    "This is desk research about pricing only. It says nothing about customer preference and is not a demand study.",
+    "Prices change. Every figure here is dated 2026-10-10 and should be re-checked before use."
+  ]
+}

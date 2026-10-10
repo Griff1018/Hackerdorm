@@ -1,0 +1,374 @@
+{
+  "generated_by": "tests/compute_expected_standalone.py",
+  "currency": "MYR",
+  "period_start": "2026-09-01",
+  "period_end": "2026-09-30",
+  "demand_window": {
+    "start": "2026-09-17",
+    "end": "2026-09-30",
+    "calendar_days": 14
+  },
+  "assumptions": {
+    "safety_stock_days": 3,
+    "staleness_days": 7,
+    "excluded_statuses": [
+      "cancelled",
+      "refunded"
+    ],
+    "duplicate_policy": "all rows sharing a duplicated id are excluded, never auto-deduplicated"
+  },
+  "dataset": "invalid_data",
+  "input_fingerprints": {
+    "products.csv": "d1c87f00680405fdebc71d8fcaf9b1a030a30e952e205dac122a5dbb509a516f",
+    "sales.csv": "50279ec4d7a0fa65e727b57f3032aab9e9da097cc62eeaa468859df757df3aea",
+    "inventory.csv": "605d0b6c466e9e32a0abf8223d85006472869df6717e2f21f4c359685c1ac986",
+    "expenses.csv": "0fa2563185b4751d466c6a6cf8a985e4b8f207a798b83b2977448bb7d857136c"
+  },
+  "row_counts": {
+    "products": 5,
+    "sales": 16,
+    "inventory": 7,
+    "expenses": 6,
+    "materials": 0,
+    "distinct_materials": 0
+  },
+  "sales_processing": {
+    "total_rows": 16,
+    "rows_by_status": {
+      "completed": 13,
+      "shipped": 1,
+      "cancelled": 1,
+      "refunded": 1
+    },
+    "eligible_lines": 2,
+    "excluded_lines": {
+      "invalid_quantity": 3,
+      "discount_exceeds_line": 1,
+      "invalid_money": 2,
+      "invalid_date": 1,
+      "invalid_status": 1,
+      "unknown_product": 1,
+      "duplicate_line_id": 2,
+      "outside_reporting_period": 1,
+      "status_cancelled": 1,
+      "status_refunded": 1
+    },
+    "promo_price_differences": 0
+  },
+  "metrics": {
+    "net_revenue": "50.00",
+    "cogs_estimate": "24.50",
+    "gross_profit_estimate": "25.50",
+    "gross_margin_pct": "51.00",
+    "units_sold": 13,
+    "recorded_expenses": "165.00",
+    "recorded_expenses_by_status": {
+      "paid": "110.00",
+      "unpaid": "55.00"
+    },
+    "expense_rows_counted": 3
+  },
+  "per_product": {
+    "P201": {
+      "product_name": "Test Cookies",
+      "units_sold": 10,
+      "net_revenue": "50.00",
+      "cogs_estimate": "20.00",
+      "gross_profit_estimate": "30.00",
+      "gross_margin_pct": "60.00"
+    },
+    "P202": {
+      "product_name": "Test Drink",
+      "units_sold": 0,
+      "net_revenue": "0.00",
+      "cogs_estimate": "0.00",
+      "gross_profit_estimate": "0.00",
+      "gross_margin_pct": null
+    },
+    "P203": {
+      "product_name": "Test Snack",
+      "units_sold": 3,
+      "net_revenue": "0.00",
+      "cogs_estimate": "4.50",
+      "gross_profit_estimate": "-4.50",
+      "gross_margin_pct": null
+    },
+    "P204": {
+      "product_name": "Invalid Pack Product",
+      "units_sold": 0,
+      "net_revenue": "0.00",
+      "cogs_estimate": "0.00",
+      "gross_profit_estimate": "0.00",
+      "gross_margin_pct": null
+    },
+    "P206": {
+      "product_name": "Test Pastry",
+      "units_sold": 0,
+      "net_revenue": "0.00",
+      "cogs_estimate": "0.00",
+      "gross_profit_estimate": "0.00",
+      "gross_margin_pct": null
+    }
+  },
+  "stock_and_replenishment": {
+    "P201": {
+      "product_name": "Test Cookies",
+      "window_units": 0,
+      "average_daily_units": "0.000000",
+      "stock_on_hand": 15,
+      "days_of_stock": null,
+      "coverage_note": "cannot be estimated - zero eligible sales in the demand window",
+      "reorder_point": 10,
+      "lead_time_days": 2,
+      "pack_size": 6,
+      "target_stock_units": null,
+      "replenishment_units": null,
+      "replenishment_note": "not computed - no recent demand",
+      "stock_age_days": 5,
+      "stock_stale": false
+    },
+    "P202": {
+      "product_name": "Test Drink",
+      "window_units": 0,
+      "average_daily_units": "0.000000",
+      "stock_on_hand": null,
+      "days_of_stock": null,
+      "coverage_note": "stock not usable (missing, invalid or duplicated inventory record)",
+      "reorder_point": 12,
+      "lead_time_days": 2,
+      "pack_size": 12,
+      "target_stock_units": null,
+      "replenishment_units": null,
+      "replenishment_note": "not computed - stock data not usable"
+    },
+    "P203": {
+      "product_name": "Test Snack",
+      "window_units": 0,
+      "average_daily_units": "0.000000",
+      "stock_on_hand": 0,
+      "days_of_stock": null,
+      "coverage_note": "cannot be estimated - zero eligible sales in the demand window",
+      "reorder_point": 8,
+      "lead_time_days": 3,
+      "pack_size": 4,
+      "target_stock_units": null,
+      "replenishment_units": null,
+      "replenishment_note": "not computed - no recent demand",
+      "stock_age_days": 22,
+      "stock_stale": true
+    },
+    "P204": {
+      "product_name": "Invalid Pack Product",
+      "window_units": 0,
+      "average_daily_units": "0.000000",
+      "stock_on_hand": null,
+      "days_of_stock": null,
+      "coverage_note": "stock not usable (missing, invalid or duplicated inventory record)",
+      "reorder_point": 5,
+      "lead_time_days": 2,
+      "pack_size": 0,
+      "target_stock_units": null,
+      "replenishment_units": null,
+      "replenishment_note": "not computed - stock data not usable"
+    },
+    "P206": {
+      "product_name": "Test Pastry",
+      "window_units": 0,
+      "average_daily_units": "0.000000",
+      "stock_on_hand": null,
+      "days_of_stock": null,
+      "coverage_note": "stock not usable (missing, invalid or duplicated inventory record)",
+      "reorder_point": 6,
+      "lead_time_days": 2,
+      "pack_size": 6,
+      "target_stock_units": null,
+      "replenishment_units": null,
+      "replenishment_note": "not computed - stock data not usable"
+    }
+  },
+  "data_quality_issues": [
+    {
+      "issue_id": "PRD",
+      "file": "products.csv",
+      "row_or_id": "P204",
+      "issue": "pack_size invalid",
+      "severity": "error",
+      "proposed_resolution": "exclude product from stock metrics"
+    },
+    {
+      "issue_id": "VAL",
+      "file": "sales.csv",
+      "row_or_id": "L02",
+      "issue": "quantity blank or non-integer",
+      "severity": "error",
+      "proposed_resolution": "exclude line"
+    },
+    {
+      "issue_id": "VAL",
+      "file": "sales.csv",
+      "row_or_id": "L03",
+      "issue": "quantity blank or non-integer",
+      "severity": "error",
+      "proposed_resolution": "exclude line"
+    },
+    {
+      "issue_id": "VAL",
+      "file": "sales.csv",
+      "row_or_id": "L04",
+      "issue": "quantity not > 0 (-3)",
+      "severity": "error",
+      "proposed_resolution": "exclude line"
+    },
+    {
+      "issue_id": "VAL",
+      "file": "sales.csv",
+      "row_or_id": "L05",
+      "issue": "discount greater than gross line value",
+      "severity": "error",
+      "proposed_resolution": "exclude line"
+    },
+    {
+      "issue_id": "VAL",
+      "file": "sales.csv",
+      "row_or_id": "L06",
+      "issue": "unit_price/discount missing or negative",
+      "severity": "error",
+      "proposed_resolution": "exclude line"
+    },
+    {
+      "issue_id": "VAL",
+      "file": "sales.csv",
+      "row_or_id": "L07",
+      "issue": "invalid date '2026-09-31'",
+      "severity": "error",
+      "proposed_resolution": "exclude line; fix export"
+    },
+    {
+      "issue_id": "VAL",
+      "file": "sales.csv",
+      "row_or_id": "L08",
+      "issue": "unrecognised status 'shipped'",
+      "severity": "error",
+      "proposed_resolution": "exclude line; fix export"
+    },
+    {
+      "issue_id": "REF",
+      "file": "sales.csv",
+      "row_or_id": "L09",
+      "issue": "unknown product_id 'P999'",
+      "severity": "error",
+      "proposed_resolution": "exclude line; add product or fix id"
+    },
+    {
+      "issue_id": "VAL",
+      "file": "sales.csv",
+      "row_or_id": "L10",
+      "issue": "unit_price/discount missing or negative",
+      "severity": "error",
+      "proposed_resolution": "exclude line"
+    },
+    {
+      "issue_id": "DUP",
+      "file": "sales.csv",
+      "row_or_id": "L12",
+      "issue": "duplicate line_id",
+      "severity": "error",
+      "proposed_resolution": "exclude all copies; do not auto-pick one"
+    },
+    {
+      "issue_id": "DUP",
+      "file": "sales.csv",
+      "row_or_id": "L12",
+      "issue": "duplicate line_id",
+      "severity": "error",
+      "proposed_resolution": "exclude all copies; do not auto-pick one"
+    },
+    {
+      "issue_id": "DUP",
+      "file": "inventory.csv",
+      "row_or_id": "P202",
+      "issue": "duplicate current inventory record",
+      "severity": "error",
+      "proposed_resolution": "exclude product from stock metrics; recount"
+    },
+    {
+      "issue_id": "DUP",
+      "file": "inventory.csv",
+      "row_or_id": "P202",
+      "issue": "duplicate current inventory record",
+      "severity": "error",
+      "proposed_resolution": "exclude product from stock metrics; recount"
+    },
+    {
+      "issue_id": "STALE",
+      "file": "inventory.csv",
+      "row_or_id": "P203",
+      "issue": "stock count is 22 days old (threshold 7)",
+      "severity": "warning",
+      "proposed_resolution": "recount; do not compute replenishment"
+    },
+    {
+      "issue_id": "VAL",
+      "file": "inventory.csv",
+      "row_or_id": "P204",
+      "issue": "invalid last_count_date",
+      "severity": "error",
+      "proposed_resolution": "exclude product from stock metrics"
+    },
+    {
+      "issue_id": "REF",
+      "file": "inventory.csv",
+      "row_or_id": "P205",
+      "issue": "unknown product_id",
+      "severity": "error",
+      "proposed_resolution": "exclude"
+    },
+    {
+      "issue_id": "VAL",
+      "file": "inventory.csv",
+      "row_or_id": "P206",
+      "issue": "stock_on_hand invalid",
+      "severity": "error",
+      "proposed_resolution": "exclude product from stock metrics"
+    },
+    {
+      "issue_id": "VAL",
+      "file": "expenses.csv",
+      "row_or_id": "X-02",
+      "issue": "invalid date '2026-09-31'",
+      "severity": "error",
+      "proposed_resolution": "exclude expense"
+    },
+    {
+      "issue_id": "VAL",
+      "file": "expenses.csv",
+      "row_or_id": "X-03",
+      "issue": "unrecognised paid_status 'pending'",
+      "severity": "error",
+      "proposed_resolution": "exclude expense"
+    },
+    {
+      "issue_id": "VAL",
+      "file": "expenses.csv",
+      "row_or_id": "X-04",
+      "issue": "blank category",
+      "severity": "error",
+      "proposed_resolution": "exclude expense"
+    },
+    {
+      "issue_id": "WARN",
+      "file": "expenses.csv",
+      "row_or_id": "X-05",
+      "issue": "blank description",
+      "severity": "warning",
+      "proposed_resolution": "keep; disclose"
+    }
+  ],
+  "issue_counts": {
+    "total": 22,
+    "by_severity": {
+      "error": 20,
+      "warning": 2
+    }
+  }
+}

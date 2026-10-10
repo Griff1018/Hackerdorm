@@ -1,0 +1,39 @@
+{
+  "schema": "bizflow.marketplace_status.v1",
+  "external_order_id": "MP-20261010-0003",
+  "order_id": "ORD-MP-20261010-0003",
+  "status": "completed",
+  "history": [
+    {
+      "status": "received",
+      "at": "2026-10-10T15:43:24.522589+08:00"
+    },
+    {
+      "status": "confirmed",
+      "at": "2026-10-10T15:43:24.522601+08:00"
+    },
+    {
+      "status": "packing",
+      "at": "2026-10-10T15:43:24.522606+08:00"
+    },
+    {
+      "status": "shipped",
+      "at": "2026-10-10T15:43:24.524511+08:00"
+    },
+    {
+      "status": "delivered",
+      "at": "2026-10-10T15:43:24.561689+08:00"
+    },
+    {
+      "status": "completed",
+      "at": "2026-10-10T15:43:24.579192+08:00"
+    }
+  ],
+  "tracking_no": "SIM-TRK-0-0003",
+  "courier": "SimuExpress (simulated)",
+  "label_path": "data/output/shipping_labels/MP-20261010-0003.html",
+  "message_to_buyer": "Simulated status update only.",
+  "reason": "synthetic buyer confirmation",
+  "updated_at": "2026-10-10T15:43:24.579204+08:00",
+  "synthetic": true
+}

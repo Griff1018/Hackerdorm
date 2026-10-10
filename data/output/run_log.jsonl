@@ -1,0 +1,248 @@
+{"run_id": "run-2026-10-10-60e88b", "at": "2026-10-10T13:57:23.112702+08:00", "stage": "intake", "detail": "goal=Check September records and prepare actions mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-60e88b", "at": "2026-10-10T13:57:23.112724+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-60e88b", "at": "2026-10-10T13:57:23.130736+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-60e88b", "at": "2026-10-10T13:57:23.130748+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-60e88b", "at": "2026-10-10T13:57:23.131173+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-60e88b", "at": "2026-10-10T13:57:23.131207+08:00", "stage": "prioritise", "detail": "6 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-60e88b", "at": "2026-10-10T13:57:23.143576+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-60e88b", "at": "2026-10-10T13:57:23.146232+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P002", "status": "ok"}
+{"run_id": "run-2026-10-10-60e88b", "at": "2026-10-10T13:57:23.150529+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-92fafe", "at": "2026-10-10T14:10:58.580069+08:00", "stage": "intake", "detail": "goal=(default) mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-92fafe", "at": "2026-10-10T14:10:58.580094+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-92fafe", "at": "2026-10-10T14:10:58.599576+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-92fafe", "at": "2026-10-10T14:10:58.599590+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-92fafe", "at": "2026-10-10T14:10:58.600033+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-92fafe", "at": "2026-10-10T14:10:58.600069+08:00", "stage": "prioritise", "detail": "6 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-92fafe", "at": "2026-10-10T14:10:58.615839+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-92fafe", "at": "2026-10-10T14:10:58.621859+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P002", "status": "ok"}
+{"run_id": "run-2026-10-10-92fafe", "at": "2026-10-10T14:10:58.624457+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-92fafe", "at": "2026-10-10T14:10:58.628910+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-c42b22", "at": "2026-10-10T14:12:03.951531+08:00", "stage": "intake", "detail": "goal=(default) mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-c42b22", "at": "2026-10-10T14:12:03.951553+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-c42b22", "at": "2026-10-10T14:12:03.971623+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-c42b22", "at": "2026-10-10T14:12:03.971635+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-c42b22", "at": "2026-10-10T14:12:03.972046+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-c42b22", "at": "2026-10-10T14:12:03.972080+08:00", "stage": "prioritise", "detail": "6 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-c42b22", "at": "2026-10-10T14:12:03.980971+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-c42b22", "at": "2026-10-10T14:12:03.984564+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P002", "status": "ok"}
+{"run_id": "run-2026-10-10-c42b22", "at": "2026-10-10T14:12:03.988540+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-c42b22", "at": "2026-10-10T14:12:03.988552+08:00", "stage": "operations", "detail": "supplier coverage: 13/17 materials have at least one priced supplier; no priced supplier found for: Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml", "status": "ok"}
+{"run_id": "run-2026-10-10-c42b22", "at": "2026-10-10T14:12:03.988556+08:00", "stage": "operations", "detail": "4 material(s) need a quotation before they can be compared - recorded as an open gap, not filled with an estimate", "status": "gap"}
+{"run_id": "run-2026-10-10-c42b22", "at": "2026-10-10T14:12:03.992234+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.110104+08:00", "stage": "intake", "detail": "goal=(default) mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.110125+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.131881+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.131893+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.132333+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.132368+08:00", "stage": "prioritise", "detail": "6 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.162964+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.176445+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P002", "status": "ok"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.184287+08:00", "stage": "strategy", "detail": "market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...", "status": "ok"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.191636+08:00", "stage": "marketing", "detail": "promo_draft.md written for P002 (draft only - not posted)", "status": "ok"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.208496+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.208527+08:00", "stage": "operations", "detail": "supplier coverage: 13/17 materials have at least one priced supplier; no priced supplier found for: Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml", "status": "ok"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.208536+08:00", "stage": "operations", "detail": "4 material(s) need a quotation before they can be compared - recorded as an open gap, not filled with an estimate", "status": "gap"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.231962+08:00", "stage": "purchase", "detail": "6 draft PO(s) written to po/ (budget 1500.00 MYR)", "status": "ok"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.231980+08:00", "stage": "purchase", "detail": "1 material(s) not ordered - no supplier price found", "status": "gap"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.244356+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-cfb99b", "at": "2026-10-10T14:20:50.252126+08:00", "stage": "technology", "detail": "health check fail logged", "status": "ok"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.055507+08:00", "stage": "intake", "detail": "goal=(default) mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.055531+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.077277+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.077290+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.077705+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.077739+08:00", "stage": "prioritise", "detail": "6 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.098332+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.111903+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P002", "status": "ok"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.117564+08:00", "stage": "strategy", "detail": "market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...", "status": "ok"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.121690+08:00", "stage": "marketing", "detail": "promo_draft.md written for P002 (draft only - not posted)", "status": "ok"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.137054+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.137084+08:00", "stage": "operations", "detail": "supplier coverage: 13/17 materials have at least one priced supplier; no priced supplier found for: Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml", "status": "ok"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.137093+08:00", "stage": "operations", "detail": "4 material(s) need a quotation before they can be compared - recorded as an open gap, not filled with an estimate", "status": "gap"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.180788+08:00", "stage": "purchase", "detail": "6 draft PO(s) written to po/ (budget 1500.00 MYR)", "status": "ok"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.180819+08:00", "stage": "purchase", "detail": "1 material(s) not ordered - no supplier price found", "status": "gap"}
+{"run_id": "run-2026-10-10-069d22", "at": "2026-10-10T14:21:44.189044+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.160199+08:00", "stage": "intake", "detail": "goal=(default) mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.160221+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.180303+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.180319+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.180768+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.180806+08:00", "stage": "prioritise", "detail": "6 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.216882+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.230184+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P002", "status": "ok"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.239295+08:00", "stage": "strategy", "detail": "market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...", "status": "ok"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.247472+08:00", "stage": "marketing", "detail": "promo_draft.md written for P002 (draft only - not posted)", "status": "ok"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.265294+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.265327+08:00", "stage": "operations", "detail": "supplier coverage: 13/17 materials have at least one priced supplier; no priced supplier found for: Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml", "status": "ok"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.265336+08:00", "stage": "operations", "detail": "4 material(s) need a quotation before they can be compared - recorded as an open gap, not filled with an estimate", "status": "gap"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.326617+08:00", "stage": "purchase", "detail": "6 draft PO(s) written to po/ (budget 1500.00 MYR)", "status": "ok"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.326647+08:00", "stage": "purchase", "detail": "2 PO(s) exceed the remaining budget - NOT approved automatically, owner decides", "status": "blocked"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.326652+08:00", "stage": "purchase", "detail": "1 material(s) not ordered - no supplier price found", "status": "gap"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.336560+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-68ed93", "at": "2026-10-10T14:25:25.350126+08:00", "stage": "technology", "detail": "health check fail logged", "status": "ok"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.402181+08:00", "stage": "intake", "detail": "goal=(default) mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.402203+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.423853+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.423866+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.424338+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.424372+08:00", "stage": "prioritise", "detail": "6 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.432050+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.434458+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P002", "status": "ok"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.436352+08:00", "stage": "strategy", "detail": "market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...", "status": "ok"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.437740+08:00", "stage": "marketing", "detail": "promo_draft.md written for P002 (draft only - not posted)", "status": "ok"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.441973+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.441984+08:00", "stage": "operations", "detail": "supplier coverage: 13/17 materials have at least one priced supplier; no priced supplier found for: Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml", "status": "ok"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.441988+08:00", "stage": "operations", "detail": "4 material(s) need a quotation before they can be compared - recorded as an open gap, not filled with an estimate", "status": "gap"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.458614+08:00", "stage": "purchase", "detail": "6 draft PO(s) written to po/ (budget 1500.00 MYR)", "status": "ok"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.458624+08:00", "stage": "purchase", "detail": "2 PO(s) exceed the remaining budget - NOT approved automatically, owner decides", "status": "blocked"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.458628+08:00", "stage": "purchase", "detail": "1 material(s) not ordered - no supplier price found", "status": "gap"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.462451+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-634f42", "at": "2026-10-10T14:26:47.469634+08:00", "stage": "technology", "detail": "health check fail logged", "status": "ok"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.697619+08:00", "stage": "intake", "detail": "goal=(default) mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.697646+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.721888+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.721902+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.722332+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.722368+08:00", "stage": "prioritise", "detail": "6 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.738306+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.744710+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P002", "status": "ok"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.748305+08:00", "stage": "strategy", "detail": "market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...", "status": "ok"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.751573+08:00", "stage": "marketing", "detail": "promo_draft.md written for P002 (draft only - not posted)", "status": "ok"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.756109+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.756121+08:00", "stage": "operations", "detail": "supplier coverage: 13/17 materials have at least one priced supplier; no priced supplier found for: Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml", "status": "ok"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.756125+08:00", "stage": "operations", "detail": "4 material(s) need a quotation before they can be compared - recorded as an open gap, not filled with an estimate", "status": "gap"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.786088+08:00", "stage": "purchase", "detail": "6 draft PO(s) written to po/ (budget 1500.00 MYR)", "status": "ok"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.786109+08:00", "stage": "purchase", "detail": "2 PO(s) exceed the remaining budget - NOT approved automatically, owner decides", "status": "blocked"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.786113+08:00", "stage": "purchase", "detail": "1 material(s) not ordered - no supplier price found", "status": "gap"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.790667+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-ec91f9", "at": "2026-10-10T14:28:04.801382+08:00", "stage": "technology", "detail": "health check pass logged", "status": "ok"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.556267+08:00", "stage": "intake", "detail": "goal=(default) mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.556292+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.580342+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.580356+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.580781+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.580817+08:00", "stage": "prioritise", "detail": "7 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.610853+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.626772+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P005", "status": "ok"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.636935+08:00", "stage": "strategy", "detail": "market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...", "status": "ok"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.646809+08:00", "stage": "marketing", "detail": "promo_draft.md written for P005 (draft only - not posted)", "status": "ok"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.665393+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.665431+08:00", "stage": "operations", "detail": "supplier coverage: 11/17 materials have at least one priced listing; no priced listings for: Butter, Chicken filling, Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml", "status": "ok"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.665435+08:00", "stage": "operations", "detail": "no eligible supplier for: Butter, Chicken filling, Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml (unavailable listings and substitutes are not recommendations)", "status": "gap"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.665439+08:00", "stage": "operations", "detail": "6 material(s) need a quotation before they can be compared - recorded as an open gap, not filled with an estimate", "status": "gap"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.701969+08:00", "stage": "purchase", "detail": "4 draft PO(s) written to po/ (purchasing budget 800.00 MYR)", "status": "ok"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.701983+08:00", "stage": "purchase", "detail": "3 material(s) not ordered - no supplier price found", "status": "gap"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.710341+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-8f0de3", "at": "2026-10-10T15:05:04.722372+08:00", "stage": "technology", "detail": "health check pass logged", "status": "ok"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.373503+08:00", "stage": "intake", "detail": "goal=(default) mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.373561+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.392451+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.392463+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.392911+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.392947+08:00", "stage": "prioritise", "detail": "7 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.408561+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.418397+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P005", "status": "ok"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.420712+08:00", "stage": "strategy", "detail": "market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...", "status": "ok"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.422670+08:00", "stage": "marketing", "detail": "promo_draft.md written for P005 (draft only - not posted)", "status": "ok"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.430889+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.431026+08:00", "stage": "operations", "detail": "supplier coverage: 13/17 materials have at least one priced listing; no priced listings for: Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml", "status": "ok"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.431037+08:00", "stage": "operations", "detail": "no eligible supplier for: Butter, Chicken filling, Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml (unavailable listings and substitutes are not recommendations)", "status": "gap"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.431045+08:00", "stage": "operations", "detail": "4 material(s) have no published comparable price and need a quotation - recorded as an open gap, not filled with an estimate", "status": "gap"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.452095+08:00", "stage": "purchase", "detail": "4 draft PO(s) written to po/ (purchasing budget 800.00 MYR)", "status": "ok"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.452112+08:00", "stage": "purchase", "detail": "3 material(s) not ordered - no supplier price found", "status": "gap"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.454963+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-de2f1b", "at": "2026-10-10T15:05:53.461227+08:00", "stage": "technology", "detail": "health check pass logged", "status": "ok"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.527974+08:00", "stage": "intake", "detail": "goal=Check this month's records in data/sample, tell me what needs attention, and prepare everything I need to act on it. mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.528000+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.547874+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.547887+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.548327+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.548364+08:00", "stage": "prioritise", "detail": "7 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.555027+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.558308+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P005", "status": "ok"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.560361+08:00", "stage": "strategy", "detail": "market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...", "status": "ok"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.561703+08:00", "stage": "marketing", "detail": "promo_draft.md written for P005 (draft only - not posted)", "status": "ok"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.566924+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.566953+08:00", "stage": "operations", "detail": "supplier coverage: 13/17 materials have at least one priced listing; no priced listings for: Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml", "status": "ok"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.566958+08:00", "stage": "operations", "detail": "no eligible supplier for: Butter, Chicken filling, Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml (unavailable listings and substitutes are not recommendations)", "status": "gap"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.566961+08:00", "stage": "operations", "detail": "4 material(s) have no published comparable price and need a quotation - recorded as an open gap, not filled with an estimate", "status": "gap"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.581494+08:00", "stage": "purchase", "detail": "4 draft PO(s) written to po/ (purchasing budget 800.00 MYR)", "status": "ok"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.581506+08:00", "stage": "purchase", "detail": "3 material(s) not ordered - no supplier price found", "status": "gap"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.584315+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-fe532a", "at": "2026-10-10T15:10:35.590732+08:00", "stage": "technology", "detail": "health check pass logged", "status": "ok"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.338989+08:00", "stage": "intake", "detail": "goal=Check this month's records in data/sample, tell me what needs attention, and prepare everything I need to act on it. mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.339012+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.366172+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.366189+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.366703+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.366747+08:00", "stage": "prioritise", "detail": "7 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.389925+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.404581+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P005", "status": "ok"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.409777+08:00", "stage": "strategy", "detail": "market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...", "status": "ok"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.414601+08:00", "stage": "marketing", "detail": "promo_draft.md written for P005 (draft only - not posted)", "status": "ok"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.428502+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.428577+08:00", "stage": "operations", "detail": "supplier coverage: 13/17 materials have at least one priced listing; no priced listings for: Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml", "status": "ok"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.428588+08:00", "stage": "operations", "detail": "no eligible supplier for: Butter, Chicken filling, Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml (unavailable listings and substitutes are not recommendations)", "status": "gap"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.428597+08:00", "stage": "operations", "detail": "4 material(s) have no published comparable price and need a quotation - recorded as an open gap, not filled with an estimate", "status": "gap"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.459724+08:00", "stage": "purchase", "detail": "4 draft PO(s) written to po/ (purchasing budget 800.00 MYR)", "status": "ok"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.459746+08:00", "stage": "purchase", "detail": "3 material(s) not ordered - see purchase_plan.md for availability/material-match/quotation reasons", "status": "gap"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.466190+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-bc7ba2", "at": "2026-10-10T15:11:12.480453+08:00", "stage": "technology", "detail": "health check pass logged", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.288561+08:00", "stage": "intake", "detail": "goal=Check Campus Crumb's records, handle the synthetic customer operation, prepare draft actions, campaign, job ad and POs, verify everything, and check technology. mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.288590+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.309941+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.309955+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.310384+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.310424+08:00", "stage": "prioritise", "detail": "7 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.325920+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.330617+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P005", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.333575+08:00", "stage": "strategy", "detail": "market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.337865+08:00", "stage": "marketing", "detail": "promo_draft.md written for P005 (draft only - not posted)", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.344717+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.344760+08:00", "stage": "operations", "detail": "supplier coverage: 13/17 materials have at least one priced listing; no priced listings for: Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.344765+08:00", "stage": "operations", "detail": "no eligible supplier for: Butter, Chicken filling, Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml (unavailable listings and substitutes are not recommendations)", "status": "gap"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.344769+08:00", "stage": "operations", "detail": "4 material(s) have no published comparable price and need a quotation - recorded as an open gap, not filled with an estimate", "status": "gap"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.363122+08:00", "stage": "purchase", "detail": "4 draft PO(s) written to po/ (purchasing budget 800.00 MYR)", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.363136+08:00", "stage": "purchase", "detail": "3 material(s) not ordered - see purchase_plan.md for availability/material-match/quotation reasons", "status": "gap"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.366620+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.376319+08:00", "stage": "technology", "detail": "health check pass logged", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.390084+08:00", "stage": "customer_ops", "detail": "FR-01 Tier B passed (9 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.395002+08:00", "stage": "marketing", "detail": "FR-03 campaign planner wrote 5 draft post(s)", "status": "ok"}
+{"run_id": "run-2026-10-10-592ee9", "at": "2026-10-10T15:23:13.396694+08:00", "stage": "people", "detail": "FR-04 job ad and hiring kit written (draft only)", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.277094+08:00", "stage": "intake", "detail": "goal=Check Campus Crumb's records, tell me what needs attention, prepare everything I need to act on it, and verify the result. mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.277121+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.296141+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.296155+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.296635+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.296681+08:00", "stage": "prioritise", "detail": "7 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.304810+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.307863+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P005", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.310478+08:00", "stage": "strategy", "detail": "market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.312440+08:00", "stage": "marketing", "detail": "promo_draft.md written for P005 (draft only - not posted)", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.317033+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.317069+08:00", "stage": "operations", "detail": "supplier coverage: 13/17 materials have at least one priced listing; no priced listings for: Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.317074+08:00", "stage": "operations", "detail": "no eligible supplier for: Butter, Chicken filling, Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml (unavailable listings and substitutes are not recommendations)", "status": "gap"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.317078+08:00", "stage": "operations", "detail": "4 material(s) have no published comparable price and need a quotation - recorded as an open gap, not filled with an estimate", "status": "gap"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.327681+08:00", "stage": "purchase", "detail": "4 draft PO(s) written to po/ (purchasing budget 800.00 MYR)", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.327695+08:00", "stage": "purchase", "detail": "3 material(s) not ordered - see purchase_plan.md for availability/material-match/quotation reasons", "status": "gap"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.330609+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.336703+08:00", "stage": "technology", "detail": "health check pass logged", "status": "ok"}
+{"run_id": "run-2026-10-10-9ea7c3", "at": "2026-10-10T15:30:38.355924+08:00", "stage": "customer_ops", "detail": "FR-01 Tier B passed (9 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.503564+08:00", "stage": "intake", "detail": "goal=Prepare draft purchase orders and verify them. mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.503587+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.527390+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.527437+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.528100+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.528157+08:00", "stage": "prioritise", "detail": "7 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.544332+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.549780+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P005", "status": "ok"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.553345+08:00", "stage": "strategy", "detail": "market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...", "status": "ok"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.556709+08:00", "stage": "marketing", "detail": "promo_draft.md written for P005 (draft only - not posted)", "status": "ok"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.564070+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.564110+08:00", "stage": "operations", "detail": "supplier coverage: 13/17 materials have at least one priced listing; no priced listings for: Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml", "status": "ok"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.564116+08:00", "stage": "operations", "detail": "no eligible supplier for: Butter, Chicken filling, Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml (unavailable listings and substitutes are not recommendations)", "status": "gap"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.564120+08:00", "stage": "operations", "detail": "4 material(s) have no published comparable price and need a quotation - recorded as an open gap, not filled with an estimate", "status": "gap"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.581318+08:00", "stage": "purchase", "detail": "4 draft PO(s) written to po/ (purchasing budget 800.00 MYR)", "status": "ok"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.581332+08:00", "stage": "purchase", "detail": "3 material(s) not ordered - see purchase_plan.md for availability/material-match/quotation reasons", "status": "gap"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.585071+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-584c22", "at": "2026-10-10T16:03:20.595321+08:00", "stage": "technology", "detail": "health check fail logged", "status": "ok"}

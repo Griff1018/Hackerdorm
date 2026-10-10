@@ -1,0 +1,17 @@
+line_id,order_id,date,product_id,quantity,unit_price,discount_amount,status
+L01,O-01,2026-09-02,P201,10,5.00,0.00,completed
+L02,O-02,2026-09-04,P201,,5.00,0.00,completed
+L03,O-03,2026-09-05,P201,two,5.00,0.00,completed
+L04,O-04,2026-09-06,P201,-3,5.00,0.00,completed
+L05,O-05,2026-09-07,P202,4,3.00,20.00,completed
+L06,O-06,2026-09-08,P202,3,3.00,-1.00,completed
+L07,O-07,2026-09-31,P202,2,3.00,0.00,completed
+L08,O-08,2026-09-10,P203,2,4.00,0.00,shipped
+L09,O-09,2026-09-11,P999,2,3.00,0.00,completed
+L10,O-10,2026-09-12,P201,5,,0.00,completed
+L11,O-11,2026-09-13,P203,3,4.00,12.00,completed
+L12,O-12,2026-09-14,P202,6,3.00,0.00,completed
+L12,O-12,2026-09-14,P202,6,3.00,0.00,completed
+L13,O-13,2026-08-15,P201,4,5.00,0.00,completed
+L14,O-14,2026-09-16,P201,2,5.00,0.00,cancelled
+L15,O-15,2026-09-18,P202,3,3.00,0.00,refunded

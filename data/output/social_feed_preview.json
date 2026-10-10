@@ -1,0 +1,42 @@
+{
+  "title": "Campus Crumb social post preview (simulated)",
+  "synthetic": true,
+  "platforms_are_generic_previews": true,
+  "posts": [
+    {
+      "day": "Monday",
+      "platform": "Instagram post",
+      "caption": "Campus Crumb Granola Bar - check today's menu and message us to order.",
+      "hashtags": "#CampusCrumb #CampusSnacks",
+      "draft_only": true
+    },
+    {
+      "day": "Tuesday",
+      "platform": "Instagram story",
+      "caption": "Campus snack break: ask about today's available items.",
+      "hashtags": "#CampusCrumb #StudentSeller",
+      "draft_only": true
+    },
+    {
+      "day": "Wednesday",
+      "platform": "TikTok script",
+      "caption": "Show the synthetic campus snack prep table, then invite viewers to check the menu.",
+      "hashtags": "#CampusCrumb #CampusFood",
+      "draft_only": true
+    },
+    {
+      "day": "Thursday",
+      "platform": "Facebook campus group",
+      "caption": "Campus Crumb has synthetic demo stock available for campus pickup. Message to order.",
+      "hashtags": "#CampusCrumb #CampusPickup",
+      "draft_only": true
+    },
+    {
+      "day": "Friday",
+      "platform": "WhatsApp Status",
+      "caption": "Weekend study snack reminder: see the current menu before ordering.",
+      "hashtags": "#CampusCrumb #StudySnacks",
+      "draft_only": true
+    }
+  ]
+}

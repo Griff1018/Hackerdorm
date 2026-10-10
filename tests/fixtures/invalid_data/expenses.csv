@@ -1,0 +1,7 @@
+expense_id,date,category,amount,description,paid_status
+X-01,2026-09-03,Rent,100.00,Table fee,paid
+X-02,2026-09-31,Supplies,25.50,Cups,paid
+X-03,2026-09-15,Marketing,40.00,Boost,pending
+X-04,2026-09-18,,30.00,Sundries,paid
+X-05,2026-09-20,Misc,10.00,,paid
+X-06,2026-09-22,Utilities,55.00,Electricity,unpaid

@@ -1,0 +1,8 @@
+test_campaign_people_and_social_preview_outputs (__main__.Sprint3B.test_campaign_people_and_social_preview_outputs) ... ok
+test_marketplace_full_seller_side (__main__.Sprint3B.test_marketplace_full_seller_side) ... ok
+test_social_feed_is_generic_and_labelled (__main__.Sprint3B.test_social_feed_is_generic_and_labelled) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 9.143s
+
+OK

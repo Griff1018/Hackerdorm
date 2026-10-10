@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Agent Console</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React & ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <!-- Babel for JSX compilation -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body { background-color: #f8fafc; color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
+    .shimmer { background: linear-gradient(90deg, #e2e8f0 0%, #f1f5f9 50%, #e2e8f0 100%); background-size: 800px 100%; animation: shimmer 1.4s linear infinite; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    // --- SHARED CONFIG (must match index.html) ---
+    const LS_PUBLISHED = "ig_mock_published";  // posts created by the agents
+    const LS_NEW_POST = "ig_mock_new_post";    // id of the post to pop up on the Instagram Home feed
+
+    const SELLER = {
+      username: "vintage_vault_my",
+      name: "Vintage Vault Malaysia",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+      bio: "Curated 90s archive & bespoke accessories. Worldwide shipping, ships in 24h. DM to purchase."
+    };
+
+    const TEXT_MODEL = "gpt-4o-mini";
+    const IMAGE_MODEL = "gpt-image-1";
+
+    const AGENTS = [
+      { id: "copy", name: "Copywriter Agent", desc: "Writes caption, hashtags & a visual brief" },
+      { id: "visual", name: "Visual Agent", desc: "Generates the post image from the brief" },
+      { id: "review", name: "Human Approval", desc: "You review and edit the draft" },
+      { id: "publish", name: "Publisher Agent", desc: "Uploads the post to Instagram" }
+    ];
+
+    const COPYWRITER_PROMPT = `You are the Copywriter Agent for the Instagram shop @${SELLER.username} (${SELLER.name}: ${SELLER.bio}).
+Given the seller's request, draft one Instagram post. Respond ONLY with JSON:
+{
+  "caption": "2-4 engaging sentences, 1-3 emojis, end with a call to action such as DM to purchase",
+  "hashtags": ["5 to 8 hashtags without the # symbol"],
+  "image_prompt": "a detailed prompt for a photorealistic square product photo for this post, styled for Instagram, with no text or logos in the image"
+}`;
+
+    // --- OPENAI CALLS ---
+    // Calls go through server.js, which adds the API key from .env
+    async function openai(path, body) {
+      const res = await fetch(`/api/openai/${path}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error?.message || `OpenAI request failed (${res.status})`);
+      return data;
+    }
+
+    // photo: optional data URL of the seller's own media, so the caption matches it
+    async function runCopywriter(userPrompt, photo) {
+      const userContent = photo
+        ? [
+            { type: "text", text: `${userPrompt}\n\n(The seller attached their own product photo for this post. Describe what is shown accurately.)` },
+            { type: "image_url", image_url: { url: photo } }
+          ]
+        : userPrompt;
+      const data = await openai("chat/completions", {
+        model: TEXT_MODEL,
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: COPYWRITER_PROMPT },
+          { role: "user", content: userContent }
+        ]
+      });
+      const draft = JSON.parse(data.choices[0].message.content);
+      return {
+        caption: draft.caption || "",
+        hashtags: (draft.hashtags || []).map(h => `#${h.replace(/^#/, "")}`).join(" "),
+        imagePrompt: draft.image_prompt || userPrompt
+      };
+    }
+
+    async function runVisual(imagePrompt) {
+      const data = await openai("images/generations", {
+        model: IMAGE_MODEL,
+        prompt: imagePrompt,
+        size: "1024x1024",
+        quality: "medium",
+        output_format: "jpeg",
+        output_compression: 80,
+        n: 1
+      });
+      return shrinkImage(`data:image/jpeg;base64,${data.data[0].b64_json}`);
+    }
+
+    // Center-crop to square and downscale so the post fits comfortably in localStorage
+    function shrinkImage(dataUrl, size = 720) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = canvas.height = size;
+          const side = Math.min(img.width, img.height);
+          canvas.getContext("2d").drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, size, size);
+          resolve(canvas.toDataURL("image/jpeg", 0.85));
+        };
+        img.onerror = () => reject(new Error("Could not read that image file"));
+        img.src = dataUrl;
+      });
+    }
+
+    function readFile(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => shrinkImage(reader.result).then(resolve, reject);
+        reader.onerror = () => reject(new Error("Could not read that image file"));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function loadPublished() {
+      try { return JSON.parse(localStorage.getItem(LS_PUBLISHED)) || []; } catch { return []; }
+    }
+
+    function savePublished(posts) {
+      // Drop the oldest generated posts if storage is full
+      while (posts.length) {
+        try { localStorage.setItem(LS_PUBLISHED, JSON.stringify(posts)); return; }
+        catch { posts = posts.slice(0, -1); }
+      }
+      localStorage.removeItem(LS_PUBLISHED);
+    }
+
+    const wait = (ms) => new Promise(r => setTimeout(r, ms));
+
+    // --- MAIN APP COMPONENT ---
+    function App() {
+      const [prompt, setPrompt] = useState("");
+      const [status, setStatus] = useState({}); // agentId -> 'running' | 'done' | 'error'
+      const [draft, setDraft] = useState(null);  // { caption, hashtags, imagePrompt, image }
+      const [error, setError] = useState("");
+      const [published, setPublished] = useState(false);
+      const [mediaMode, setMediaMode] = useState("ai"); // 'ai' | 'upload'
+      const [upload, setUpload] = useState(null);       // data URL of the seller's own media
+
+      const busy = Object.values(status).includes("running") && status.review !== "running";
+      const setStep = (id, s) => setStatus(prev => ({ ...prev, [id]: s }));
+      const needsUpload = mediaMode === "upload" && !upload;
+      const canEdit = status.review === "running";
+
+      const pickUpload = async (e, intoDraft) => {
+        const file = e.target.files?.[0];
+        e.target.value = "";
+        if (!file) return;
+        try {
+          const image = await readFile(file);
+          if (intoDraft) setDraft(d => ({ ...d, image }));
+          else setUpload(image);
+        } catch (err) {
+          setError(err.message);
+        }
+      };
+
+      const generateDraft = async (e) => {
+        e?.preventDefault();
+        if (!prompt.trim() || busy || needsUpload) return;
+        setError("");
+        setDraft(null);
+        setPublished(false);
+        setStatus({});
+
+        let current = "copy";
+        try {
+          setStep("copy", "running");
+          const photo = mediaMode === "upload" ? upload : null;
+          const copy = await runCopywriter(prompt.trim(), photo);
+          setDraft({ ...copy, image: photo });
+          setStep("copy", "done");
+
+          if (photo) {
+            setStep("visual", "skipped");
+          } else {
+            current = "visual";
+            setStep("visual", "running");
+            const image = await runVisual(copy.imagePrompt);
+            setDraft(d => ({ ...d, image }));
+            setStep("visual", "done");
+          }
+
+          setStep("review", "running");
+        } catch (err) {
+          setStep(current, "error");
+          setError(err.message);
+        }
+      };
+
+      const approveAndPost = async () => {
+        if (!draft?.image || status.review !== "running") return;
+        setStep("review", "done");
+        setStep("publish", "running");
+        await wait(1500); // simulated upload to Instagram
+
+        const tags = draft.hashtags.trim();
+        const post = {
+          id: `gen_${Date.now()}`,
+          author: SELLER.username,
+          avatar: SELLER.avatar,
+          image: draft.image,
+          caption: tags ? `${draft.caption.trim()}\n\n${tags}` : draft.caption.trim(),
+          likes: 0,
+          isLiked: false,
+          isSaved: false,
+          timeAgo: "JUST NOW",
+          commentsCount: 0
+        };
+        savePublished([post, ...loadPublished()]);
+        localStorage.setItem(LS_NEW_POST, post.id);
+
+        setStep("publish", "done");
+        setPublished(true);
+      };
+
+      const reset = () => {
+        setDraft(null);
+        setStatus({});
+        setPublished(false);
+        setError("");
+        setPrompt("");
+        setUpload(null);
+      };
+
+      const resetDemo = () => {
+        localStorage.removeItem(LS_PUBLISHED);
+        localStorage.removeItem(LS_NEW_POST);
+        reset();
+      };
+
+      return (
+        <div className="min-h-screen">
+          {/* --- HEADER --- */}
+          <header className="bg-white border-b border-slate-200">
+            <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">AI</div>
+                <div>
+                  <h1 className="font-bold leading-tight">Content Agent Console</h1>
+                  <p className="text-xs text-slate-500">Multi-agent social media publishing</p>
+                </div>
+              </div>
+              <button onClick={resetDemo} className="text-xs text-slate-500 hover:text-slate-800">
+                Reset demo
+              </button>
+            </div>
+          </header>
+
+          <main className="max-w-6xl mx-auto py-6 px-4 grid md:grid-cols-[1fr_minmax(0,26rem)] gap-6">
+            {/* LEFT: prompt + agent pipeline */}
+            <section className="space-y-5">
+              <form onSubmit={generateDraft} className="bg-white border border-slate-200 rounded-xl p-4 space-y-3 shadow-sm">
+                <div>
+                  <h2 className="font-semibold">Campaign request</h2>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Posting as <strong>@{SELLER.username}</strong> on Instagram. Describe what to post.
+                  </p>
+                </div>
+                <textarea
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  rows={4}
+                  placeholder="e.g. Announce our restocked 1990s Sony Walkman, only 3 units, 15% off this weekend"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-500 resize-none"
+                />
+                {/* Media source */}
+                <div className="space-y-2">
+                  <span className="text-xs font-semibold text-slate-500">Media</span>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[["ai", "✨ AI generated image"], ["upload", "⬆ Upload my own"]].map(([mode, label]) => (
+                      <button
+                        key={mode}
+                        type="button"
+                        onClick={() => setMediaMode(mode)}
+                        disabled={busy}
+                        className={`text-sm font-medium px-3 py-2 rounded-lg border transition ${
+                          mediaMode === mode ? "border-indigo-500 bg-indigo-50 text-indigo-700" : "border-slate-300 hover:bg-slate-50"
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  {mediaMode === "upload" && (
+                    <label className="flex items-center gap-3 border border-dashed border-slate-300 rounded-lg p-2.5 cursor-pointer hover:bg-slate-50">
+                      {upload ? (
+                        <img src={upload} alt="Upload" className="w-14 h-14 rounded-md object-cover" />
+                      ) : (
+                        <div className="w-14 h-14 rounded-md bg-slate-100 flex items-center justify-center text-slate-400 text-xl">+</div>
+                      )}
+                      <span className="text-sm text-slate-600">{upload ? "Change photo" : "Choose a photo"}</span>
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => pickUpload(e, false)} />
+                    </label>
+                  )}
+                </div>
+
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-xs text-slate-500">
+                    {TEXT_MODEL}{mediaMode === "ai" && ` + ${IMAGE_MODEL}`}
+                  </span>
+                  <button
+                    type="submit"
+                    disabled={!prompt.trim() || busy || needsUpload}
+                    className="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:hover:bg-indigo-600 text-white font-semibold text-sm px-4 py-2 rounded-lg transition"
+                  >
+                    {busy ? "Agents working..." : draft ? "Regenerate draft" : "Generate draft"}
+                  </button>
+                </div>
+              </form>
+
+              {/* Agent Pipeline */}
+              <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                <h3 className="text-xs font-semibold tracking-wider text-slate-500 mb-3">AGENT PIPELINE</h3>
+                <ol className="space-y-3">
+                  {AGENTS.map((agent, i) => {
+                    const s = status[agent.id];
+                    return (
+                      <li key={agent.id} className="flex gap-3">
+                        <div className={`w-7 h-7 shrink-0 rounded-full flex items-center justify-center text-xs font-bold ${
+                          s === "done" ? "bg-emerald-500 text-white"
+                          : s === "running" ? "bg-indigo-600 text-white animate-pulse"
+                          : s === "error" ? "bg-red-500 text-white"
+                          : s === "skipped" ? "bg-slate-100 text-slate-400"
+                          : "bg-slate-200 text-slate-500"
+                        }`}>
+                          {s === "done" ? "✓" : s === "error" ? "!" : s === "skipped" ? "–" : i + 1}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-sm font-semibold">
+                            {agent.name}
+                            {s === "running" && (
+                              <span className="ml-2 text-xs font-normal text-indigo-600">
+                                {agent.id === "review" ? "waiting for you" : "working..."}
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-xs text-slate-500">
+                            {s === "skipped" ? "Skipped: using the seller's uploaded media" : agent.desc}
+                          </div>
+                          {agent.id === "visual" && s !== "skipped" && draft?.imagePrompt && (
+                            <div className="mt-1.5 text-xs text-slate-600 bg-slate-100 rounded-md px-2.5 py-1.5">
+                              <span className="text-slate-400">Brief from Copywriter: </span>{draft.imagePrompt}
+                            </div>
+                          )}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
+                {error && <p className="mt-3 text-xs text-red-600">{error}</p>}
+              </div>
+            </section>
+
+            {/* RIGHT: draft review */}
+            <section className="space-y-3">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-semibold tracking-wider text-slate-500">
+                  {published ? "PUBLISHED" : "DRAFT FOR APPROVAL"}
+                </h3>
+                {published && <span className="text-xs bg-emerald-100 text-emerald-700 font-semibold px-2 py-0.5 rounded-full">Live on Instagram</span>}
+              </div>
+
+              <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <div className="relative w-full aspect-square bg-slate-100 overflow-hidden">
+                  {draft?.image && canEdit && (
+                    <label className="absolute bottom-3 right-3 bg-white/90 hover:bg-white text-xs font-semibold px-3 py-1.5 rounded-full shadow cursor-pointer">
+                      Replace with my own
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => pickUpload(e, true)} />
+                    </label>
+                  )}
+                  {draft?.image ? (
+                    <img src={draft.image} alt="Draft" className="w-full h-full object-cover" />
+                  ) : busy ? (
+                    <div className="w-full h-full shimmer flex items-center justify-center text-xs text-slate-500">
+                      {status.copy === "running" ? "Copywriter is writing..." : "Visual Agent is generating the image..."}
+                    </div>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-xs text-slate-400">
+                      Generated media will appear here
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-4 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-semibold text-slate-500">Caption</label>
+                    {canEdit && <span className="text-xs text-slate-400">AI draft, edit freely</span>}
+                  </div>
+                  {draft ? (
+                    <>
+                      <textarea
+                        value={draft.caption}
+                        onChange={(e) => setDraft({ ...draft, caption: e.target.value })}
+                        disabled={!canEdit}
+                        rows={5}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-md px-2.5 py-2 text-sm leading-snug resize-y focus:outline-none focus:border-indigo-500 disabled:text-slate-600"
+                      />
+                      <label className="text-xs font-semibold text-slate-500">Hashtags</label>
+                      <textarea
+                        value={draft.hashtags}
+                        onChange={(e) => setDraft({ ...draft, hashtags: e.target.value })}
+                        disabled={!canEdit}
+                        rows={2}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-md px-2.5 py-2 text-sm text-indigo-600 leading-snug resize-none focus:outline-none focus:border-indigo-500"
+                      />
+                    </>
+                  ) : (
+                    <div className="space-y-2">
+                      <div className={`h-3 rounded w-11/12 ${busy ? "shimmer" : "bg-slate-100"}`} />
+                      <div className={`h-3 rounded w-3/4 ${busy ? "shimmer" : "bg-slate-100"}`} />
+                      <div className={`h-3 rounded w-1/2 ${busy ? "shimmer" : "bg-slate-100"}`} />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Approval actions */}
+              {published ? (
+                <div className="flex gap-2">
+                  <a href="index.html#feed" target="_blank" className="flex-1 text-center bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-4 py-2.5 rounded-lg transition">
+                    Open Instagram ↗
+                  </a>
+                  <button onClick={reset} className="bg-white border border-slate-300 hover:bg-slate-100 font-semibold text-sm px-4 py-2.5 rounded-lg transition">
+                    New request
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <button
+                    onClick={approveAndPost}
+                    disabled={status.review !== "running"}
+                    className="flex-1 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:hover:bg-emerald-600 text-white font-semibold text-sm px-4 py-2.5 rounded-lg transition"
+                  >
+                    {status.publish === "running" ? "Publishing to Instagram..." : "Approve & Post"}
+                  </button>
+                  <button
+                    onClick={generateDraft}
+                    disabled={status.review !== "running"}
+                    className="bg-white border border-slate-300 hover:bg-slate-100 disabled:opacity-40 font-semibold text-sm px-4 py-2.5 rounded-lg transition"
+                  >
+                    Reject & Regenerate
+                  </button>
+                </div>
+              )}
+            </section>
+          </main>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

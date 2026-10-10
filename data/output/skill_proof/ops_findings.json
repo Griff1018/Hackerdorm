@@ -1,0 +1,241 @@
+{
+  "run_id": "run-2026-10-10-9c4909",
+  "stock_and_replenishment": {
+    "P001": {
+      "product_name": "Chocolate Chip Cookies (6pcs)",
+      "window_units": 78,
+      "average_daily_units": "5.571429",
+      "stock_on_hand": 18,
+      "days_of_stock": "3.23",
+      "coverage_note": null,
+      "reorder_point": 20,
+      "lead_time_days": 3,
+      "pack_size": 12,
+      "target_stock_units": "33.43",
+      "replenishment_units": 24,
+      "replenishment_note": "raw 15.43 rounded up to pack_size 12",
+      "reorder_trigger": true,
+      "marketing_trigger": false,
+      "marketing_reason": null,
+      "stock_age_days": 2,
+      "stock_stale": false
+    },
+    "P002": {
+      "product_name": "Iced Lemon Tea 500ml",
+      "window_units": 97,
+      "average_daily_units": "6.928571",
+      "stock_on_hand": 96,
+      "days_of_stock": "13.86",
+      "coverage_note": null,
+      "reorder_point": 24,
+      "lead_time_days": 2,
+      "pack_size": 24,
+      "target_stock_units": "34.64",
+      "replenishment_units": 0,
+      "replenishment_note": "target stock below current stock - no replenishment",
+      "reorder_trigger": false,
+      "marketing_trigger": true,
+      "marketing_reason": "13.86 days of stock > 2 x (lead 2 + safety 3) = 10.00 days",
+      "stock_age_days": 1,
+      "stock_stale": false
+    },
+    "P003": {
+      "product_name": "Banana Muffin",
+      "window_units": 28,
+      "average_daily_units": "2.000000",
+      "stock_on_hand": 22,
+      "days_of_stock": "11.00",
+      "coverage_note": null,
+      "reorder_point": 15,
+      "lead_time_days": 3,
+      "pack_size": 10,
+      "target_stock_units": "12.00",
+      "replenishment_units": null,
+      "replenishment_note": "not computed - stock count is stale (25 days); recount first",
+      "reorder_trigger": false,
+      "marketing_trigger": false,
+      "marketing_reason": null,
+      "stock_age_days": 25,
+      "stock_stale": true
+    },
+    "P004": {
+      "product_name": "Spicy Chicken Bun",
+      "window_units": 22,
+      "average_daily_units": "1.571429",
+      "stock_on_hand": 6,
+      "days_of_stock": "3.82",
+      "coverage_note": null,
+      "reorder_point": 18,
+      "lead_time_days": 4,
+      "pack_size": 12,
+      "target_stock_units": "11.00",
+      "replenishment_units": 12,
+      "replenishment_note": "raw 5.00 rounded up to pack_size 12",
+      "reorder_trigger": true,
+      "marketing_trigger": false,
+      "marketing_reason": null,
+      "stock_age_days": 0,
+      "stock_stale": false
+    },
+    "P005": {
+      "product_name": "Granola Bar",
+      "window_units": 0,
+      "average_daily_units": "0.000000",
+      "stock_on_hand": 34,
+      "days_of_stock": null,
+      "coverage_note": "cannot be estimated - zero eligible sales in the demand window",
+      "reorder_point": 10,
+      "lead_time_days": 5,
+      "pack_size": 20,
+      "target_stock_units": null,
+      "replenishment_units": null,
+      "replenishment_note": "not computed - no recent demand",
+      "reorder_trigger": null,
+      "marketing_trigger": true,
+      "marketing_reason": "34 units in stock but zero eligible sales in the 14-day demand window (2026-09-17..2026-09-30) - stock is not moving",
+      "stock_age_days": 3,
+      "stock_stale": false
+    }
+  },
+  "replenishment_list": [
+    {
+      "product_id": "P001",
+      "product_name": "Chocolate Chip Cookies (6pcs)",
+      "units": 24
+    },
+    {
+      "product_id": "P004",
+      "product_name": "Spicy Chicken Bun",
+      "units": 12
+    }
+  ],
+  "recount_checklist": [
+    {
+      "product_id": "P003",
+      "product_name": "Banana Muffin",
+      "reason": "not computed - stock count is stale (25 days); recount first"
+    }
+  ],
+  "materials": [
+    {
+      "product_id": "P001",
+      "material_name": "Flour",
+      "quantity_per_unit": "200",
+      "unit": "g"
+    },
+    {
+      "product_id": "P001",
+      "material_name": "Butter",
+      "quantity_per_unit": "80",
+      "unit": "g"
+    },
+    {
+      "product_id": "P001",
+      "material_name": "Chocolate chips",
+      "quantity_per_unit": "60",
+      "unit": "g"
+    },
+    {
+      "product_id": "P001",
+      "material_name": "Paper cookie bag",
+      "quantity_per_unit": "1",
+      "unit": "pcs"
+    },
+    {
+      "product_id": "P002",
+      "material_name": "Tea bag",
+      "quantity_per_unit": "2",
+      "unit": "pcs"
+    },
+    {
+      "product_id": "P002",
+      "material_name": "Sugar",
+      "quantity_per_unit": "25",
+      "unit": "g"
+    },
+    {
+      "product_id": "P002",
+      "material_name": "Lemon syrup",
+      "quantity_per_unit": "30",
+      "unit": "ml"
+    },
+    {
+      "product_id": "P002",
+      "material_name": "Plastic cup 500ml",
+      "quantity_per_unit": "1",
+      "unit": "pcs"
+    },
+    {
+      "product_id": "P003",
+      "material_name": "Flour",
+      "quantity_per_unit": "150",
+      "unit": "g"
+    },
+    {
+      "product_id": "P003",
+      "material_name": "Banana",
+      "quantity_per_unit": "1",
+      "unit": "pcs"
+    },
+    {
+      "product_id": "P003",
+      "material_name": "Sugar",
+      "quantity_per_unit": "30",
+      "unit": "g"
+    },
+    {
+      "product_id": "P003",
+      "material_name": "Muffin cup",
+      "quantity_per_unit": "1",
+      "unit": "pcs"
+    },
+    {
+      "product_id": "P004",
+      "material_name": "Flour",
+      "quantity_per_unit": "120",
+      "unit": "g"
+    },
+    {
+      "product_id": "P004",
+      "material_name": "Chicken filling",
+      "quantity_per_unit": "80",
+      "unit": "g"
+    },
+    {
+      "product_id": "P004",
+      "material_name": "Spice mix",
+      "quantity_per_unit": "10",
+      "unit": "g"
+    },
+    {
+      "product_id": "P004",
+      "material_name": "Wax paper",
+      "quantity_per_unit": "1",
+      "unit": "pcs"
+    },
+    {
+      "product_id": "P005",
+      "material_name": "Rolled oats",
+      "quantity_per_unit": "60",
+      "unit": "g"
+    },
+    {
+      "product_id": "P005",
+      "material_name": "Honey",
+      "quantity_per_unit": "20",
+      "unit": "g"
+    },
+    {
+      "product_id": "P005",
+      "material_name": "Peanut butter",
+      "quantity_per_unit": "15",
+      "unit": "g"
+    },
+    {
+      "product_id": "P005",
+      "material_name": "Granola bar wrapper",
+      "quantity_per_unit": "1",
+      "unit": "pcs"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+product_id,material_name,quantity_per_unit,unit
+P001,Flour,200,g
+P001,Butter,80,g
+P001,Chocolate chips,60,g
+P001,Paper cookie bag,1,pcs
+P002,Tea bag,2,pcs
+P002,Sugar,25,g
+P002,Lemon syrup,30,ml
+P002,Plastic cup 500ml,1,pcs
+P003,Flour,150,g
+P003,Banana,1,pcs
+P003,Sugar,30,g
+P003,Muffin cup,1,pcs
+P004,Flour,120,g
+P004,Chicken filling,80,g
+P004,Spice mix,10,g
+P004,Wax paper,1,pcs
+P005,Rolled oats,60,g
+P005,Honey,20,g
+P005,Peanut butter,15,g
+P005,Granola bar wrapper,1,pcs

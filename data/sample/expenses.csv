@@ -1,0 +1,9 @@
+expense_id,date,category,amount,description,paid_status
+E-001,2026-09-01,Stall rental,450.00,Campus night market stall fee September,paid
+E-002,2026-09-03,Delivery & fuel,88.50,Petrol for deliveries,paid
+E-003,2026-09-05,Packaging supplies,132.00,Cups bags and wax paper,paid
+E-004,2026-09-08,Marketing materials,75.00,Printed flyers for campus,unpaid
+E-005,2026-09-12,Equipment maintenance,210.00,Blender repair,paid
+E-006,2026-09-18,Delivery & fuel,54.20,Delivery top-up,unknown
+E-007,2026-09-22,Packaging supplies,96.00,Muffin cups and wrappers,unpaid
+E-008,2026-08-20,Stall rental,450.00,August stall fee outside September period,paid

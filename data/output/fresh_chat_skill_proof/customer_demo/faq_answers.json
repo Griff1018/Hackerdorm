@@ -1,0 +1,10 @@
+{
+  "answers": [
+    {
+      "question": "What are your opening hours?",
+      "answer": "Campus pickup is Monday-Friday, 08:00-18:00."
+    }
+  ],
+  "source": "data/sample/business_policies.md",
+  "synthetic": true
+}

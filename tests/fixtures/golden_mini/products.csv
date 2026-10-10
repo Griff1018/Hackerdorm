@@ -1,0 +1,4 @@
+product_id,product_name,unit_cost,selling_price,reorder_point,pack_size,lead_time_days
+P101,Iced Tea Small,1.00,3.00,10,5,2
+P102,Slice Cake,2.00,5.00,8,4,3
+P103,Fresh Juice,1.50,4.00,5,6,1

@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-2026-10-10-584c22",
+  "generated_at": "2026-10-10T16:03:20.528086+08:00",
+  "currency": "MYR",
+  "period_start": "2026-09-01",
+  "period_end": "2026-09-30",
+  "data_quality_status": "issues_found",
+  "metrics": {
+    "net_revenue": "2451.25",
+    "cogs_estimate": "856.80",
+    "gross_profit_estimate": "1594.45",
+    "gross_margin_pct": "65.05",
+    "units_sold": 484,
+    "recorded_expenses": "1105.70",
+    "recorded_expenses_by_status": {
+      "paid": "880.50",
+      "unpaid": "171.00",
+      "unknown": "54.20"
+    },
+    "expense_rows_counted": 7
+  },
+  "products": {
+    "P001": {
+      "product_name": "Chocolate Chip Cookies (6pcs)",
+      "units_sold": 161,
+      "net_revenue": "940.80",
+      "cogs_estimate": "386.40",
+      "gross_profit_estimate": "554.40",
+      "gross_margin_pct": "58.93"
+    },
+    "P002": {
+      "product_name": "Iced Lemon Tea 500ml",
+      "units_sold": 206,
+      "net_revenue": "916.20",
+      "cogs_estimate": "247.20",
+      "gross_profit_estimate": "669.00",
+      "gross_margin_pct": "73.02"
+    },
+    "P003": {
+      "product_name": "Banana Muffin",
+      "units_sold": 63,
+      "net_revenue": "309.00",
+      "cogs_estimate": "113.40",
+      "gross_profit_estimate": "195.60",
+      "gross_margin_pct": "63.30"
+    },
+    "P004": {
+      "product_name": "Spicy Chicken Bun",
+      "units_sold": 48,
+      "net_revenue": "261.25",
+      "cogs_estimate": "100.80",
+      "gross_profit_estimate": "160.45",
+      "gross_margin_pct": "61.42"
+    },
+    "P005": {
+      "product_name": "Granola Bar",
+      "units_sold": 6,
+      "net_revenue": "24.00",
+      "cogs_estimate": "9.00",
+      "gross_profit_estimate": "15.00",
+      "gross_margin_pct": "62.50"
+    }
+  },
+  "assumptions": {
+    "demand_window_days": 14,
+    "safety_stock_days": 3,
+    "staleness_days": 7,
+    "excluded_statuses": [
+      "cancelled",
+      "refunded"
+    ],
+    "duplicate_policy": "exclude_all_copies",
+    "cogs_basis": "products.unit_cost (owner estimate)"
+  },
+  "limitations": [
+    "Synthetic demonstration data - not a real business.",
+    "Gross profit is an estimate from the owner's unit costs; expenses are reported separately.",
+    "Recorded expenses are not netted off gross profit; net profit is not claimed."
+  ],
+  "row_counts": {
+    "products": 5,
+    "sales": 59,
+    "inventory": 5,
+    "expenses": 8,
+    "materials": 20,
+    "distinct_materials": 17
+  },
+  "excluded_line_counts": {
+    "status_cancelled": 1,
+    "status_refunded": 1,
+    "duplicate_line_id": 2,
+    "unknown_product": 1
+  },
+  "eligible_lines": 54
+}

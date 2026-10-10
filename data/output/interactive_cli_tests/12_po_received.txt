@@ -1,0 +1,5 @@
+[department: Operations] Record receipt of a paid PO, append raw-material stock, and refresh the derived stock view.
+[result] PO-2026-09-30-01 marked received; 1 material line(s) added
+[evidence] data/output/purchase_stock_ledger.csv
+[result] derived current stock refreshed without editing data/sample/inventory.csv
+[evidence] data/output/current_stock.csv

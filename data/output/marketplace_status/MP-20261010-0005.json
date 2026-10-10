@@ -1,0 +1,19 @@
+{
+  "schema": "bizflow.marketplace_status.v1",
+  "external_order_id": "MP-20261010-0005",
+  "order_id": "ORD-MP-20261010-0005",
+  "status": "rejected_out_of_stock",
+  "history": [
+    {
+      "status": "rejected_out_of_stock",
+      "at": "2026-10-10T15:43:24.547492+08:00"
+    }
+  ],
+  "tracking_no": "SIM-TRK-0-0005",
+  "courier": "SimuExpress (simulated)",
+  "label_path": null,
+  "message_to_buyer": "Simulated status update only.",
+  "reason": "stock is insufficient",
+  "updated_at": "2026-10-10T15:43:24.547503+08:00",
+  "synthetic": true
+}

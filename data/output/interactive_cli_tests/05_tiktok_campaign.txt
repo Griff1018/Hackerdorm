@@ -1,0 +1,3 @@
+[department: Sales & Marketing] Build an unsent one-week campaign draft for Granola Bar; do not post automatically.
+[result] campaign planner wrote 5 draft post(s)
+[evidence] data/output/campaign_plan.md

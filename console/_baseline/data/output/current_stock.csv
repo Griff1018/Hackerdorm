@@ -1,0 +1,7 @@
+product_id,product_name,selling_price,stock_available,as_of,material_name,material_unit,material_stock_available
+P001,Chocolate Chip Cookies (6pcs),6.00,17,2026-10-10T16:03:23.417569+08:00,,,
+P002,Iced Lemon Tea 500ml,4.50,96,2026-10-10T16:03:23.417579+08:00,,,
+P003,Banana Muffin,5.00,22,2026-10-10T16:03:23.417581+08:00,,,
+P004,Spicy Chicken Bun,5.50,6,2026-10-10T16:03:23.417583+08:00,,,
+P005,Granola Bar,4.00,34,2026-10-10T16:03:23.417585+08:00,,,
+,,,,2026-10-10T16:04:18.668136+08:00,Spice mix,g,1000.0000

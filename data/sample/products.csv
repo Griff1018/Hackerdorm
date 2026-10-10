@@ -1,0 +1,6 @@
+product_id,product_name,unit_cost,selling_price,reorder_point,pack_size,lead_time_days
+P001,Chocolate Chip Cookies (6pcs),2.40,6.00,20,12,3
+P002,Iced Lemon Tea 500ml,1.20,4.50,24,24,2
+P003,Banana Muffin,1.80,5.00,15,10,3
+P004,Spicy Chicken Bun,2.10,5.50,18,12,4
+P005,Granola Bar,1.50,4.00,10,20,5

@@ -1,0 +1,16 @@
+[department: Customer Operations] Parse the synthetic customer message against menu.csv; prices and totals come from configured files.
+[result] order request status: pending_customer_confirmation
+[evidence] data/output/customer_demo/chat_request_latest.json
+{
+  "status": "pending_customer_confirmation",
+  "items": {
+    "M001": 2,
+    "M002": 1
+  },
+  "subtotal": "16.50",
+  "discount": "0.00",
+  "total": "16.50",
+  "pickup_or_delivery": "pickup at requested time",
+  "special_requests": "",
+  "message": "Cart prepared from menu.csv; customer confirmation is still required."
+}

@@ -1,0 +1,6 @@
+raw rows written      : 39  -> data\output\supplier_research_raw.csv
+input rows written    : 39  -> data\output\supplier_research_input.csv
+rows with a comparable price : 31
+materials covered     : 17
+materials with >=1 comparable price : 13
+materials with NO comparable price (open gap): Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml

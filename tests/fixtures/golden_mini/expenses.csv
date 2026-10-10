@@ -1,0 +1,4 @@
+expense_id,date,category,amount,description,paid_status
+X-01,2026-09-03,Rent,100.00,Table fee,paid
+X-02,2026-09-18,Supplies,25.50,Cups,unpaid
+X-03,2026-09-21,Misc,10.00,Sundries,unknown

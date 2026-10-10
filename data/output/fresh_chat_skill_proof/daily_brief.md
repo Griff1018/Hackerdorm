@@ -1,0 +1,61 @@
+# DAILY BUSINESS BRIEF - BizFlow
+
+**SYNTHETIC DEMONSTRATION DATA - not a real business.**
+
+Period 2026-09-01 .. 2026-09-30 · currency MYR · run run-2026-10-10-f24208 · generated 2026-10-10T15:31:15.233159+08:00
+
+## Executive summary
+
+Net revenue 2451.25 from 484 units. Estimated gross profit 1594.45 (65.05 %). Recorded expenses 1105.70 (reported separately, not deducted). 5 data-quality finding(s) were detected; excluded rows are listed in the quality report.
+
+| metric | value |
+|---|---|
+| net revenue | 2451.25 |
+| COGS estimate | 856.80 |
+| gross profit estimate | 1594.45 |
+| gross margin | 65.05 % |
+| units sold | 484 |
+| recorded expenses | 1105.70 |
+
+## Top actions for the owner
+
+**P2 · Reorder Chocolate Chip Cookies (6pcs) - 24 units**
+- why: stock 18 is at or below the reorder point 20 and coverage is 3.23 days, within lead 3 + safety 3 days
+- evidence: inventory.csv:P001; products.csv:P001; sales.csv:2026-09-17..2026-09-30 (78 units)
+- numbers: stock=18; reorder_point=20; days_of_stock=3.23; target=33.43; avg_daily_units=5.571429; replenishment=24 (raw 15.43 rounded up to pack_size 12)
+- confidence: high · impact: prevents a stockout of Chocolate Chip Cookies (6pcs) within 3.23 days
+- next step: approve a purchase order for the recommended supplier (draft only - you pay)
+
+**P2 · Recount stock for Banana Muffin**
+- why: the last stock count is 25 days old (threshold 7); no replenishment quantity is computed from a stale count
+- evidence: inventory.csv:P003 last_count_date
+- numbers: stock_age_days=25; threshold=7
+- confidence: high · impact: not estimated - the actual stock level is unknown until recounted
+- next step: physically recount and update inventory.csv, then re-run
+
+**P1 · Reorder Spicy Chicken Bun - 12 units**
+- why: stock 6 is at or below the reorder point 18 and coverage is 3.82 days, within lead 4 + safety 3 days; stock would run out before a new delivery arrives
+- evidence: inventory.csv:P004; products.csv:P004; sales.csv:2026-09-17..2026-09-30 (22 units)
+- numbers: stock=6; reorder_point=18; days_of_stock=3.82; target=11.00; avg_daily_units=1.571429; replenishment=12 (raw 5.00 rounded up to pack_size 12)
+- confidence: high · impact: prevents a stockout of Spicy Chicken Bun within 3.82 days
+- next step: approve a purchase order for the recommended supplier (draft only - you pay)
+
+**P2 · Fix 3 data-quality error(s) in the input files**
+- why: affected rows were excluded and are listed in data_quality_report.md; metrics that depend on them are marked as affected
+- evidence: data_quality_report.md; sales.csv:S-0011; sales.csv:S-0011; sales.csv:S-0059
+- numbers: errors=3; excluded_lines=5
+- confidence: high · impact: not estimated - depends on how much revenue the excluded rows represent
+- next step: correct the listed rows in the source files and re-run
+
+## Data quality cautions
+
+- **warning** sales.csv:S-0001 — unit_price 5.00 differs from products.selling_price → keep line; disclose
+- **error** sales.csv:S-0011 — duplicate line_id → exclude all copies; do not auto-pick one
+- **error** sales.csv:S-0011 — duplicate line_id → exclude all copies; do not auto-pick one
+- **error** sales.csv:S-0059 — unknown product_id 'P999' → exclude line; add product or fix id
+- **warning** inventory.csv:P003 — stock count is 25 days old (threshold 7) → recount; do not compute replenishment
+
+## Decisions that need your approval
+
+- Approve or reject each action above (nothing is ordered, paid or sent automatically).
+- Approve a purchase order only when you have chosen the supplier and checked the total against your budget.

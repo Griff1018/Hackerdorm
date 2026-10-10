@@ -1,0 +1,6 @@
+test_paid_po_received_updates_ledger_and_derived_view (__main__.PurchaseReceiveLoop.test_paid_po_received_updates_ledger_and_derived_view) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 2.384s
+
+OK

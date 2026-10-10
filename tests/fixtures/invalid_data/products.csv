@@ -1,0 +1,6 @@
+product_id,product_name,unit_cost,selling_price,reorder_point,pack_size,lead_time_days
+P201,Test Cookies,2.00,5.00,10,6,2
+P202,Test Drink,1.00,3.00,12,12,2
+P203,Test Snack,1.50,4.00,8,4,3
+P204,Invalid Pack Product,1.00,2.50,5,0,2
+P206,Test Pastry,1.20,3.50,6,6,2

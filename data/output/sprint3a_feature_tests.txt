@@ -1,0 +1,8 @@
+test_customer_tier_b_golden_flow_and_source_safety (__main__.Sprint3AFeatures.test_customer_tier_b_golden_flow_and_source_safety) ... ok
+test_demo_mode_separation_and_badges (__main__.Sprint3AFeatures.test_demo_mode_separation_and_badges) ... ok
+test_marketplace_recomputes_total_and_rejects_tampering (__main__.Sprint3AFeatures.test_marketplace_recomputes_total_and_rejects_tampering) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.864s
+
+OK

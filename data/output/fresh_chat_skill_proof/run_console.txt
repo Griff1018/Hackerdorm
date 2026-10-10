@@ -1,0 +1,31 @@
+raw rows written      : 39  -> data\output\supplier_research_raw.csv
+input rows written    : 39  -> data\output\supplier_research_input.csv
+rows with a comparable price : 31
+materials covered     : 17
+materials with >=1 comparable price : 13
+materials with NO comparable price (open gap): Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml
+[intake] goal=Check Campus Crumb's records, tell me what needs attention, prepare everything I need to act on it, and verify the result. All data is synthetic demonstration data. mode=auto
+[plan] validate -> calculate -> actions -> reports -> verify (data=sample)
+[inspect] row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}
+[validate] 5 issue rows (3 error)
+[calculate] net revenue 2451.25, 54 eligible lines
+[prioritise] 7 actions
+[report] business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written
+[operations] ops_findings.json written; marketing handoff -> P005
+[strategy] market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...
+[marketing] promo_draft.md written for P005 (draft only - not posted)
+[operations] supplier_research.csv: 39 rows across 17 materials (scored by code)
+[operations] supplier coverage: 13/17 materials have at least one priced listing; no priced listings for: Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml
+[operations] no eligible supplier for: Butter, Chicken filling, Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml (unavailable listings and substitutes are not recommendations)
+[operations] 4 material(s) have no published comparable price and need a quotation - recorded as an open gap, not filled with an estimate
+[purchase] 4 draft PO(s) written to po/ (purchasing budget 800.00 MYR)
+[purchase] 3 material(s) not ordered - see purchase_plan.md for availability/material-match/quotation reasons
+[verify] verification passed (7 checks)
+[technology] health check pass logged
+[customer_ops] FR-01 Tier B passed (9 checks)
+[marketplace] FR-06 processed 0 synthetic inbox order(s)
+[marketing] FR-03 campaign planner wrote 5 draft post(s)
+[people] FR-04 job ad and hiring kit written (draft only)
+
+Run run-2026-10-10-f24208 -> C:\Users\Chew Chee Kin\WorkBuddy AI\2026-10-10-13-15-01\data\output\fresh_chat_skill_proof
+net revenue 2451.25 | actions 7 | issues 5 | verification passed

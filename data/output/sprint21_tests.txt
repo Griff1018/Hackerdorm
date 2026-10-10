@@ -1,0 +1,31 @@
+test_every_action_has_evidence_and_status (__main__.ActionsAndSafety.test_every_action_has_evidence_and_status) ... ok
+test_no_replenishment_is_computed_from_a_stale_count (__main__.ActionsAndSafety.test_no_replenishment_is_computed_from_a_stale_count) ... ok
+test_po_budget_check (__main__.ActionsAndSafety.test_po_budget_check) ... ok
+test_replenishment_and_recount_actions_exist (__main__.ActionsAndSafety.test_replenishment_and_recount_actions_exist) ... ok
+test_golden_mini_fixture (__main__.GoldenCalculations.test_golden_mini_fixture) ... ok
+test_invalid_data_fixture (__main__.GoldenCalculations.test_invalid_data_fixture) ... ok
+test_sample_dataset (__main__.GoldenCalculations.test_sample_dataset) ... ok
+test_g9_rule_zero_sales_branch (__main__.MarketingHandoff.test_g9_rule_zero_sales_branch) ... ok
+test_p002_and_p005_trigger_marketing (__main__.MarketingHandoff.test_p002_and_p005_trigger_marketing) ... ok
+test_p005_stock_is_usable_and_zero_demand_is_visible (__main__.MarketingHandoff.test_p005_stock_is_usable_and_zero_demand_is_visible) ... ok
+test_forbidden_field_list_is_not_empty (__main__.ProfileSafety.test_forbidden_field_list_is_not_empty) ... ok
+test_forbidden_fields_are_rejected (__main__.ProfileSafety.test_forbidden_fields_are_rejected) ... ok
+test_demo_dataset_detects_all_four (__main__.SeededDefectDetection.test_demo_dataset_detects_all_four) ... ok
+test_invalid_fixture_detects_all_twenty (__main__.SeededDefectDetection.test_invalid_fixture_detects_all_twenty) ... ok
+test_valid_rows_are_not_reported_as_errors (__main__.SeededDefectDetection.test_valid_rows_are_not_reported_as_errors)
+L13 (outside period), L14/L15 (cancelled/refunded) and L11 (discount = line value) are not errors. ... ok
+test_components (__main__.SupplierScoring.test_components) ... ok
+test_full_tier_chocolate_chips (__main__.SupplierScoring.test_full_tier_chocolate_chips) ... ok
+test_light_tier_sugar (__main__.SupplierScoring.test_light_tier_sugar) ... ok
+test_material_with_no_priced_supplier_has_no_recommendation (__main__.SupplierScoring.test_material_with_no_priced_supplier_has_no_recommendation) ... ok
+test_missing_price_is_not_scored (__main__.SupplierScoring.test_missing_price_is_not_scored) ... ok
+test_over_budget_po_does_not_reduce_budget_for_later_po (__main__.SupplierScoring.test_over_budget_po_does_not_reduce_budget_for_later_po) ... ok
+test_substitute_is_not_recommended (__main__.SupplierScoring.test_substitute_is_not_recommended) ... ok
+test_unavailable_listing_is_never_recommended (__main__.SupplierScoring.test_unavailable_listing_is_never_recommended) ... ok
+test_unpriced_rows_are_never_recommended (__main__.SupplierScoring.test_unpriced_rows_are_never_recommended)
+Regression: an unpriced row must rank last and must not be marked recommended. ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.049s
+
+OK

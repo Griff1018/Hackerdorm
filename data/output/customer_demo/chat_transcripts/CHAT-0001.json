@@ -1,0 +1,10 @@
+{
+  "conversation_id": "CHAT-0001",
+  "messages": [
+    "I would like 2 chocolate chip cookies and pickup at 12:30.",
+    "Yes, add one iced lemon tea.",
+    "Confirmed: 2 cookies plus 1 iced lemon tea. Total MYR 16.50."
+  ],
+  "order_id": "ORD-CHAT-0001",
+  "synthetic": true
+}

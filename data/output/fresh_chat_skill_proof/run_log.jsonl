@@ -1,0 +1,22 @@
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.211914+08:00", "stage": "intake", "detail": "goal=Check Campus Crumb's records, tell me what needs attention, prepare everything I need to act on it, and verify the result. All data is synthetic demonstration data. mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.211946+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.232656+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.232672+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.233167+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.233214+08:00", "stage": "prioritise", "detail": "7 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.238757+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.240234+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P005", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.241746+08:00", "stage": "strategy", "detail": "market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.242781+08:00", "stage": "marketing", "detail": "promo_draft.md written for P005 (draft only - not posted)", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.246142+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.246182+08:00", "stage": "operations", "detail": "supplier coverage: 13/17 materials have at least one priced listing; no priced listings for: Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.246188+08:00", "stage": "operations", "detail": "no eligible supplier for: Butter, Chicken filling, Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml (unavailable listings and substitutes are not recommendations)", "status": "gap"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.246191+08:00", "stage": "operations", "detail": "4 material(s) have no published comparable price and need a quotation - recorded as an open gap, not filled with an estimate", "status": "gap"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.255892+08:00", "stage": "purchase", "detail": "4 draft PO(s) written to po/ (purchasing budget 800.00 MYR)", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.255909+08:00", "stage": "purchase", "detail": "3 material(s) not ordered - see purchase_plan.md for availability/material-match/quotation reasons", "status": "gap"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.258047+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.263472+08:00", "stage": "technology", "detail": "health check pass logged", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.275895+08:00", "stage": "customer_ops", "detail": "FR-01 Tier B passed (9 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.283442+08:00", "stage": "marketplace", "detail": "FR-06 processed 0 synthetic inbox order(s)", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.288042+08:00", "stage": "marketing", "detail": "FR-03 campaign planner wrote 5 draft post(s)", "status": "ok"}
+{"run_id": "run-2026-10-10-f24208", "at": "2026-10-10T15:31:15.289758+08:00", "stage": "people", "detail": "FR-04 job ad and hiring kit written (draft only)", "status": "ok"}

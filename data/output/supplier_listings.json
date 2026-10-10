@@ -1,0 +1,1569 @@
+{
+  "generated_at": "2026-10-10T17:18:08",
+  "count": 39,
+  "scraped_ok": 38,
+  "pages": 39,
+  "note": "Listed prices are what the public page showed at retrieval time; confirm with the supplier before paying.",
+  "listings": [
+    {
+      "material": "Banana",
+      "supplier": "SupplyBunny (Fresh Veg Fruits supplier)",
+      "score": "50.00",
+      "tier": "light",
+      "rank": "1",
+      "recommended": "yes",
+      "saved_price": "6.25",
+      "price_unit": "1 kg",
+      "location": "Klang Valley, Malaysia",
+      "notes": "LIGHT RESEARCH. BASIS NOTE: the source sells bananas by weight (MYR 6.25/kg) while materials.csv counts 1 banana per muffin, so the two units are not reconciled here - the number of bananas per kg is NOT stated by the source and is not assumed. No delivery time published on the listing.",
+      "source_url": "https://www.supplybunny.com/en/products/banana-cavendish-pisang-montel-1kg-pkt",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Banana Cavendish/Pisang Montel (1KG+-/PKT)",
+      "listed_price_now": "6.25",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "PreOrder",
+      "image_url": "https://sb-assets.sgp1.cdn.digitaloceanspaces.com/product/main_image/45275/fbbf7bad-c432-488b-8405-6f02c5bdd420.png",
+      "image_local": "data/output/supplier_images/687da2c86dee9cc9.png",
+      "online_order": true,
+      "offline_purchase": false,
+      "delivery_mentioned": true,
+      "marketplace": "SupplyBunny",
+      "address_found": "",
+      "evidence": {
+        "online_signals": [
+          "add to cart",
+          "checkout",
+          "listed on SupplyBunny"
+        ],
+        "offline_signals": [],
+        "delivery_signals": [
+          "delivery",
+          "shipping"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:18:04+0800"
+    },
+    {
+      "material": "Butter",
+      "supplier": "Buttercup & SCS (listed on Borong)",
+      "score": "77.00",
+      "tier": "full",
+      "rank": "2",
+      "recommended": "no",
+      "saved_price": "236.16",
+      "price_unit": "12 kg",
+      "location": "Selangor, Malaysia",
+      "notes": "Spread (blended), not pure butter. Listing states free delivery to Semenanjung Malaysia. Delivery time is the Borong marketplace 3-5 day promise, not a per-seller promise. Minimum order = the 12 kg carton as listed. | SUBSTITUTE - not the specified material; shown for owner review, not recommended.",
+      "source_url": "https://market.borong.com/v/buttercup-and-scs/product/Plastic-Tub-Buttercup-Luxury-Spread-1-KG-x-12-Free-Delivery-Semenanjung-Malaysia/135701",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Plastic Tub Buttercup Luxury Spread 1 KG x 12 (Free Delivery Semenanjung Malaysia)",
+      "listed_price_now": "236.16",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/c95d65e7a54866469029fb4554f8567c1c72ed31.jpg",
+      "image_local": "data/output/supplier_images/99147aeb1b2cb9d7.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:16:54+0800"
+    },
+    {
+      "material": "Butter",
+      "supplier": "PJ Grocer Sdn Bhd (listed on Borong)",
+      "score": "68.49",
+      "tier": "full",
+      "rank": "4",
+      "recommended": "no",
+      "saved_price": "250.00",
+      "price_unit": "10 kg",
+      "location": "Selangor, Malaysia",
+      "notes": "[KLANG VALLEY ONLY]. Sold as 'Fat Spread Unsalted Butter' - a spread, not dairy butter. RRP MYR 300.00. | SUBSTITUTE - not the specified material; shown for owner review, not recommended.",
+      "source_url": "https://market.borong.com/v/pj-grocer/product/BUTTEROLL-Fat-Spread-Unsalted-Butter-10kg-KLANG-VALLEY-ONLY/136795",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "BUTTEROLL Fat Spread Unsalted Butter 10kg [KLANG VALLEY ONLY]",
+      "listed_price_now": "250.00",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/1ecb97e164c82456e48c0ee9ab8a338d73f4d04e.png",
+      "image_local": "data/output/supplier_images/ff84fb8c4876ef66.png",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:39+0800"
+    },
+    {
+      "material": "Butter",
+      "supplier": "e-Petani (listed on Borong)",
+      "score": "58.87",
+      "tier": "full",
+      "rank": "3",
+      "recommended": "no",
+      "saved_price": "9.00",
+      "price_unit": "250 g",
+      "location": "Selangor, Malaysia",
+      "notes": "[KLANG VALLEY ONLY]. 'Buttery' blended product, not pure butter. Cheapest entry quantity of the four (250 g) but the most expensive per kg. | SUBSTITUTE - not the specified material; shown for owner review, not recommended.",
+      "source_url": "https://market.borong.com/v/e-petani/product/Emborg-Cook-Bake-Buttery-250g-KLANG-VALLEY-ONLY/148640",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Emborg Cook & Bake Buttery 250g [KLANG VALLEY ONLY]",
+      "listed_price_now": "9.00",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/19355bb915db5588bc8f19e52dab5ffb0b6d3e86.jpg",
+      "image_local": "data/output/supplier_images/4a81adc4b9be13b2.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:05+0800"
+    },
+    {
+      "material": "Butter",
+      "supplier": "Pastry Pro Retail Sdn Bhd (listed on SupplyBunny)",
+      "score": "24.17",
+      "tier": "full",
+      "rank": "1",
+      "recommended": "no",
+      "saved_price": "55.55",
+      "price_unit": "1 kg",
+      "location": "Klang Valley, Malaysia",
+      "notes": "NOT block butter: the page describes it as 'Bake stable flavourings for yeast doughs, danish pastries, cakes and cookies'. The only bake-stable butter-type item on SupplyBunny in this search. No MOQ or delivery time published. | SUBSTITUTE - not the specified material; shown for owner review, not recommended.",
+      "source_url": "https://www.supplybunny.com/en/products/pastarom-bake-butter-h-1kg-bottle",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Pastarom Bake Butter (H) 1kg/bottle",
+      "listed_price_now": "55.55",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "PreOrder",
+      "image_url": "https://sb-assets.sgp1.cdn.digitaloceanspaces.com/product/main_image/65914/0087c63e-a6a4-4c94-bec6-1b62631936c3.jpg",
+      "image_local": "data/output/supplier_images/e9ba865f2c03da33.jpg",
+      "online_order": true,
+      "offline_purchase": false,
+      "delivery_mentioned": true,
+      "marketplace": "SupplyBunny",
+      "address_found": "",
+      "evidence": {
+        "online_signals": [
+          "add to cart",
+          "checkout",
+          "listed on SupplyBunny"
+        ],
+        "offline_signals": [],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:18:05+0800"
+    },
+    {
+      "material": "Chicken filling",
+      "supplier": "SupplyBunny (frozen chicken supplier)",
+      "score": "70.00",
+      "tier": "full",
+      "rank": "1",
+      "recommended": "no",
+      "saved_price": "16.80",
+      "price_unit": "1 kg",
+      "location": "Klang Valley, Malaysia",
+      "notes": "Page states 'Chicken Fillet Halal Certificate' and 'Next Day Delivery KL & Major Selangor Area, order cut-off 10pm'. WARNING shown on the page: 'Not currently available to order - this product's supplier is not active on SupplyBunny right now'. SupplyBunny's 2026 HORECA price guide states boneless breast RM12-RM16/kg and typical wholesale MOQ 50-200 kg per delivery (guide, not this listing). | NOT RECOMMENDED: listing marked unavailable/inactive at source - cannot be ordered.",
+      "source_url": "https://www.supplybunny.com/en/products/halal-frozen-chicken-fillet-1kg-pack-sold-per-pack",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Halal Frozen Chicken Fillet 1kg/pack (Sold per Pack)",
+      "listed_price_now": "16.80",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "OutOfStock",
+      "image_url": "https://sb-assets.sgp1.cdn.digitaloceanspaces.com/product/main_image/40115/1d05c4d3-47f6-4196-8d31-73e1ad69363f.png",
+      "image_local": "data/output/supplier_images/1aa0c42d07073f1f.png",
+      "online_order": true,
+      "offline_purchase": false,
+      "delivery_mentioned": true,
+      "marketplace": "SupplyBunny",
+      "address_found": "",
+      "evidence": {
+        "online_signals": [
+          "checkout",
+          "listed on SupplyBunny"
+        ],
+        "offline_signals": [],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:18:05+0800"
+    },
+    {
+      "material": "Chicken filling",
+      "supplier": "FarmiHub",
+      "score": "",
+      "tier": "full",
+      "rank": "2",
+      "recommended": "no",
+      "saved_price": "",
+      "price_unit": "not stated",
+      "location": "Malaysia",
+      "notes": "NO PRICE PUBLISHED - quotation by WhatsApp only, so no comparable price is recorded (scored as 'not comparable', not zero). Page states chicken fillet is an available part, blast-frozen, from 100% halal-certified sources. No MOQ or lead time published.",
+      "source_url": "https://farmihub.com/poultry-wholesale/",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Wholesale Cut Chicken Supplier Malaysia | Custom Cuts | FarmiHub",
+      "listed_price_now": "",
+      "currency": "",
+      "price_method": "not found on page",
+      "availability": "",
+      "image_url": "https://farmihub.com/wp-content/uploads/2026/09/frozen-chicken_2026-09-10_14-47-33-1024x1024.webp",
+      "image_local": "data/output/supplier_images/613d0b4f1cbe12bd.webp",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": false,
+      "marketplace": "",
+      "address_found": "23C, Jalan Zaaba, 70100 Seremban, Negeri Sembilan",
+      "evidence": {
+        "online_signals": [
+          "add-to-cart",
+          "checkout",
+          "shop now",
+          "woocommerce"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": []
+      },
+      "retrieved_at": "2026-10-10T17:16:30+0800"
+    },
+    {
+      "material": "Chocolate chips",
+      "supplier": "Healthy Baker Malaysia",
+      "score": "60.00",
+      "tier": "full",
+      "rank": "1",
+      "recommended": "yes",
+      "saved_price": "19.90",
+      "price_unit": "1 kg",
+      "location": "Malaysia",
+      "notes": "Retail/consumer listing (page shows '4 sold' and consumer vouchers), NOT a wholesale price - included only as a price reference. Page price range RM3.90-RM19.90 for 100g-1kg; RM19.90 is the 1 kg option. Country of origin Malaysia, halal stated in the listing title.",
+      "source_url": "https://www.healthybakermalaysia.com/product/premium-dark-chocolate-chip-coklat-chip-baking-chocolate-chips-premium-halal-wholesale-price",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Premium Dark Chocolate chip / Coklat Chip / Baking chocolate chips / premium / halal / wholesale price | Healthy Baker",
+      "listed_price_now": "3.90",
+      "currency": "MYR",
+      "price_method": "page text (unconfirmed - check on page)",
+      "availability": "",
+      "image_url": "https://cdn1.sgliteasset.com/healthybaker/images/product/product-4079873/cached/1dDbpEqG6984708611a64_1770287238_420x420.png",
+      "image_local": "data/output/supplier_images/4a1ef94ef20628f9.png",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "",
+      "address_found": "Conditions Delivery & Shipping Information Contact Membership & Rewards 33, Jalan 20 , Taman Sri Kluang, KLUANG , 86000 , Johor",
+      "evidence": {
+        "online_signals": [
+          "add-to-cart",
+          "add_to_cart",
+          "buynow",
+          "checkout",
+          "shop now",
+          "shopify",
+          "woocommerce"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery",
+          "shipping"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:18:01+0800"
+    },
+    {
+      "material": "Chocolate chips",
+      "supplier": "Marubishi Malaysia",
+      "score": "47.45",
+      "tier": "full",
+      "rank": "2",
+      "recommended": "yes",
+      "saved_price": "29.00",
+      "price_unit": "1 kg",
+      "location": "Malaysia",
+      "notes": "AMBIGUOUS PRICE BASIS: the title bundles 10 pkts per carton but only one RM29.00 price is shown; recorded as the 1 kg packet price because the page's only pack statement is 'Packing: 1kg per packet'. Origin Malaysia, halal certified. Confirm the basis with the supplier before ordering.",
+      "source_url": "https://marubishi-group.com/products/lecker-white-compound-chips-1kg",
+      "scrape_ok": false,
+      "scrape_error": "page could not be read: HTTP Error 429: Too Many Requests",
+      "item_name": "",
+      "listed_price_now": "",
+      "currency": "",
+      "price_method": "",
+      "availability": "",
+      "image_url": "",
+      "image_local": "",
+      "online_order": false,
+      "offline_purchase": false,
+      "delivery_mentioned": false,
+      "marketplace": "",
+      "address_found": "",
+      "evidence": {},
+      "retrieved_at": "2026-10-10T17:17:54+0800"
+    },
+    {
+      "material": "Chocolate chips",
+      "supplier": "Pastry Pro Retail Sdn Bhd (listed on SupplyBunny)",
+      "score": "40.91",
+      "tier": "full",
+      "rank": "3",
+      "recommended": "yes",
+      "saved_price": "25.75",
+      "price_unit": "1 kg",
+      "location": "Klang Valley, Malaysia",
+      "notes": "Unbranded compound (not couverture) white chips. Page states 'Quote in 2-4h'. No minimum order and no delivery time published on the page - both left blank, not guessed.",
+      "source_url": "https://www.supplybunny.com/en/products/chocolate-chips-compound-white-1kg-pack",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Chocolate Chips - Compound White 1kg/pack",
+      "listed_price_now": "25.75",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "PreOrder",
+      "image_url": "https://sb-assets.sgp1.cdn.digitaloceanspaces.com/product/main_image/65982/e482cb8f-5a05-4ca7-ab2c-cd1c0a387f11.jpg",
+      "image_local": "data/output/supplier_images/120e5aef437bc0fe.jpg",
+      "online_order": true,
+      "offline_purchase": false,
+      "delivery_mentioned": true,
+      "marketplace": "SupplyBunny",
+      "address_found": "",
+      "evidence": {
+        "online_signals": [
+          "add to cart",
+          "checkout",
+          "listed on SupplyBunny"
+        ],
+        "offline_signals": [],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:18:04+0800"
+    },
+    {
+      "material": "Flour",
+      "supplier": "PJ Grocer Sdn Bhd (listed on Borong)",
+      "score": "50.00",
+      "tier": "light",
+      "rank": "1",
+      "recommended": "yes",
+      "saved_price": "78.50",
+      "price_unit": "25 kg",
+      "location": "Selangor, Malaysia",
+      "notes": "LIGHT RESEARCH. [KLANG VALLEY ONLY]. Cheapest of the three at MYR 3.14/kg. RRP MYR 85.60.",
+      "source_url": "https://market.borong.com/v/pj-grocer/product/Blue-Key-Flour-25KG-KLANG-VALLEY-ONLY/136962",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Blue Key Flour 25KG [KLANG VALLEY ONLY]",
+      "listed_price_now": "78.50",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/b8972cd02fe1ef7b34ff54a9326579da2e5fbc1e.jpg",
+      "image_local": "data/output/supplier_images/18262270b8b2e356.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:39+0800"
+    },
+    {
+      "material": "Flour",
+      "supplier": "Borong Runcit (listed on Borong)",
+      "score": "47.92",
+      "tier": "light",
+      "rank": "2",
+      "recommended": "yes",
+      "saved_price": "82.80",
+      "price_unit": "25 kg",
+      "location": "Wilayah Persekutuan, Malaysia",
+      "notes": "LIGHT RESEARCH. Same brand as the cheapest option but MYR 3.31/kg; no KLANG VALLEY restriction, so usable outside the Klang Valley. RRP MYR 108.00.",
+      "source_url": "https://market.borong.com/v/borong-runcit/product/Blue-Key-Tepung-Gandum-25kg/127613",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Blue Key Tepung Gandum 25kg",
+      "listed_price_now": "82.80",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/9485b1d03ea71b3b85000b5b06ab93bc9e0e4587.jpg",
+      "image_local": "data/output/supplier_images/05a54d88ea2ebeb3.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:16:37+0800"
+    },
+    {
+      "material": "Flour",
+      "supplier": "PJ Grocer Sdn Bhd (listed on Borong)",
+      "score": "40.19",
+      "tier": "light",
+      "rank": "3",
+      "recommended": "yes",
+      "saved_price": "104.00",
+      "price_unit": "25 kg",
+      "location": "Selangor, Malaysia",
+      "notes": "LIGHT RESEARCH. Cake flour is a lower-protein specification, not a like-for-like swap for general-purpose flour - recorded for reference, MYR 4.16/kg. [KLANG VALLEY ONLY].",
+      "source_url": "https://market.borong.com/v/pj-grocer/product/GOLD-KEY-Cake-Flour-25kg-KLANG-VALLEY-ONLY/136848",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "GOLD KEY Cake Flour 25kg [KLANG VALLEY ONLY]",
+      "listed_price_now": "104.00",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/6fc9ece0bb83b2224f52b62f63ebfac6766ffa39.jpg",
+      "image_local": "data/output/supplier_images/b3c7a190045b1152.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:45+0800"
+    },
+    {
+      "material": "Granola bar wrapper",
+      "supplier": "None found in light research",
+      "score": "",
+      "tier": "light",
+      "rank": "1",
+      "recommended": "no",
+      "saved_price": "",
+      "price_unit": "not stated",
+      "location": "",
+      "notes": "LIGHT RESEARCH FOUND NO USABLE SOURCE. The only listings found are overseas marketplaces (Alibaba/AliExpress) with no published MYR price and no Malaysian seller, so nothing is recorded rather than inventing a number. This material cannot be scored until a quotation is obtained - the run reports it as an open gap. | NOT RECOMMENDED: no comparable price recorded from this source, so it cannot be compared.",
+      "source_url": "https://www.alibaba.com/showroom/granola-bar-wrapper_5.html",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "",
+      "listed_price_now": "",
+      "currency": "",
+      "price_method": "not found on page",
+      "availability": "",
+      "image_url": "",
+      "image_local": "",
+      "online_order": true,
+      "offline_purchase": false,
+      "delivery_mentioned": false,
+      "marketplace": "Alibaba",
+      "address_found": "",
+      "evidence": {
+        "online_signals": [
+          "listed on Alibaba"
+        ],
+        "offline_signals": [],
+        "delivery_signals": []
+      },
+      "retrieved_at": "2026-10-10T17:17:58+0800"
+    },
+    {
+      "material": "Honey",
+      "supplier": "Excel Big Bulk Trading Sdn Bhd (listed on Borong)",
+      "score": "62.00",
+      "tier": "full",
+      "rank": "1",
+      "recommended": "yes",
+      "saved_price": "98.30",
+      "price_unit": "12 kg",
+      "location": "Selangor, Malaysia",
+      "notes": "Cheapest per kg (MYR 8.19) of the four, but the listing publishes no brand, origin or purity detail. Same seller lists 'SO PURE HONEY SYRUP 1KG 12 X 1KG' at a similar price - confirm whether this SKU is honey or syrup. Minimum order = the 12 kg carton.",
+      "source_url": "https://market.borong.com/v/excel-big-bulk-trading-sdn-bhd/product/Honey-12-x-1kg/137645",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Honey 12 x 1kg",
+      "listed_price_now": "98.30",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/c1474874a3b19e7c3a5b45840db3285146c41a01.png",
+      "image_local": "data/output/supplier_images/665c6886353cba8f.png",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:09+0800"
+    },
+    {
+      "material": "Honey",
+      "supplier": "ETL Lab PLT (listed on Borong)",
+      "score": "55.44",
+      "tier": "full",
+      "rank": "2",
+      "recommended": "yes",
+      "saved_price": "29.40",
+      "price_unit": "3 kg",
+      "location": "Selangor, Malaysia",
+      "notes": "Generic unbranded 'HONEY' listing at MYR 9.80/kg - far below pure honey market levels, which is exactly the adulteration risk noted in the tiering decision. No purity, origin or composition detail published. Verify composition before using in a product labelled as honey.",
+      "source_url": "https://market.borong.com/v/etl-lab-plt/product/HONEY-3KG-3-KG-Per-Unit/146834",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "HONEY 3KG (3 KG Per Unit)",
+      "listed_price_now": "27.30",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/209bb1ea1f5a70a5760943064508c920f193315f.jpg",
+      "image_local": "data/output/supplier_images/59336942930a015b.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:08+0800"
+    },
+    {
+      "material": "Honey",
+      "supplier": "e-Petani (listed on Borong)",
+      "score": "43.14",
+      "tier": "full",
+      "rank": "3",
+      "recommended": "yes",
+      "saved_price": "15.50",
+      "price_unit": "1 kg",
+      "location": "Selangor, Malaysia",
+      "notes": "[KLANG VALLEY ONLY]. Deligold also sells 'Honey Syrup (Sirap Madu)' as a separate product, so confirm whether this SKU is honey or honey-flavoured syrup before use. RRP MYR 17.83.",
+      "source_url": "https://market.borong.com/v/e-petani/product/Deligold-HONEY-1kg-KLANG-VALLEY-ONLY/148611",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Deligold HONEY 1kg [KLANG VALLEY ONLY]",
+      "listed_price_now": "15.50",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/d4621e004bb6aacaa32be853a3922994de4178c3.jpg",
+      "image_local": "data/output/supplier_images/f7cc430feb60faa5.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:00+0800"
+    },
+    {
+      "material": "Honey",
+      "supplier": "Nores Marketing Sdn Bhd (listed on Borong)",
+      "score": "25.47",
+      "tier": "full",
+      "rank": "4",
+      "recommended": "no",
+      "saved_price": "94.50",
+      "price_unit": "1 kg",
+      "location": "Pulau Pinang, Malaysia",
+      "notes": "Marketed as 'Natural Pure Honey'; the most expensive of the four at MYR 94.50/kg, consistent with the wide purity-driven price spread that put honey in the full tier. Same seller also lists 300 g (MYR 35.90) and 20 g x 15 sachets (MYR 26.50).",
+      "source_url": "https://market.borong.com/v/nores-marketing-sdn-bhd/product/LAMIS-Natural-Pure-Honey1kg-bottle/145332",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "LAMIS Natural Pure Honey(1kg bottle)",
+      "listed_price_now": "70.80",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/726b379ad91d4fa685915bec95875686330b41fc.jpeg",
+      "image_local": "data/output/supplier_images/7e7e632c40a79d56.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:24+0800"
+    },
+    {
+      "material": "Lemon syrup",
+      "supplier": "Happy Popper",
+      "score": "60.00",
+      "tier": "light",
+      "rank": "1",
+      "recommended": "yes",
+      "saved_price": "49.00",
+      "price_unit": "5 kg",
+      "location": "Selangor, Malaysia",
+      "notes": "LIGHT RESEARCH. BASIS NOTE: sold by weight (5 kg), so the comparable price is per kg, not per litre; materials.csv records lemon syrup in ml, so the two are not directly reconciled here. Tiered price: RM49.00, RM47.50, RM46.50 for 4+. Free shipping to Selangor at MYR 150+; MYR 20 flat below. No delivery-day promise published - left blank.",
+      "source_url": "https://www.happypopper.net/index.php?route=product/product&product_id=1777",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "B&B Concentrated Fruit Syrup Lemon 5kg ( 4 Btl/Ctn ) BT-SY127 柠檬果味糖浆5公斤装",
+      "listed_price_now": "47.50",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://www.happypopper.net/image/cache/data/Pic%20food/Concentrated%20Fruit%20Syrup%20Series/Lemon/image-800x800.jpg",
+      "image_local": "data/output/supplier_images/194d8c055f9c9cc4.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "",
+      "address_found": "",
+      "evidence": {
+        "online_signals": [
+          "addtocart",
+          "checkout",
+          "in stock"
+        ],
+        "offline_signals": [
+          "operating hours",
+          "self-pickup"
+        ],
+        "delivery_signals": [
+          "courier",
+          "delivery",
+          "shipping"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:18:00+0800"
+    },
+    {
+      "material": "Muffin cup",
+      "supplier": "Peng Kee Enterprise Sdn Bhd",
+      "score": "",
+      "tier": "light",
+      "rank": "1",
+      "recommended": "no",
+      "saved_price": "",
+      "price_unit": "100 pcs",
+      "location": "Pulau Pinang, Malaysia",
+      "notes": "LIGHT RESEARCH. NO PRICE PUBLISHED on the category page - prices require login/WhatsApp enquiry, so no comparable price is recorded. Packing stated as +/- 100's per pkt, 60 pkt per carton. Same seller lists 1,000's cup cake cases and 200's baking cases. | NOT RECOMMENDED: no comparable price recorded from this source, so it cannot be compared.",
+      "source_url": "https://pengkeeonline.com/baking-cup",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "BAKING CUP",
+      "listed_price_now": "0.00",
+      "currency": "MYR",
+      "price_method": "page text (unconfirmed - check on page)",
+      "availability": "",
+      "image_url": "https://pengkeeonline.com/image/catalog/bakery%20packaging/Untitled-3-02.jpg",
+      "image_local": "data/output/supplier_images/6a36eeca1e7d0aa1.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "",
+      "address_found": "Question Showing 1 to 18 of 18 (1 Pages) Facebook You may visit us at: Peng Kee Enterprise Sdn Bhd 274 Jalan Gurdwara, 10300 Penang",
+      "evidence": {
+        "online_signals": [
+          "add to cart",
+          "checkout"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery",
+          "nationwide",
+          "shipping"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:55+0800"
+    },
+    {
+      "material": "Paper cookie bag",
+      "supplier": "Akah Marketing",
+      "score": "",
+      "tier": "light",
+      "rank": "1",
+      "recommended": "no",
+      "saved_price": "",
+      "price_unit": "not stated",
+      "location": "Malaysia",
+      "notes": "LIGHT RESEARCH. NO PRICE PUBLISHED - packaging is quoted per job (size, print, quantity), so no comparable price is recorded rather than estimated. Malaysian packaging specialist carrying bakery/pastry paper bags. | NOT RECOMMENDED: no comparable price recorded from this source, so it cannot be compared.",
+      "source_url": "https://www.akahmarketing.com/ourproducts/cid/650024/cat/paper-bag-food-packaging-bag-bakery-paper-bag-pastry-bag/",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Paper Bag Food Packaging Bag Bakery Paper Bag / Pastry Bag Selangor, KL, Malaysia, Subang Jaya Supplier, Distributor, Dealer, Wholesaler | AKAH MARKETING SDN BH",
+      "listed_price_now": "",
+      "currency": "",
+      "price_method": "not found on page",
+      "availability": "",
+      "image_url": "https://cdn1.npcdn.net/images/4b7316368cb221c31374ba92f46862b8_1774367301.jpeg?md5id=3a8fcf2a8e88e290cf69a9b95726187a&new_width=450&new_height=450&size=max&w=1782705727&type=9",
+      "image_local": "data/output/supplier_images/8f131f3ce13601f8.jpg",
+      "online_order": false,
+      "offline_purchase": false,
+      "delivery_mentioned": true,
+      "marketplace": "",
+      "address_found": "",
+      "evidence": {
+        "online_signals": [],
+        "offline_signals": [],
+        "delivery_signals": [
+          "courier"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:58+0800"
+    },
+    {
+      "material": "Paper cookie bag",
+      "supplier": "Xin Packs",
+      "score": "",
+      "tier": "light",
+      "rank": "2",
+      "recommended": "no",
+      "saved_price": "",
+      "price_unit": "not stated",
+      "location": "Malaysia",
+      "notes": "LIGHT RESEARCH. NO PRICE PUBLISHED - quote on request. Malaysian packaging supplier for kraft/handle/window bags. Custom print means price depends on artwork and quantity. | NOT RECOMMENDED: no comparable price recorded from this source, so it cannot be compared.",
+      "source_url": "https://xinpacks.com/paper-bag-food-packaging",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Paper Bag Supplier Malaysia | Custom Packaging | Xin Packs",
+      "listed_price_now": "",
+      "currency": "",
+      "price_method": "not found on page",
+      "availability": "",
+      "image_url": "https://xinpacks.com/my_asset/xin-packs-banner-1.jpg",
+      "image_local": "data/output/supplier_images/9b8a8fdd3b075f80.jpg",
+      "online_order": false,
+      "offline_purchase": true,
+      "delivery_mentioned": false,
+      "marketplace": "",
+      "address_found": "25 Jalan Idaman 1/1, Senai Industrial Park, Seelong, 81400 Senai, Johor",
+      "evidence": {
+        "online_signals": [],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": []
+      },
+      "retrieved_at": "2026-10-10T17:18:06+0800"
+    },
+    {
+      "material": "Peanut butter",
+      "supplier": "Leeng Marketing (listed on Borong)",
+      "score": "62.00",
+      "tier": "full",
+      "rank": "1",
+      "recommended": "yes",
+      "saved_price": "110.00",
+      "price_unit": "3 kg",
+      "location": "Wilayah Persekutuan, Malaysia",
+      "notes": "Branded (Lady's Choice) peanut butter, the only peanut butter found on Borong with a published price. Minimum order = the 3 kg unit as listed. RRP MYR 117.00. Allergen: peanut.",
+      "source_url": "https://market.borong.com/v/leeng-marketing/product/Ladys-Choice-Peanut-Butter-3KG-Per-Unit/137806",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Lady's Choice Peanut Butter (3KG Per Unit)",
+      "listed_price_now": "110.00",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/0359dc5fa9bb29be25830e6e200ed196103185bf.jpeg",
+      "image_local": "data/output/supplier_images/3468b38965f54ded.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:24+0800"
+    },
+    {
+      "material": "Peanut butter",
+      "supplier": "Fresh Bulk",
+      "score": "",
+      "tier": "full",
+      "rank": "2",
+      "recommended": "no",
+      "saved_price": "11.99",
+      "price_unit": "not stated",
+      "location": "Malaysia",
+      "notes": "NO NET WEIGHT PUBLISHED on the page, so no per-kg price can be computed - left blank rather than assumed. States halal certified, no added sugar, no emulsifier. Sale price RM11.99 (was RM21.90). | NOT RECOMMENDED: no comparable price recorded from this source, so it cannot be compared.",
+      "source_url": "https://www.freshbulkonline.com/product/fresh-bulk-peanut-butter",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Fresh Bulk Classic Peanut Butter SMOOTH | Halal Certified | no sugar",
+      "listed_price_now": "11.99",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://cdn1.sgliteasset.com/freshbul/images/product/product-6764267/cached/1EEklBbF69578b8c87953_1767345036_420x420.jpg",
+      "image_local": "data/output/supplier_images/614a8af236f1c5ad.png",
+      "online_order": true,
+      "offline_purchase": false,
+      "delivery_mentioned": false,
+      "marketplace": "",
+      "address_found": "",
+      "evidence": {
+        "online_signals": [
+          "add-to-cart",
+          "add_to_cart",
+          "buynow",
+          "checkout",
+          "shop now",
+          "shopify",
+          "woocommerce"
+        ],
+        "offline_signals": [],
+        "delivery_signals": []
+      },
+      "retrieved_at": "2026-10-10T17:17:59+0800"
+    },
+    {
+      "material": "Plastic cup 500ml",
+      "supplier": "Panagawa Sdn Bhd",
+      "score": "",
+      "tier": "light",
+      "rank": "1",
+      "recommended": "no",
+      "saved_price": "",
+      "price_unit": "2000 pcs",
+      "location": "Johor Bahru, Malaysia",
+      "notes": "LIGHT RESEARCH. NO PRICE PUBLISHED - enquiry-based, so no comparable price is recorded. Specs stated: 500 ml / 16.5 oz polypropylene, transparent, packing 20 x 100 pcs = 2,000 per carton, gross weight 13 kg. No delivery time published. | NOT RECOMMENDED: no comparable price recorded from this source, so it cannot be compared.",
+      "source_url": "https://www.panagawa.com/showproducts/productid/6704503/500ml-pp-cup-ao500/",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "500ml PP Cup AO500",
+      "listed_price_now": "",
+      "currency": "MYR",
+      "price_method": "not found on page",
+      "availability": "InStock",
+      "image_url": "https://cdn1.npcdn.net/images/d40d77409af20aeda7af367fc1d972de_1787290608.png?md5id=824c121add38289730a196fff2102e1d&new_width=1000&new_height=1000&size=max&w=1661159801&type=9",
+      "image_local": "data/output/supplier_images/46760df4d74b2e52.png",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": false,
+      "marketplace": "",
+      "address_found": "Plo 527, Jalan Keluli 5, 81700 Pasir Gudang, Johor",
+      "evidence": {
+        "online_signals": [
+          "in stock"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": []
+      },
+      "retrieved_at": "2026-10-10T17:18:03+0800"
+    },
+    {
+      "material": "Rolled oats",
+      "supplier": "PepsiCo Foods Malaysia (listed on Borong)",
+      "score": "50.00",
+      "tier": "light",
+      "rank": "1",
+      "recommended": "yes",
+      "saved_price": "125.96",
+      "price_unit": "9.6 kg",
+      "location": "Selangor, Malaysia",
+      "notes": "LIGHT RESEARCH. Cheapest of the three at MYR 13.12/kg (12 x 800 g = 9.6 kg carton). Branded whole rolled oats, the exact spec used by P005. RRP MYR 128.40.",
+      "source_url": "https://market.borong.com/v/pepsi-co/product/QUAKER-WHOLE-ROLLED-OATS-800G-x-12/135742",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "QUAKER WHOLE ROLLED OATS 800G x 12",
+      "listed_price_now": "119.66",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/33f44fa67c1984a0192782175f44765dd1fa9ba3.jpg",
+      "image_local": "data/output/supplier_images/6f297de59a77ff97.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:30+0800"
+    },
+    {
+      "material": "Rolled oats",
+      "supplier": "SCC MARKETPLACE (listed on Borong)",
+      "score": "41.08",
+      "tier": "light",
+      "rank": "2",
+      "recommended": "yes",
+      "saved_price": "182.40",
+      "price_unit": "10.8 kg",
+      "location": "Selangor, Malaysia",
+      "notes": "LIGHT RESEARCH. Organic rolled oats at MYR 16.89/kg (24 x 450 g = 10.8 kg carton). RRP MYR 228.00.",
+      "source_url": "https://market.borong.com/v/scc-marketplace/product/CED-Organic-Rolled-Oat-450gx24/135888",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "CED Organic Rolled Oat (450gx24)",
+      "listed_price_now": "182.40",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/c076e148b229141d53707f5cd550961022e07f03.png",
+      "image_local": "data/output/supplier_images/f05301540040ebfa.png",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:53+0800"
+    },
+    {
+      "material": "Rolled oats",
+      "supplier": "Wide Tropism Marketing Sdn Bhd (listed on Borong)",
+      "score": "36.24",
+      "tier": "light",
+      "rank": "3",
+      "recommended": "yes",
+      "saved_price": "8.00",
+      "price_unit": "400 g",
+      "location": "Selangor, Malaysia",
+      "notes": "LIGHT RESEARCH. Most expensive per kg (MYR 20.00) but the smallest pack (400 g), so the lowest cash commitment - relevant because P005 sold only 6 units in the period. RRP MYR 8.90.",
+      "source_url": "https://market.borong.com/v/Wide-Tropism-Marketing/product/Organic-Regular-Rolled-Oat-400g/141120",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Organic Regular Rolled Oat 400g",
+      "listed_price_now": "8.00",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/d859c4c5f6c08945fc23665b2c4ae5a4833bbe2b.jpg",
+      "image_local": "data/output/supplier_images/4bd7214a7fcb10e4.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:16:30+0800"
+    },
+    {
+      "material": "Spice mix",
+      "supplier": "Borong Runcit (listed on Borong)",
+      "score": "50.00",
+      "tier": "light",
+      "rank": "1",
+      "recommended": "yes",
+      "saved_price": "26.80",
+      "price_unit": "1 kg",
+      "location": "Wilayah Persekutuan, Malaysia",
+      "notes": "LIGHT RESEARCH. Blended spice powder (the closest published match to a generic 'spice mix'). Cheapest of the three at MYR 26.80/kg, 1 kg minimum. RRP MYR 33.00.",
+      "source_url": "https://market.borong.com/v/borong-runcit/product/BABAS-MEAT-CURRY-POWDER-1KG/127729",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "BABAS MEAT CURRY POWDER 1KG",
+      "listed_price_now": "26.80",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/12f0cfc399ca956f227019deaee6e9cba40bf68a.jpg",
+      "image_local": "data/output/supplier_images/8cfeb89cc4ef1ba7.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:16:37+0800"
+    },
+    {
+      "material": "Spice mix",
+      "supplier": "ABBY'S HEALTHY (listed on Borong)",
+      "score": "40.63",
+      "tier": "light",
+      "rank": "2",
+      "recommended": "yes",
+      "saved_price": "3.50",
+      "price_unit": "100 g",
+      "location": "Melaka, Malaysia",
+      "notes": "LIGHT RESEARCH. MYR 35.00/kg. Smallest pack (100 g), so the lowest cash outlay even though the per-kg price is higher. RRP MYR 3.85.",
+      "source_url": "https://market.borong.com/v/abbys-healthy/product/SERBUK-BERIANI-100G/144961",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "SERBUK BERIANI 100G",
+      "listed_price_now": "3.50",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/images/no-image-found.jpg",
+      "image_local": "data/output/supplier_images/a8e8787eb5ad37fc.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:16:34+0800"
+    },
+    {
+      "material": "Spice mix",
+      "supplier": "Heritage Food Network (listed on Borong)",
+      "score": "31.88",
+      "tier": "light",
+      "rank": "3",
+      "recommended": "yes",
+      "saved_price": "24.50",
+      "price_unit": "500 g",
+      "location": "Selangor, Malaysia",
+      "notes": "LIGHT RESEARCH. Most expensive per kg (MYR 49.00) - a Western Cajun blend, recorded for reference rather than as the default choice for a Malaysian bun filling. RRP MYR 27.00.",
+      "source_url": "https://market.borong.com/v/heritage-food-network/product/CAJUN-SPICE-500gm-unit/136360",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "CAJUN SPICE 500gm unit",
+      "listed_price_now": "24.50",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/90c15d6223465930d947be6499dec84a6c09dca3.jpeg",
+      "image_local": "data/output/supplier_images/2cc931ba5792ef3f.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:24+0800"
+    },
+    {
+      "material": "Sugar",
+      "supplier": "Borong Runcit (listed on Borong)",
+      "score": "50.00",
+      "tier": "light",
+      "rank": "1",
+      "recommended": "yes",
+      "saved_price": "39.33",
+      "price_unit": "12 kg",
+      "location": "Wilayah Persekutuan, Malaysia",
+      "notes": "LIGHT RESEARCH. Cheapest of the three at MYR 3.28/kg and the smallest carton (12 kg). RRP MYR 51.00.",
+      "source_url": "https://market.borong.com/v/borong-runcit/product/CSR-GULA-KASAR-1KG-x-12/127622",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "CSR GULA KASAR 1KG x 12",
+      "listed_price_now": "39.33",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/c00037fe3a71bc2829553bef0526109c2be425c1.jpg",
+      "image_local": "data/output/supplier_images/714fe6c8befc55b8.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:16:45+0800"
+    },
+    {
+      "material": "Sugar",
+      "supplier": "Borong Runcit (listed on Borong)",
+      "score": "42.78",
+      "tier": "light",
+      "rank": "2",
+      "recommended": "yes",
+      "saved_price": "96.00",
+      "price_unit": "24 kg",
+      "location": "Wilayah Persekutuan, Malaysia",
+      "notes": "LIGHT RESEARCH. MYR 4.00/kg. RRP MYR 98.00.",
+      "source_url": "https://market.borong.com/v/borong-runcit/product/Gula-Prai-Super-Premium-1kgx24/127852",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Gula Prai Super Premium 1kgx24",
+      "listed_price_now": "96.00",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/871b23a75bbcc80dce8cdc3eca29fdb5919ead64.jpg",
+      "image_local": "data/output/supplier_images/bdd6f7b0e9566077.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:16:51+0800"
+    },
+    {
+      "material": "Sugar",
+      "supplier": "PJ Grocer Sdn Bhd (listed on Borong)",
+      "score": "36.22",
+      "tier": "light",
+      "rank": "3",
+      "recommended": "yes",
+      "saved_price": "250.00",
+      "price_unit": "50 kg",
+      "location": "Selangor, Malaysia",
+      "notes": "LIGHT RESEARCH. Caster (finer) sugar at MYR 5.00/kg and a 50 kg minimum - the largest commitment of the three. [KLANG VALLEY ONLY]. RRP MYR 240.00 (below the selling price shown).",
+      "source_url": "https://market.borong.com/v/pj-grocer/product/CSR-Caster-Sugar-50kg-KLANG-VALLEY-ONLY/136824",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "CSR Caster Sugar 50kg [KLANG VALLEY ONLY]",
+      "listed_price_now": "250.00",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/3933a3e2065039688f28cbb6836a83ee960d2ea9.jpeg",
+      "image_local": "data/output/supplier_images/321f69b2dc460cac.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:39+0800"
+    },
+    {
+      "material": "Tea bag",
+      "supplier": "YEE LEE TRADING CO. SDN BHD (listed on Borong)",
+      "score": "50.00",
+      "tier": "light",
+      "rank": "1",
+      "recommended": "yes",
+      "saved_price": "592.50",
+      "price_unit": "3600 pcs",
+      "location": "Wilayah Persekutuan, Malaysia",
+      "notes": "LIGHT RESEARCH. Cheapest per 100 bags (MYR 16.46) but the largest commitment: 3,600 bags. Malaysian Sabah tea. RRP MYR 675.36.",
+      "source_url": "https://market.borong.com/v/yeelee/product/144-x-25s-Sabah-Tea-Bags/61314",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "144 x 25s Sabah Tea Bags",
+      "listed_price_now": "592.50",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/c32ba7bb8d04577a1741129e3d789132e44c7766.jpg",
+      "image_local": "data/output/supplier_images/cd8eab1d38eaa11c.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "self pickup",
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:53+0800"
+    },
+    {
+      "material": "Tea bag",
+      "supplier": "HANKER FOODS (M) SDN BHD (listed on Borong)",
+      "score": "44.36",
+      "tier": "light",
+      "rank": "2",
+      "recommended": "yes",
+      "saved_price": "229.90",
+      "price_unit": "1200 pcs",
+      "location": "Selangor, Malaysia",
+      "notes": "LIGHT RESEARCH. 1,200 individually enveloped bags (12 boxes x 100). MYR 19.16 per 100 bags. RRP MYR 239.00.",
+      "source_url": "https://market.borong.com/v/hanker-foods-m-sdn-bhd/product/Lipton-Tea-Yellow-Label-Individual-Env-A1200-1.85g-X-100s-X-12-BOX/135820",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Lipton Tea Yellow Label Individual Env (A1200) (1.85g X 100's) X 12 BOX",
+      "listed_price_now": "225.00",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/cf91aa18f13a90e3d4fb39d430e87caa84c4f5b0.png",
+      "image_local": "data/output/supplier_images/344ce83a0b5be454.png",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:17:14+0800"
+    },
+    {
+      "material": "Tea bag",
+      "supplier": "BREW LAB RESOURCES SDN BHD (listed on Borong)",
+      "score": "26.06",
+      "tier": "light",
+      "rank": "3",
+      "recommended": "yes",
+      "saved_price": "41.00",
+      "price_unit": "100 pcs",
+      "location": "Melaka, Malaysia",
+      "notes": "LIGHT RESEARCH. Most expensive per 100 bags (MYR 41.00) but the smallest commitment (one 100-bag box) - relevant while P002 volume is uncertain. RRP MYR 42.00.",
+      "source_url": "https://market.borong.com/v/brew-lab-resources-sdn-bhd/product/JAF-TEA-English-Breakfast-100s-box/121070",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "JAF TEA English Breakfast 100's box",
+      "listed_price_now": "40.00",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://market.borong.com/product-images/0cf8cc2bf73e966e49b347acbe5cee1b10bb950e.jpg",
+      "image_local": "data/output/supplier_images/307c73d54f2b9309.jpg",
+      "online_order": true,
+      "offline_purchase": true,
+      "delivery_mentioned": true,
+      "marketplace": "Borong",
+      "address_found": "02, 13 Floor, Menara IGB,1, Lingkaran Syed Putra, Mid Valley City, 59200 Kuala Lumpur",
+      "evidence": {
+        "online_signals": [
+          "add_to_cart",
+          "checkout",
+          "listed on Borong"
+        ],
+        "offline_signals": [
+          "self pickup",
+          "address on page"
+        ],
+        "delivery_signals": [
+          "delivery"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:16:54+0800"
+    },
+    {
+      "material": "Wax paper",
+      "supplier": "Image Magic",
+      "score": "60.00",
+      "tier": "light",
+      "rank": "1",
+      "recommended": "yes",
+      "saved_price": "50.00",
+      "price_unit": "100 pcs",
+      "location": "Malaysia",
+      "notes": "LIGHT RESEARCH. MYR 50.00 for 100 sheets (MYR 0.50 each); production approx 2 working days, delivery extra. FOOD-SAFETY WARNING stated by the supplier itself: the printed sheet is NOT certified for direct food contact and must not be used to wrap hot or oily food - P004 wraps a chicken bun, so this SKU is recorded for price reference only and needs an inner food-safe barrier.",
+      "source_url": "https://imagemagic.com.my/food-grade-wrapping-paper/",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Custom Printed Greaseproof Wrapping Paper",
+      "listed_price_now": "50.00",
+      "currency": "MYR",
+      "price_method": "structured data (JSON-LD)",
+      "availability": "InStock",
+      "image_url": "https://d2k7xl8xl93d43.cloudfront.net/images/product/Food-Wrapping-Paper-5_05271831202512.png",
+      "image_local": "data/output/supplier_images/e99c76adf524914c.png",
+      "online_order": true,
+      "offline_purchase": false,
+      "delivery_mentioned": true,
+      "marketplace": "",
+      "address_found": "",
+      "evidence": {
+        "online_signals": [
+          "addtocart",
+          "buy now",
+          "checkout"
+        ],
+        "offline_signals": [],
+        "delivery_signals": [
+          "delivery",
+          "shipping"
+        ]
+      },
+      "retrieved_at": "2026-10-10T17:16:30+0800"
+    },
+    {
+      "material": "Wax paper",
+      "supplier": "Magnus Oriental",
+      "score": "",
+      "tier": "light",
+      "rank": "2",
+      "recommended": "no",
+      "saved_price": "",
+      "price_unit": "500 pcs",
+      "location": "Malaysia",
+      "notes": "LIGHT RESEARCH. NO PRICE PUBLISHED - pricing scales with volume, so no comparable price is recorded. Stated as food-contact safe (unlike the Image Magic option). Stock items ship 1-3 working days across Malaysia; custom print MOQ 5,000; packing 500 per ream, 10 reams per case. | NOT RECOMMENDED: no comparable price recorded from this source, so it cannot be compared.",
+      "source_url": "https://magnusoriental.com.my/products/bags-wraps-takeaway-packaging/greaseproof-liners",
+      "scrape_ok": true,
+      "scrape_error": "",
+      "item_name": "Greaseproof Liners & Sheets",
+      "listed_price_now": "",
+      "currency": "",
+      "price_method": "not found on page",
+      "availability": "",
+      "image_url": "https://magnusoriental.com.my/assets/family-greaseproof-liners-BVwnJedJ.jpg",
+      "image_local": "data/output/supplier_images/3cee44c4c5806248.jpg",
+      "online_order": false,
+      "offline_purchase": true,
+      "delivery_mentioned": false,
+      "marketplace": "",
+      "address_found": "4, Lot 752, Jalan Subang 3, Taman Perindustrian Sungai Penaga, 47610 Subang Jaya, Selangor",
+      "evidence": {
+        "online_signals": [],
+        "offline_signals": [
+          "address on page"
+        ],
+        "delivery_signals": []
+      },
+      "retrieved_at": "2026-10-10T17:16:30+0800"
+    }
+  ]
+}

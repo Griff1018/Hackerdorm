@@ -1,0 +1,3 @@
+entry_id,order_id,product_id,change,stock_after,timestamp
+LED-0001,ORD-CHAT-0001,P001,-2,16,2026-10-10T15:30:38.338547+08:00
+LED-0002,ORD-CHAT-0001,P002,-1,95,2026-10-10T15:30:38.338553+08:00

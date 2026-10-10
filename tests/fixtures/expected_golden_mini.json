@@ -1,0 +1,177 @@
+{
+  "generated_by": "tests/compute_expected_standalone.py",
+  "currency": "MYR",
+  "period_start": "2026-09-01",
+  "period_end": "2026-09-30",
+  "demand_window": {
+    "start": "2026-09-17",
+    "end": "2026-09-30",
+    "calendar_days": 14
+  },
+  "assumptions": {
+    "safety_stock_days": 3,
+    "staleness_days": 7,
+    "excluded_statuses": [
+      "cancelled",
+      "refunded"
+    ],
+    "duplicate_policy": "all rows sharing a duplicated id are excluded, never auto-deduplicated"
+  },
+  "dataset": "golden_mini",
+  "input_fingerprints": {
+    "products.csv": "8d69c52209fb378a04c9e479101d91154c8fdea877a862caba4f41f35bcb8b4e",
+    "sales.csv": "17569da1db42a7cc926a15322dabece761e0b3221650335a03c637feceea6b3c",
+    "inventory.csv": "84669f34932fd6f3294da0f7100f25828b5c60b411d598af0db94774f6390e05",
+    "expenses.csv": "aeff4b881a600ffad9faa4f1467a368f20999c2c528c12ccc32e85fe7539a15c"
+  },
+  "row_counts": {
+    "products": 3,
+    "sales": 10,
+    "inventory": 3,
+    "expenses": 3,
+    "materials": 0,
+    "distinct_materials": 0
+  },
+  "sales_processing": {
+    "total_rows": 10,
+    "rows_by_status": {
+      "completed": 8,
+      "cancelled": 1,
+      "refunded": 1
+    },
+    "eligible_lines": 6,
+    "excluded_lines": {
+      "status_cancelled": 1,
+      "invalid_quantity": 1,
+      "status_refunded": 1,
+      "unknown_product": 1
+    },
+    "promo_price_differences": 0
+  },
+  "metrics": {
+    "net_revenue": "119.00",
+    "cogs_estimate": "51.00",
+    "gross_profit_estimate": "68.00",
+    "gross_margin_pct": "57.14",
+    "units_sold": 34,
+    "recorded_expenses": "135.50",
+    "recorded_expenses_by_status": {
+      "paid": "100.00",
+      "unpaid": "25.50",
+      "unknown": "10.00"
+    },
+    "expense_rows_counted": 3
+  },
+  "per_product": {
+    "P101": {
+      "product_name": "Iced Tea Small",
+      "units_sold": 16,
+      "net_revenue": "47.00",
+      "cogs_estimate": "16.00",
+      "gross_profit_estimate": "31.00",
+      "gross_margin_pct": "65.96"
+    },
+    "P102": {
+      "product_name": "Slice Cake",
+      "units_sold": 16,
+      "net_revenue": "72.00",
+      "cogs_estimate": "32.00",
+      "gross_profit_estimate": "40.00",
+      "gross_margin_pct": "55.56"
+    },
+    "P103": {
+      "product_name": "Fresh Juice",
+      "units_sold": 2,
+      "net_revenue": "0.00",
+      "cogs_estimate": "3.00",
+      "gross_profit_estimate": "-3.00",
+      "gross_margin_pct": null
+    }
+  },
+  "stock_and_replenishment": {
+    "P101": {
+      "product_name": "Iced Tea Small",
+      "window_units": 6,
+      "average_daily_units": "0.428571",
+      "stock_on_hand": 12,
+      "days_of_stock": "28.00",
+      "coverage_note": null,
+      "reorder_point": 10,
+      "lead_time_days": 2,
+      "pack_size": 5,
+      "target_stock_units": "2.14",
+      "replenishment_units": 0,
+      "replenishment_note": "target stock below current stock - no replenishment",
+      "stock_age_days": 4,
+      "stock_stale": false,
+      "reorder_trigger": false
+    },
+    "P102": {
+      "product_name": "Slice Cake",
+      "window_units": 12,
+      "average_daily_units": "0.857143",
+      "stock_on_hand": 5,
+      "days_of_stock": "5.83",
+      "coverage_note": null,
+      "reorder_point": 8,
+      "lead_time_days": 3,
+      "pack_size": 4,
+      "target_stock_units": "5.14",
+      "replenishment_units": 4,
+      "replenishment_note": "raw 0.14 rounded up to pack_size 4",
+      "stock_age_days": 6,
+      "stock_stale": false,
+      "reorder_trigger": true
+    },
+    "P103": {
+      "product_name": "Fresh Juice",
+      "window_units": 2,
+      "average_daily_units": "0.142857",
+      "stock_on_hand": 0,
+      "days_of_stock": "0.00",
+      "coverage_note": null,
+      "reorder_point": 5,
+      "lead_time_days": 1,
+      "pack_size": 6,
+      "target_stock_units": "0.57",
+      "replenishment_units": null,
+      "replenishment_note": "not computed - stock count is stale (19 days); recount first",
+      "stock_age_days": 19,
+      "stock_stale": true,
+      "reorder_trigger": true
+    }
+  },
+  "data_quality_issues": [
+    {
+      "issue_id": "VAL",
+      "file": "sales.csv",
+      "row_or_id": "L4",
+      "issue": "quantity not > 0 (0)",
+      "severity": "error",
+      "proposed_resolution": "exclude line"
+    },
+    {
+      "issue_id": "REF",
+      "file": "sales.csv",
+      "row_or_id": "L9",
+      "issue": "unknown product_id 'P999'",
+      "severity": "error",
+      "proposed_resolution": "exclude line; add product or fix id"
+    },
+    {
+      "issue_id": "STALE",
+      "file": "inventory.csv",
+      "row_or_id": "P103",
+      "issue": "stock count is 19 days old (threshold 7)",
+      "severity": "warning",
+      "proposed_resolution": "recount; do not compute replenishment"
+    }
+  ],
+  "issue_counts": {
+    "total": 3,
+    "by_severity": {
+      "error": 2,
+      "warning": 1
+    }
+  }
+}

@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LinkedIn Clone – Agent Hiring Demo</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { li: { DEFAULT: "#0a66c2", dark: "#004182", bg: "#f4f2ee", soft: "#edf3f8" } } } }
+    };
+  </script>
+  <!-- React & ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+  <!-- Babel for JSX compilation -->
+  <script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+  <!-- Lucide Icons (rendered as React components below) -->
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <style>
+    body { background-color: #f4f2ee; color: #191919; font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    /* Newly published post */
+    @keyframes popIn { 0% { opacity: 0; transform: translateY(-28px) scale(0.96); } 60% { opacity: 1; transform: translateY(0) scale(1.01); } 100% { transform: scale(1); } }
+    @keyframes glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(10, 102, 194, 0); } 50% { box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.55); } }
+    .pop-in { animation: popIn 0.7s cubic-bezier(.2,.9,.3,1.15), glow 1.6s ease-in-out 0.7s 2; }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .toast-in { animation: toastIn 0.3s ease-out; }
+    @keyframes shimmer { 0% { background-position: -500px 0; } 100% { background-position: 500px 0; } }
+    .shimmer { background: linear-gradient(90deg, #eef0f3 0%, #f8f9fa 50%, #eef0f3 100%); background-size: 1000px 100%; animation: shimmer 1.4s linear infinite; }
+  </style>
+</head>
+<body class="bg-li-bg antialiased">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // =====================================================================
+    // CONFIG & MOCK DATA
+    // =====================================================================
+    const LS = { posts: "li_mock_posts", notifs: "li_mock_notifications", key: "li_mock_openai_key" };
+    const TEXT_MODEL = "gpt-4o-mini";
+    const AI_TIMEOUT_MS = 25000;
+    const DAY = 864e5;
+
+    const unsplash = (id, w = 1200) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
+    const IMG = {
+      team: unsplash("photo-1522071820081-009f0129c71c"),
+      coding: unsplash("photo-1498050108023-c5249f4df085"),
+      cafe: unsplash("photo-1501339847302-ac426a4a7cbb"),
+      office: unsplash("photo-1497366216548-37526070297c"),
+      design: unsplash("photo-1559136555-9303baea8ebd"),
+      cover: unsplash("photo-1497366754035-f200968a6e72", 1600)
+    };
+
+    const LOGO = "data:image/svg+xml;utf8," + encodeURIComponent(
+      `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#0a66c2'/><stop offset='1' stop-color='#7c3aed'/></linearGradient></defs><rect width='64' height='64' rx='6' fill='url(#g)'/><path d='M19 46V18h5.5l14 18.5V18H44v28h-5.5l-14-18.5V46z' fill='white'/></svg>`
+    );
+
+    const COMPANY = {
+      name: "Nexora Technologies",
+      tagline: "AI-powered commerce infrastructure for Southeast Asian businesses",
+      industry: "Software Development",
+      location: "Subang Jaya, Selangor",
+      followers: 48212,
+      size: "201-500 employees",
+      onLinkedIn: 312,
+      website: "www.nexora.example",
+      founded: 2016,
+      hq: "SS15, Subang Jaya, Selangor, Malaysia",
+      overview: "Nexora Technologies builds the payments, storefront and AI automation layer that helps 3,200+ merchants across Malaysia, Singapore and Indonesia sell online and offline.\n\nFounded in a six-person shophouse office in SS15, we are now a 300+ strong team of engineers, designers and merchant-success specialists on a mission to make digital commerce simple for every business in Southeast Asia.",
+      specialties: ["Payments", "E-commerce", "Fintech", "AI Automation", "Merchant Platforms", "SaaS"],
+      industryTags: ["Software Development", "Financial Services", "Retail Technology"]
+    };
+
+    const VIEWER = {
+      name: "Aisha Rahman",
+      headline: "Head of Talent at Nexora Technologies",
+      avatar: unsplash("photo-1573496359142-b8d87734a5a2", 200)
+    };
+
+    const REACTIONS = [
+      { id: "like", emoji: "👍", label: "Like", color: "text-li" },
+      { id: "celebrate", emoji: "👏", label: "Celebrate", color: "text-emerald-700" },
+      { id: "love", emoji: "❤️", label: "Love", color: "text-rose-600" },
+      { id: "insightful", emoji: "💡", label: "Insightful", color: "text-amber-600" }
+    ];
+
+    const TONES = [
+      { id: "startup", label: "High-Growth Startup", hint: "Energetic, ambitious, fast-paced" },
+      { id: "corporate", label: "Corporate Formal", hint: "Polished, precise, credible" },
+      { id: "culture", label: "Culture & Team-Centric", hint: "Warm, people-first, inclusive" }
+    ];
+
+    const EMPLOYMENT_TYPES = ["Full-time", "Part-time", "Contract", "Internship"];
+    const WORKPLACES = ["On-site", "Hybrid", "Remote"];
+
+    const MEDIA_PRESETS = [
+      { label: "Tech team", url: IMG.team },
+      { label: "Dev desk", url: IMG.coding },
+      { label: "Café", url: IMG.cafe },
+      { label: "Office", url: IMG.office }
+    ];
+
+    const JOB_PRESETS = [
+      {
+        label: "Full-Stack Engineer",
+        title: "Senior Full-Stack Engineer", department: "Engineering", employmentType: "Full-time", workplace: "Hybrid",
+        location: "Subang Jaya, Selangor", tone: "startup", media: IMG.coding,
+        details: "- Build and scale our merchant platform with React, Node.js and PostgreSQL\n- Design distributed services that process millions of transactions\n- Own features end-to-end, from architecture to production\n- Mentor engineers and raise the engineering bar\nPerks: flexible hours, RM 3,000 learning budget, stock options, MacBook Pro"
+      },
+      {
+        label: "Barista & Cafe Manager",
+        title: "Barista & Cafe Manager", department: "Operations", employmentType: "Full-time", workplace: "On-site",
+        location: "Petaling Jaya, Selangor", tone: "culture", media: IMG.cafe,
+        details: "- Lead a team of 6 baristas in our in-office specialty coffee bar\n- Manage daily cafe operations, inventory and supplier orders\n- Craft a seasonal drinks menu with our team\n- Keep quality, hygiene and service standards high\nPerks: free meals, SCA barista certification, medical coverage, 18 days annual leave"
+      },
+      {
+        label: "Growth Marketing Lead",
+        title: "Growth Marketing Lead", department: "Marketing", employmentType: "Full-time", workplace: "Remote",
+        location: "Kuala Lumpur, Malaysia", tone: "corporate", media: IMG.office,
+        details: "- Own merchant acquisition across paid, SEO and lifecycle channels\n- Run data-driven experiments and report on CAC and LTV\n- Partner with sales and product on go-to-market launches\nPerks: remote-first, quarterly team retreats, performance bonus"
+      }
+    ];
+
+    // --- BizFlow integration: this page is the business's LinkedIn company page ---
+    const BIZ_ID = new URLSearchParams(location.search).get("business_id") || "campus-crumb";
+    try {
+      const x = new XMLHttpRequest(); x.open("GET", "/api/linkedin/bootstrap?business_id=" + encodeURIComponent(BIZ_ID), false); x.send();
+      const bf = JSON.parse(x.responseText); Object.assign(COMPANY, bf.company); Object.assign(VIEWER, bf.viewer);
+    } catch { /* opened without BizFlow */ }
+    LS.posts += "_" + BIZ_ID; LS.notifs += "_" + BIZ_ID;
+    const bfPost = (url, body) => fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).then(r => r.json());
+    const slug = (t) => String(t || "candidate").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
+
+    function makeSeedPosts() { return []; }  // the original Nexora sample posts are kept below, unused
+    function makeSeedPostsNexora() {
+      const now = Date.now();
+      return [
+        {
+          id: "seed_milestone",
+          createdAt: now - 2 * DAY,
+          body: "🎉 1,000,000 merchant transactions. One quarter.\n\nWhen we started Nexora in a six-person shophouse office in SS15, we set out to make digital commerce simple for every Southeast Asian business.\n\nThis quarter our platform processed over 1 million transactions for 3,200+ merchants across Malaysia, Singapore and Indonesia. 🙌\n\nHuge thanks to our engineers, our merchant success team, and every business owner who trusted us early.\n\nOn to the next million. 🚀\n\n#Milestone #Fintech #MalaysiaTech #StartupLife #Ecommerce",
+          media: IMG.team,
+          job: null,
+          keywords: [],
+          reactions: { like: 412, celebrate: 228, love: 61, insightful: 19 },
+          myReaction: null,
+          comments: [
+            { id: "c1", author: "Daniel Lim", headline: "Engineering Manager · Fintech", text: "Massive milestone, congrats to the whole Nexora team! 👏", createdAt: now - 1.8 * DAY },
+            { id: "c2", author: "Priya Nair", headline: "Owner, Kopi & Co.", text: "Been with you since day one. Well deserved!", createdAt: now - 1.5 * DAY }
+          ],
+          reposts: 37, reposted: false, applicants: 0, byAgent: false
+        },
+        {
+          id: "seed_designer",
+          createdAt: now - 7 * DAY,
+          body: "We're looking for a Senior Product Designer to shape how 3,000+ merchants run their business. ✏️\n\nYou'll own end-to-end design for our merchant dashboard, from research to polished UI, working side by side with product and engineering.\n\n🔹 Lead discovery and usability research with real merchants\n🔹 Design and evolve the Nexora design system\n🔹 Ship features weekly with a fast, collaborative squad\n\n📍 Subang Jaya · Hybrid (3 days in office)\n\nKnow someone great? Tag them below or hit Easy Apply. 👇\n\n#Hiring #ProductDesign #UXDesign #DesignJobs #MalaysiaJobs",
+          media: IMG.design,
+          job: { title: "Senior Product Designer", department: "Design", location: "Subang Jaya, Selangor", workplace: "Hybrid", employmentType: "Full-time", salary: "RM 9,000 – 13,000 / month", experience: "Senior · 5+ years" },
+          keywords: ["Figma", "UX Research", "Design Systems", "Subang Jaya"],
+          reactions: { like: 186, celebrate: 24, love: 9, insightful: 31 },
+          myReaction: null,
+          comments: [
+            { id: "c3", author: "Mei Ling Tan", headline: "UX Designer", text: "Just applied! The merchant research angle sounds amazing.", createdAt: now - 6 * DAY }
+          ],
+          reposts: 22, reposted: false, applicants: 47, byAgent: false
+        }
+      ];
+    }
+
+    function makeSeedNotifs() { return [{ id: "n0", icon: "Sparkles", text: "Jobs you create in BizFlow → Automations → Recruiting appear here automatically.", createdAt: Date.now(), read: false }]; }
+    function makeSeedNotifsNexora() {
+      const now = Date.now();
+      return [
+        { id: "n1", icon: "Users", text: "Your company page gained 214 new followers this week.", createdAt: now - 1 * DAY, read: true },
+        { id: "n2", icon: "Briefcase", text: "47 people applied to Senior Product Designer.", createdAt: now - 3 * DAY, read: true }
+      ];
+    }
+
+    // =====================================================================
+    // HELPERS
+    // =====================================================================
+    function load(key, fallback) {
+      try { const v = JSON.parse(localStorage.getItem(key)); return v ?? fallback; } catch { return fallback; }
+    }
+    function save(key, value) {
+      try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch { return false; }
+    }
+    // If uploaded images overflow storage, keep the newest post's image and drop older uploaded ones
+    function savePosts(posts) {
+      if (save(LS.posts, posts)) return;
+      save(LS.posts, posts.map((p, i) => (i > 0 && p.media?.startsWith("data:") ? { ...p, media: "" } : p)));
+    }
+
+    function timeAgo(ts) {
+      const s = Math.max(0, (Date.now() - ts) / 1000);
+      if (s < 60) return "Just now";
+      if (s < 3600) return `${Math.floor(s / 60)}m`;
+      if (s < 86400) return `${Math.floor(s / 3600)}h`;
+      if (s < 7 * 86400) return `${Math.floor(s / 86400)}d`;
+      return `${Math.floor(s / (7 * 86400))}w`;
+    }
+    const fmt = (n) => Number(n).toLocaleString();
+    const initials = (name = "") => name.split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpperCase();
+    const wait = (ms) => new Promise(r => setTimeout(r, ms));
+    const stripHash = (t) => String(t).trim().replace(/^#+/, "").replace(/\s+/g, "");
+    const uniq = (arr) => [...new Set(arr.filter(Boolean))];
+
+    // Downscale uploads so they fit in localStorage
+    function readImageFile(file, maxW = 1200) {
+      return new Promise((resolve, reject) => {
+        if (!file || !file.type.startsWith("image/")) return reject(new Error("Please choose an image file"));
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error("Could not read that file"));
+        reader.onload = () => {
+          const img = new Image();
+          img.onerror = () => reject(new Error("Could not read that image"));
+          img.onload = () => {
+            const scale = Math.min(1, maxW / img.width);
+            const canvas = document.createElement("canvas");
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+            canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL("image/jpeg", 0.85));
+          };
+          img.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // =====================================================================
+    // AI: TALENT & CONTENT AGENT (OpenAI → server .env proxy → mock fallback)
+    // =====================================================================
+    const AGENT_PROMPT = `You are the Talent & Content Agent for ${COMPANY.name} (${COMPANY.industry}, ${COMPANY.location}): ${COMPANY.tagline}.
+Write a high-conversion LinkedIn job announcement optimized for LinkedIn algorithm reach and SEO.
+Rules:
+- "hook": one scroll-stopping first line under 150 characters (LinkedIn truncates around 210 characters).
+- "body": short paragraphs separated by blank lines, 3-6 bullet points that start with a professional emoji, a line with location and work arrangement, and a clear call to action (Easy Apply, comment, or tag someone). Do not repeat the hook. Do not include hashtags.
+- Match the requested tone.
+Respond ONLY with JSON:
+{"hook": string, "body": string, "salary": "estimated monthly range in the local currency of the location, e.g. RM 8,000 – 12,000 / month", "experience": "seniority and years, e.g. Mid-Senior · 5+ years", "keywords": ["5-8 role, skill and location SEO keywords"], "hashtags": ["5-8 targeted hashtags without #"]}`;
+
+    async function callOpenAI(apiKey, body) {
+      const direct = !!apiKey;
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), AI_TIMEOUT_MS);
+      try {
+        const res = await fetch(direct ? "https://api.openai.com/v1/chat/completions" : "/api/openai/chat/completions", {
+          method: "POST",
+          signal: ctrl.signal,
+          headers: { "Content-Type": "application/json", ...(direct ? { Authorization: `Bearer ${apiKey}` } : {}) },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error?.message || `HTTP ${res.status}`);
+        return { data, via: direct ? "OpenAI · your API key" : "OpenAI · server .env key" };
+      } catch (err) {
+        throw new Error(err.name === "AbortError" ? "OpenAI timed out" : err.message);
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    async function runTalentAgent(form, apiKey) {
+      const tone = TONES.find(t => t.id === form.tone);
+      const brief = `Job title: ${form.title}
+Department: ${form.department || "-"}
+Employment type: ${form.employmentType}
+Work arrangement: ${form.workplace}
+Location: ${form.location || "-"}
+Tone: ${tone.label} (${tone.hint})
+Responsibilities & perks:
+${form.details || "-"}`;
+      try {
+        const { data, via } = await callOpenAI(apiKey, {
+          model: TEXT_MODEL,
+          response_format: { type: "json_object" },
+          messages: [{ role: "system", content: AGENT_PROMPT }, { role: "user", content: brief }]
+        });
+        const d = JSON.parse(data.choices[0].message.content);
+        return {
+          source: via,
+          draft: {
+            copy: [d.hook, d.body].filter(Boolean).join("\n\n"),
+            salary: d.salary || "",
+            experience: d.experience || "",
+            location: form.location,
+            keywords: uniq((d.keywords || []).map(k => String(k).trim())).slice(0, 8),
+            hashtags: uniq((d.hashtags || []).map(stripHash)).slice(0, 8)
+          }
+        };
+      } catch (err) {
+        return { source: "Mock generator (offline)", note: err.message, draft: mockDraft(form) };
+      }
+    }
+
+    // --- Mock fallback generator: keeps the demo working with no API access ---
+    const ROLE_PROFILES = [
+      { match: /engineer|developer|software|full.?stack|backend|frontend|devops/, skills: ["React.js", "Node.js", "TypeScript", "Distributed Systems", "PostgreSQL", "AWS"], salary: "RM 12,000 – 18,000 / month", experience: "Mid-Senior · 5+ years", tags: ["Hiring", "TechCareers", "SoftwareEngineering", "FullStackDeveloper", "MalaysiaJobs", "JoinOurTeam"] },
+      { match: /barista|cafe|café|coffee|restaurant|chef|kitchen/, skills: ["Specialty Coffee", "Café Operations", "Team Leadership", "Customer Experience", "Inventory Management", "Food Safety"], salary: "RM 3,500 – 5,500 / month", experience: "Mid-level · 2+ years", tags: ["Hiring", "HospitalityJobs", "CafeLife", "BaristaLife", "FnBCareers", "MalaysiaJobs"] },
+      { match: /design|ux|ui/, skills: ["Figma", "UX Research", "Design Systems", "Prototyping", "Interaction Design"], salary: "RM 8,000 – 13,000 / month", experience: "Mid-Senior · 4+ years", tags: ["Hiring", "ProductDesign", "UXDesign", "DesignJobs", "MalaysiaJobs", "JoinOurTeam"] },
+      { match: /market|growth|sales|account|business dev/, skills: ["Growth Marketing", "Performance Marketing", "SEO", "CRM", "Go-to-Market"], salary: "RM 8,000 – 12,000 / month", experience: "Mid-Senior · 5+ years", tags: ["Hiring", "MarketingJobs", "GrowthMarketing", "DigitalMarketing", "MalaysiaJobs", "JoinOurTeam"] },
+      { match: /data|analyst|machine learning|\bai\b|scientist/, skills: ["Python", "SQL", "Machine Learning", "Data Visualization", "dbt"], salary: "RM 9,000 – 15,000 / month", experience: "Mid-Senior · 3+ years", tags: ["Hiring", "DataScience", "AIJobs", "Analytics", "TechCareers", "MalaysiaJobs"] }
+    ];
+    const DEFAULT_PROFILE = { skills: ["Teamwork", "Communication", "Problem Solving", "Ownership", "Customer Focus"], salary: "RM 4,000 – 7,000 / month", experience: "Mid-level · 2+ years", tags: ["Hiring", "NowHiring", "JobOpening", "CareerOpportunity", "MalaysiaJobs", "JoinOurTeam"] };
+
+    const MOCK_TONES = {
+      startup: {
+        hook: t => `🚀 We're hiring a ${t}. Come build what's next with us.`,
+        intro: f => `${COMPANY.name} is scaling fast, and our ${f.department || "team"} needs someone who loves ownership, moves quickly and wants their work in front of thousands of merchants from day one.`,
+        bullet: "⚡", cta: "Sounds like you? Hit Easy Apply or drop a 🙋 in the comments, and tag someone who'd crush this role."
+      },
+      corporate: {
+        hook: t => `${COMPANY.name} is seeking an experienced ${t} to join our growing organisation.`,
+        intro: f => `Reporting into our ${f.department || "leadership"} team, you will play a key role in delivering measurable impact across our regional business.`,
+        bullet: "▪️", cta: "Qualified candidates are invited to apply via Easy Apply. We are an equal opportunity employer."
+      },
+      culture: {
+        hook: t => `💙 Our team is growing, and we'd love you to be part of it. We're looking for a ${t}!`,
+        intro: f => `At ${COMPANY.name}, great work comes from people who genuinely enjoy working together. Our ${f.department || "team"} is warm, curious and always learning from each other.`,
+        bullet: "🤝", cta: "Want to grow with us? Apply via Easy Apply or send us a message. We read every one. 👋"
+      }
+    };
+
+    function mockDraft(form) {
+      const profile = ROLE_PROFILES.find(r => r.match.test(form.title.toLowerCase())) || DEFAULT_PROFILE;
+      const tone = MOCK_TONES[form.tone] || MOCK_TONES.startup;
+      const lines = form.details.split("\n").map(l => l.replace(/^[\s\-•*\d.)]+/, "").trim()).filter(Boolean);
+      const isPerk = (l) => /^perks?\s*:/i.test(l);
+      const duties = lines.filter(l => !isPerk(l)).slice(0, 5);
+      const perks = lines.filter(isPerk).map(l => l.replace(/^perks?\s*:\s*/i, "")).join(", ").split(/,\s*/).filter(Boolean).slice(0, 4);
+      const city = (form.location || "").split(",")[0].trim();
+
+      const copy = [
+        tone.hook(form.title),
+        tone.intro(form),
+        duties.length ? "What you'll do:\n" + duties.map(d => `${tone.bullet} ${d}`).join("\n") : "",
+        perks.length ? "Why you'll love it:\n" + perks.map(p => `✨ ${p}`).join("\n") : "",
+        `📍 ${form.location || "Malaysia"} · ${form.workplace} · ${form.employmentType}`,
+        tone.cta
+      ].filter(Boolean).join("\n\n");
+
+      return {
+        copy,
+        salary: profile.salary,
+        experience: profile.experience,
+        location: form.location,
+        keywords: uniq([...profile.skills.slice(0, 5), city, form.workplace === "Remote" ? "Remote Work" : `${form.workplace} Jobs`]).slice(0, 8),
+        hashtags: uniq([...profile.tags, form.workplace === "Remote" ? "RemoteJobs" : city && `${city.replace(/\W/g, "")}Jobs`]).slice(0, 8)
+      };
+    }
+
+    // =====================================================================
+    // SMALL UI PIECES
+    // =====================================================================
+    function Icon({ name, size = 20, className = "", strokeWidth = 2, fill = "none" }) {
+      const node = window.lucide?.icons?.[name];
+      const children = node ? (node[0] === "svg" ? node[2] : node) : [];
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke="currentColor" strokeWidth={strokeWidth}
+             strokeLinecap="round" strokeLinejoin="round" className={`shrink-0 ${className}`} aria-hidden="true">
+          {children.map(([tag, attrs], i) => React.createElement(tag, { key: i, ...attrs }))}
+        </svg>
+      );
+    }
+
+    // Image that never shows a broken tag
+    function SafeImg({ src, alt = "", className = "", fallback = "" }) {
+      const [failed, setFailed] = useState(false);
+      useEffect(() => setFailed(false), [src]);
+      if (!src || failed) {
+        return (
+          <div role="img" aria-label={alt} className={`${className} bg-gradient-to-br from-sky-100 via-indigo-100 to-violet-200 flex items-center justify-center text-slate-500 font-semibold`}>
+            {fallback}
+          </div>
+        );
+      }
+      return <img src={src} alt={alt} className={className} onError={() => setFailed(true)} />;
+    }
+
+    // Size comes from className (e.g. "w-9 h-9")
+    function Avatar({ src, name, className = "" }) {
+      return <SafeImg src={src} alt={name} fallback={initials(name)} className={`rounded-full object-cover shrink-0 text-xs ${className}`} />;
+    }
+
+    const Card = ({ className = "", children }) => (
+      <div className={`bg-white rounded-lg border border-slate-200 ${className}`}>{children}</div>
+    );
+
+    function ChipEditor({ items, onChange, prefix = "", placeholder, chipClass, disabled }) {
+      const [text, setText] = useState("");
+      const add = () => {
+        const v = prefix ? stripHash(text) : text.trim();
+        if (v && !items.includes(v)) onChange([...items, v]);
+        setText("");
+      };
+      return (
+        <div className="flex flex-wrap gap-1.5 items-center">
+          {items.map(item => (
+            <span key={item} className={`inline-flex items-center gap-1 text-xs font-medium pl-2.5 pr-1.5 py-1 rounded-full ${chipClass}`}>
+              {prefix}{item}
+              {!disabled && (
+                <button type="button" onClick={() => onChange(items.filter(i => i !== item))} className="opacity-60 hover:opacity-100" aria-label={`Remove ${item}`}>
+                  <Icon name="X" size={12} />
+                </button>
+              )}
+            </span>
+          ))}
+          {!disabled && (
+            <input
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === ",") { e.preventDefault(); add(); } }}
+              onBlur={add}
+              placeholder={placeholder}
+              className="text-xs px-2 py-1 rounded-full border border-dashed border-slate-300 focus:outline-none focus:border-li w-28"
+            />
+          )}
+        </div>
+      );
+    }
+
+    // Highlight hashtags in post text
+    function RichText({ text }) {
+      return text.split(/(#[A-Za-z0-9_]+)/g).map((part, i) =>
+        part.startsWith("#") ? <span key={i} className="text-li font-semibold hover:underline cursor-pointer">{part}</span> : part
+      );
+    }
+
+    // =====================================================================
+    // POST CARD
+    // =====================================================================
+    function PostCard({ post, isNew, actions }) {
+      const [expanded, setExpanded] = useState(false);
+      const [showComments, setShowComments] = useState(false);
+      const [commentText, setCommentText] = useState("");
+
+      const total = Object.values(post.reactions).reduce((a, b) => a + b, 0);
+      const top = REACTIONS.filter(r => post.reactions[r.id] > 0).sort((a, b) => post.reactions[b.id] - post.reactions[a.id]).slice(0, 3);
+      const mine = REACTIONS.find(r => r.id === post.myReaction);
+      const isLong = post.body.length > 260 || post.body.split("\n").length > 4;
+
+      const submitComment = (e) => {
+        e.preventDefault();
+        if (!commentText.trim()) return;
+        actions.comment(post.id, commentText.trim());
+        setCommentText("");
+      };
+
+      const actionBtn = "flex-1 flex items-center justify-center gap-1.5 py-3 rounded-md text-sm font-semibold text-slate-600 hover:bg-slate-100 transition";
+
+      return (
+        <article className={`bg-white rounded-lg border border-slate-200 ${isNew ? "pop-in" : ""}`}>
+          {/* Header */}
+          <div className="flex items-start gap-2 px-4 pt-3">
+            <button onClick={actions.openCompany} className="relative shrink-0">
+              <img src={LOGO} alt={COMPANY.name} className="w-12 h-12 rounded" />
+            </button>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <button onClick={actions.openCompany} className="font-semibold text-sm hover:text-li hover:underline">{COMPANY.name}</button>
+                {post.job && (
+                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5">
+                    <Icon name="Briefcase" size={11} /> Hiring
+                  </span>
+                )}
+              </div>
+              <div className="text-xs text-slate-500">{fmt(COMPANY.followers)} followers</div>
+              <div className="text-xs text-slate-500 flex items-center gap-1">
+                {timeAgo(post.createdAt)} • <Icon name="Globe" size={12} />
+                {post.byAgent && <span className="ml-1 text-violet-600 inline-flex items-center gap-0.5"><Icon name="Sparkles" size={11} /> Drafted with Agent Copilot</span>}
+              </div>
+            </div>
+            <button className="text-slate-500 hover:bg-slate-100 rounded-full p-1.5" aria-label="More"><Icon name="Ellipsis" size={20} /></button>
+          </div>
+
+          {/* Body */}
+          <div className="px-4 pt-2 pb-2 text-sm leading-relaxed text-slate-800">
+            <div className={`whitespace-pre-line break-words ${isLong && !expanded ? "line-clamp-3" : ""}`}>
+              <RichText text={post.body} />
+            </div>
+            {isLong && (
+              <button onClick={() => setExpanded(!expanded)} className="text-slate-500 hover:text-li hover:underline text-sm font-medium">
+                {expanded ? "show less" : "…see more"}
+              </button>
+            )}
+          </div>
+
+          {/* Media */}
+          {post.media && (
+            <SafeImg src={post.media} alt="Post media" fallback={<Icon name="Image" size={32} />} className="w-full aspect-[1.91/1] object-cover bg-slate-100" />
+          )}
+
+          {/* Job attachment */}
+          {post.job && (
+            <div className="mx-4 mt-3 border border-slate-200 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center gap-3">
+              <img src={LOGO} alt="" className="w-12 h-12 rounded hidden sm:block" />
+              <div className="flex-1 min-w-0">
+                <div className="font-semibold text-[15px]">{post.job.title}</div>
+                <div className="text-xs text-slate-600">{COMPANY.name} · {post.job.location} ({post.job.workplace})</div>
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {[post.job.salary, post.job.employmentType, post.job.experience].filter(Boolean).map(t => (
+                    <span key={t} className="text-[11px] bg-slate-100 text-slate-700 rounded px-2 py-0.5">{t}</span>
+                  ))}
+                </div>
+                {post.applicants > 0 && <div className="text-xs text-emerald-700 mt-1.5 font-medium">{fmt(post.applicants)} applicants</div>}
+              </div>
+              <div className="flex sm:flex-col gap-2 shrink-0">
+                <button onClick={() => actions.apply(post)} className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 bg-li hover:bg-li-dark text-white text-sm font-semibold px-4 py-1.5 rounded-full transition">
+                  <span className="bg-white text-li text-[10px] font-bold rounded-sm w-4 h-4 flex items-center justify-center">in</span> Easy Apply
+                </button>
+                <button onClick={() => actions.inmail(post)} className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 border border-li text-li hover:bg-li-soft text-sm font-semibold px-4 py-1.5 rounded-full transition">
+                  <Icon name="Mail" size={15} /> Send InMail
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Counts */}
+          <div className="flex items-center justify-between px-4 pt-3 pb-2 text-xs text-slate-500">
+            <div className="flex items-center gap-1">
+              {top.length > 0 && (
+                <span className="flex -space-x-1">
+                  {top.map(r => <span key={r.id} className="w-[18px] h-[18px] rounded-full bg-white ring-1 ring-white flex items-center justify-center text-[12px]">{r.emoji}</span>)}
+                </span>
+              )}
+              {total > 0 && <span className="hover:text-li hover:underline cursor-pointer">{fmt(total)}</span>}
+            </div>
+            <div className="flex gap-2">
+              {post.comments.length > 0 && <button onClick={() => setShowComments(true)} className="hover:text-li hover:underline">{post.comments.length} comments</button>}
+              {post.reposts > 0 && <span>{fmt(post.reposts)} reposts</span>}
+            </div>
+          </div>
+
+          {/* Action bar */}
+          <div className="mx-2 border-t border-slate-200 flex">
+            <div className="relative flex-1 group/like">
+              <div className="absolute bottom-full left-0 pb-2 hidden group-hover/like:block z-10">
+                <div className="flex gap-1 bg-white shadow-lg border border-slate-200 rounded-full px-2 py-1">
+                  {REACTIONS.map(r => (
+                    <button key={r.id} title={r.label} onClick={() => actions.react(post.id, r.id)} className="text-2xl px-0.5 transition hover:scale-125 hover:-translate-y-1">{r.emoji}</button>
+                  ))}
+                </div>
+              </div>
+              <button onClick={() => actions.react(post.id, post.myReaction || "like")} className={`${actionBtn} w-full ${mine ? mine.color : ""}`}>
+                {mine ? <span className="text-base leading-none">{mine.emoji}</span> : <Icon name="ThumbsUp" size={18} />}
+                <span className="hidden sm:inline">{mine ? mine.label : "Like"}</span>
+              </button>
+            </div>
+            <button onClick={() => setShowComments(!showComments)} className={actionBtn}>
+              <Icon name="MessageSquareText" size={18} /><span className="hidden sm:inline">Comment</span>
+            </button>
+            <button onClick={() => actions.repost(post.id)} className={`${actionBtn} ${post.reposted ? "text-emerald-700" : ""}`}>
+              <Icon name="Repeat2" size={18} /><span className="hidden sm:inline">{post.reposted ? "Reposted" : "Repost"}</span>
+            </button>
+            <button onClick={() => actions.send(post)} className={actionBtn}>
+              <Icon name="Send" size={18} /><span className="hidden sm:inline">Send</span>
+            </button>
+          </div>
+
+          {/* Comments */}
+          {showComments && (
+            <div className="px-4 pb-4 pt-1 space-y-3">
+              <form onSubmit={submitComment} className="flex items-center gap-2">
+                <Avatar src={VIEWER.avatar} name={VIEWER.name} className="w-9 h-9" />
+                <input value={commentText} onChange={(e) => setCommentText(e.target.value)} placeholder="Add a comment…"
+                       className="flex-1 min-w-0 border border-slate-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-slate-500" />
+                {commentText.trim() && <button className="bg-li hover:bg-li-dark text-white text-sm font-semibold px-3 py-1.5 rounded-full">Post</button>}
+              </form>
+              {post.comments.map(c => (
+                <div key={c.id} className="flex gap-2">
+                  <Avatar src={c.avatar} name={c.author} className="w-9 h-9" />
+                  <div className="flex-1 min-w-0 bg-slate-100 rounded-lg px-3 py-2">
+                    <div className="flex justify-between gap-2">
+                      <span className="text-xs font-semibold">{c.author}</span>
+                      <span className="text-[11px] text-slate-500 shrink-0">{timeAgo(c.createdAt)}</span>
+                    </div>
+                    <div className="text-[11px] text-slate-500">{c.headline}</div>
+                    <p className="text-sm mt-1 break-words">{c.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </article>
+      );
+    }
+
+    // =====================================================================
+    // VIEW: FEED
+    // =====================================================================
+    function FeedView({ posts, query, newPostId, actions, go }) {
+      const q = query.trim().toLowerCase();
+      const shown = q ? posts.filter(p => (p.body + " " + (p.job?.title || "")).toLowerCase().includes(q)) : posts;
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-[225px_minmax(0,1fr)] lg:grid-cols-[225px_minmax(0,1fr)_300px] gap-6 items-start">
+          {/* Left: profile */}
+          <aside className="hidden md:block space-y-2 sticky top-[68px]">
+            <Card className="overflow-hidden">
+              <div className="h-14 bg-gradient-to-r from-sky-200 via-indigo-200 to-violet-200" />
+              <div className="px-3 pb-3 -mt-8 text-center">
+                <Avatar src={VIEWER.avatar} name={VIEWER.name} className="w-16 h-16 mx-auto ring-2 ring-white" />
+                <div className="font-semibold mt-2">{VIEWER.name}</div>
+                <div className="text-xs text-slate-500">{VIEWER.headline}</div>
+              </div>
+              <div className="border-t border-slate-200 px-3 py-2.5 text-xs space-y-1.5">
+                <div className="flex justify-between"><span className="text-slate-500">Profile viewers</span><span className="text-li font-semibold">128</span></div>
+                <div className="flex justify-between"><span className="text-slate-500">Post impressions</span><span className="text-li font-semibold">2,431</span></div>
+              </div>
+              <button onClick={() => go("company")} className="w-full border-t border-slate-200 px-3 py-2.5 text-xs font-semibold flex items-center gap-2 hover:bg-slate-50">
+                <img src={LOGO} alt="" className="w-5 h-5 rounded-sm" /> {COMPANY.name} page
+              </button>
+            </Card>
+          </aside>
+
+          {/* Center: start post + posts */}
+          <section className="space-y-3 min-w-0">
+            <Card className="p-3">
+              <div className="flex items-center gap-2">
+                <Avatar src={VIEWER.avatar} name={VIEWER.name} className="w-12 h-12" />
+                <button onClick={() => go("studio")} className="flex-1 text-left border border-slate-400 hover:bg-slate-100 rounded-full px-4 py-3 text-sm font-semibold text-slate-500">
+                  Start a post
+                </button>
+              </div>
+              <div className="flex justify-around mt-2 text-sm font-semibold text-slate-600">
+                <button onClick={() => go("studio")} className="flex items-center gap-2 px-3 py-2 rounded hover:bg-slate-100"><Icon name="Image" size={20} className="text-sky-600" /> Media</button>
+                <button onClick={() => go("studio")} className="flex items-center gap-2 px-3 py-2 rounded hover:bg-slate-100"><Icon name="Briefcase" size={20} className="text-violet-600" /> Job</button>
+                <button onClick={() => go("studio")} className="flex items-center gap-2 px-3 py-2 rounded hover:bg-slate-100"><Icon name="Sparkles" size={20} className="text-amber-600" /> <span className="hidden sm:inline">Agent Copilot</span><span className="sm:hidden">AI</span></button>
+              </div>
+            </Card>
+
+            <div className="flex items-center gap-2 text-xs text-slate-500">
+              <div className="flex-1 border-t border-slate-300" />
+              {q ? <span>{shown.length} results for “{query}”</span> : <span>Sort by: <strong className="text-slate-800">Top</strong></span>}
+            </div>
+
+            {shown.map(post => <PostCard key={post.id} post={post} isNew={post.id === newPostId} actions={actions} />)}
+            {shown.length === 0 && <Card className="p-8 text-center text-sm text-slate-500">No posts match your search.</Card>}
+          </section>
+
+          {/* Right: news */}
+          <aside className="hidden lg:block space-y-2 sticky top-[68px]">
+            <Card className="p-3">
+              <div className="flex items-center justify-between"><h3 className="font-semibold">LinkedIn News</h3><Icon name="Info" size={16} className="text-slate-500" /></div>
+              <p className="text-xs text-slate-500 font-semibold mt-2">Top stories</p>
+              <ul className="mt-1 space-y-2.5">
+                {[["Malaysia tech hiring rebounds", "2h ago • 4,812 readers"], ["AI agents reshape recruiting", "5h ago • 12,377 readers"], ["Hybrid work here to stay", "1d ago • 8,029 readers"], ["Fintech funding in SEA climbs", "1d ago • 3,456 readers"]].map(([t, m]) => (
+                  <li key={t} className="cursor-pointer group">
+                    <div className="text-sm font-semibold group-hover:text-li group-hover:underline">{t}</div>
+                    <div className="text-xs text-slate-500">{m}</div>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+            <Card className="p-4 text-center">
+              <div className="w-10 h-10 mx-auto rounded-full bg-violet-100 text-violet-700 flex items-center justify-center"><Icon name="Bot" size={20} /></div>
+              <p className="text-sm font-semibold mt-2">Hire faster with Agent Copilot</p>
+              <p className="text-xs text-slate-500 mt-1">AI agents draft, optimize and publish job posts. You stay in control.</p>
+              <button onClick={() => go("studio")} className="mt-3 border border-li text-li hover:bg-li-soft font-semibold text-sm px-4 py-1.5 rounded-full">Open Studio</button>
+            </Card>
+          </aside>
+        </div>
+      );
+    }
+
+    // =====================================================================
+    // VIEW: JOBS LIST (Jobs page + Company Jobs tab)
+    // =====================================================================
+    function JobsList({ posts, actions, title = "Open roles" }) {
+      const jobs = posts.filter(p => p.job);
+      return (
+        <Card>
+          <div className="px-4 py-3 border-b border-slate-200">
+            <h2 className="font-semibold text-lg">{title}</h2>
+            <p className="text-xs text-slate-500">{jobs.length} open {jobs.length === 1 ? "role" : "roles"} at {COMPANY.name}</p>
+          </div>
+          <ul className="divide-y divide-slate-200">
+            {jobs.map(p => (
+              <li key={p.id} className="p-4 flex flex-col sm:flex-row gap-3">
+                <img src={LOGO} alt="" className="w-14 h-14 rounded" />
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold text-li hover:underline cursor-pointer">{p.job.title}</div>
+                  <div className="text-sm">{COMPANY.name}</div>
+                  <div className="text-sm text-slate-500">{p.job.location} ({p.job.workplace})</div>
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    {[p.job.salary, p.job.employmentType, p.job.experience].filter(Boolean).map(t => (
+                      <span key={t} className="text-[11px] bg-slate-100 text-slate-700 rounded px-2 py-0.5">{t}</span>
+                    ))}
+                  </div>
+                  <div className="text-xs text-slate-500 mt-2">
+                    {timeAgo(p.createdAt) === "Just now" ? "Posted just now" : `Posted ${timeAgo(p.createdAt)} ago`}
+                    {p.applicants > 0 && <span className="text-emerald-700 font-medium"> · {fmt(p.applicants)} applicants</span>}
+                  </div>
+                </div>
+                <div className="flex sm:flex-col gap-2 shrink-0">
+                  <button onClick={() => actions.apply(p)} className="bg-li hover:bg-li-dark text-white text-sm font-semibold px-4 py-1.5 rounded-full">Easy Apply</button>
+                  <button onClick={() => actions.inmail(p)} className="border border-li text-li hover:bg-li-soft text-sm font-semibold px-4 py-1.5 rounded-full">Send InMail</button>
+                </div>
+              </li>
+            ))}
+            {jobs.length === 0 && <li className="p-8 text-center text-sm text-slate-500">No open roles yet. Draft one in Agent Copilot Studio.</li>}
+          </ul>
+        </Card>
+      );
+    }
+
+    // =====================================================================
+    // VIEW: COMPANY PAGE
+    // =====================================================================
+    function CompanyView({ posts, newPostId, actions }) {
+      const [tab, setTab] = useState("posts");
+      const [following, setFollowing] = useState(true);
+      const jobsCount = posts.filter(p => p.job).length;
+      const agentCount = posts.filter(p => p.byAgent).length;
+
+      return (
+        <div className="max-w-4xl mx-auto space-y-3">
+          <Card className="overflow-hidden">
+            <SafeImg src={IMG.cover} alt="Cover" className="w-full h-32 sm:h-48 object-cover" />
+            <div className="px-4 sm:px-6 pb-4">
+              <img src={LOGO} alt={COMPANY.name} className="w-20 h-20 sm:w-28 sm:h-28 rounded-lg border-4 border-white -mt-10 sm:-mt-14 bg-white shadow-sm" />
+              <h1 className="text-xl sm:text-2xl font-semibold mt-2">{COMPANY.name}</h1>
+              <p className="text-sm sm:text-base">{COMPANY.tagline}</p>
+              <p className="text-sm text-slate-500 mt-1">
+                {COMPANY.industry} · {COMPANY.location} · {fmt(COMPANY.followers + (following ? 0 : -1))} followers · {COMPANY.size}
+              </p>
+              <p className="text-sm text-li font-semibold mt-1 flex items-center gap-1"><Icon name="Users" size={15} /> {COMPANY.onLinkedIn} employees on LinkedIn</p>
+              <div className="flex flex-wrap gap-2 mt-3">
+                <button onClick={() => setFollowing(!following)} className={`inline-flex items-center gap-1 font-semibold text-sm px-4 py-1.5 rounded-full transition ${following ? "border border-li text-li hover:bg-li-soft" : "bg-li text-white hover:bg-li-dark"}`}>
+                  <Icon name={following ? "Check" : "Plus"} size={16} /> {following ? "Following" : "Follow"}
+                </button>
+                <button className="inline-flex items-center gap-1 border border-slate-500 text-slate-600 hover:bg-slate-100 font-semibold text-sm px-4 py-1.5 rounded-full">
+                  Visit website <Icon name="ExternalLink" size={14} />
+                </button>
+              </div>
+            </div>
+            <nav className="flex border-t border-slate-200 px-2 sm:px-4 overflow-x-auto no-scrollbar">
+              {[["about", "About"], ["posts", "Posts"], ["jobs", `Jobs (${jobsCount})`]].map(([id, label]) => (
+                <button key={id} onClick={() => setTab(id)} className={`px-4 py-3 text-sm font-semibold border-b-2 whitespace-nowrap transition ${tab === id ? "border-emerald-700 text-emerald-800" : "border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-50"}`}>
+                  {label}
+                </button>
+              ))}
+            </nav>
+          </Card>
+
+          {tab === "about" && (
+            <Card className="p-4 sm:p-6 space-y-5">
+              <div>
+                <h2 className="font-semibold text-lg">Overview</h2>
+                <p className="text-sm text-slate-700 whitespace-pre-line mt-2 leading-relaxed">{COMPANY.overview}</p>
+              </div>
+              <dl className="grid sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
+                {[["Website", <span className="text-li font-semibold">{COMPANY.website}</span>], ["Industry", COMPANY.industry], ["Company size", `${COMPANY.size} · ${COMPANY.onLinkedIn} on LinkedIn`], ["Headquarters", COMPANY.hq], ["Founded", COMPANY.founded], ["Followers", fmt(COMPANY.followers)]].map(([k, v]) => (
+                  <div key={k}><dt className="font-semibold">{k}</dt><dd className="text-slate-600">{v}</dd></div>
+                ))}
+              </dl>
+              <div>
+                <h3 className="font-semibold text-sm">Specialties</h3>
+                <div className="flex flex-wrap gap-1.5 mt-2">{COMPANY.specialties.map(s => <span key={s} className="text-xs bg-slate-100 rounded-full px-3 py-1">{s}</span>)}</div>
+              </div>
+              <div>
+                <h3 className="font-semibold text-sm">Industries</h3>
+                <div className="flex flex-wrap gap-1.5 mt-2">{COMPANY.industryTags.map(s => <span key={s} className="text-xs bg-li-soft text-li font-medium rounded-full px-3 py-1">{s}</span>)}</div>
+              </div>
+            </Card>
+          )}
+
+          {tab === "posts" && (
+            <div className="space-y-3 max-w-[555px] mx-auto">
+              {agentCount > 0 && (
+                <div className="text-xs text-violet-700 bg-violet-50 border border-violet-200 rounded-lg px-3 py-2 flex items-center gap-1.5">
+                  <Icon name="Sparkles" size={14} /> {agentCount} {agentCount === 1 ? "post" : "posts"} published by the Agent Copilot workflow
+                </div>
+              )}
+              {posts.map(p => <PostCard key={p.id} post={p} isNew={p.id === newPostId} actions={actions} />)}
+            </div>
+          )}
+
+          {tab === "jobs" && <JobsList posts={posts} actions={actions} />}
+        </div>
+      );
+    }
+
+    // =====================================================================
+    // VIEW: NOTIFICATIONS
+    // =====================================================================
+    function NotificationsView({ notifs, go }) {
+      return (
+        <div className="max-w-2xl mx-auto">
+          <Card>
+            <h2 className="px-4 py-3 border-b border-slate-200 font-semibold text-lg">Notifications</h2>
+            <ul className="divide-y divide-slate-200">
+              {notifs.map(n => (
+                <li key={n.id} onClick={() => n.postId && go("feed")} className={`px-4 py-3 flex gap-3 items-start ${n.postId ? "cursor-pointer hover:bg-slate-50" : ""} ${n.read ? "" : "bg-li-soft"}`}>
+                  <div className="w-10 h-10 rounded-full bg-li-soft text-li flex items-center justify-center shrink-0"><Icon name={n.icon} size={18} /></div>
+                  <p className="text-sm flex-1">{n.text}</p>
+                  <span className="text-xs text-slate-500 shrink-0">{timeAgo(n.createdAt)}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </div>
+      );
+    }
+
+    // =====================================================================
+    // VIEW: AGENT COPILOT STUDIO (drafting + HITL approval)
+    // =====================================================================
+    const EMPTY_FORM = { title: "", department: "", employmentType: "Full-time", workplace: "Hybrid", location: "", details: "", tone: "startup", media: "" };
+
+    const STEPS = [
+      { id: "agent", name: "Talent & Content Agent", desc: "Drafts copy, specs & SEO", icon: "Bot" },
+      { id: "hitl", name: "HITL Gatekeeper", desc: "Owner reviews & authorizes", icon: "ShieldCheck" },
+      { id: "publish", name: "LinkedIn Publishing Engine", desc: "Publishes to feed & page", icon: "Rocket" }
+    ];
+
+    function stepStatus(stepId, stage) {
+      const order = { idle: 0, drafting: 1, review: 2, publishing: 3, published: 4 };
+      const active = { agent: 1, hitl: 2, publish: 3 }[stepId];
+      const s = order[stage];
+      if (s === active) return "running";
+      if (s > active) return "done";
+      return "idle";
+    }
+
+
+    // =====================================================================
+    // TALENT (BizFlow): suitable candidates + messaging, both sides for the demo
+    // =====================================================================
+    function TalentView() {
+      const [data, setData] = useState({ matches: [], jobs: [], candidates_seen: 0 });
+      const [sel, setSel] = useState(null);
+      const [thread, setThread] = useState({ messages: [] });
+      const [text, setText] = useState("");
+      const endRef = useRef(null);
+      useEffect(() => {
+        const pull = async () => { try { setData(await fetch("/api/recruiting?business_id=" + encodeURIComponent(BIZ_ID)).then(r => r.json())); } catch {} };
+        pull(); const t = setInterval(pull, 4000); return () => clearInterval(t);
+      }, []);
+      useEffect(() => {
+        if (!sel) return;
+        const pull = async () => { try { setThread(await fetch(`/api/channels/linkedin/thread?handle=${encodeURIComponent(sel.handle)}&business_id=${BIZ_ID}`).then(r => r.json())); } catch {} };
+        pull(); const t = setInterval(pull, 3000); return () => clearInterval(t);
+      }, [sel && sel.handle]);
+      useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [thread.messages && thread.messages.length]);
+      const m = sel && data.matches.find(x => x.handle === sel.handle);
+      const sendAs = async (who) => {
+        if (!text.trim() || !m) return;
+        if (who === "candidate") await bfPost("/api/channels/linkedin/incoming", { business_id: BIZ_ID, contact: { handle: m.handle, name: m.candidate.name }, text });
+        else if (thread.id) await bfPost(`/api/inbox/${thread.id}/reply`, { text });
+        else await bfPost("/api/recruiting/contact", { business_id: BIZ_ID, job_id: m.job_id, handle: m.handle, text });
+        setText("");
+        setThread(await fetch(`/api/channels/linkedin/thread?handle=${encodeURIComponent(m.handle)}&business_id=${BIZ_ID}`).then(r => r.json()));
+      };
+      const job = data.jobs[0];
+      return (
+        <div className="grid md:grid-cols-[340px_1fr] gap-4">
+          <section className="bg-white rounded-lg border border-slate-200 overflow-hidden">
+            <div className="p-4 border-b border-slate-200">
+              <div className="font-semibold">Suitable candidates</div>
+              <div className="text-xs text-slate-500">{job ? `For ${job.title} · scored by BizFlow · ${data.candidates_seen} profiles seen` : "Create a role in BizFlow → Automations → Recruiting"}</div>
+            </div>
+            {data.matches.length === 0 && <div className="p-4 text-sm text-slate-500">No matches yet — BizFlow keeps looking every minute.</div>}
+            {data.matches.map(x => (
+              <button key={x.handle} onClick={() => setSel(x)} className={`w-full text-left px-4 py-3 border-b border-slate-100 hover:bg-slate-50 flex gap-3 items-center ${sel && sel.handle === x.handle ? "bg-li-soft" : ""}`}>
+                <div className="w-11 h-11 rounded-full bg-gradient-to-br from-li to-violet-600 text-white flex items-center justify-center font-semibold shrink-0">{(x.candidate.name || "?").slice(0, 1)}</div>
+                <div className="min-w-0 flex-1">
+                  <div className="font-semibold text-sm truncate">{x.candidate.name}</div>
+                  <div className="text-xs text-slate-500 truncate">{x.candidate.headline}</div>
+                  <div className="text-xs text-slate-500">{(x.candidate.availability || []).join(", ")} · {x.status === "contacted" ? "messaged" : "new"}</div>
+                </div>
+                <div className={`text-sm font-bold rounded px-2 py-1 ${x.score >= 80 ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-700"}`}>{x.score}</div>
+              </button>
+            ))}
+          </section>
+          <section className="bg-white rounded-lg border border-slate-200 flex flex-col min-h-[520px]">
+            {!m ? <div className="p-6 text-sm text-slate-500">Pick a candidate to see why they fit and to message them.</div> : (<>
+              <div className="p-4 border-b border-slate-200">
+                <div className="font-semibold">{m.candidate.name} <span className="text-xs font-normal text-slate-500">· {m.candidate.location} · expects MYR {m.candidate.expected_pay}/h</span></div>
+                <ul className="text-xs text-slate-600 mt-1 list-disc pl-5">{(m.why || []).map((w, i) => <li key={i}>{w}</li>)}</ul>
+              </div>
+              <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-slate-50">
+                {(thread.messages || []).length === 0 && <div className="text-sm text-slate-500">No messages yet. Send one as {COMPANY.name}, or from BizFlow → ✉ Message on LinkedIn.</div>}
+                {(thread.messages || []).map(msg => (
+                  <div key={msg.id} className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm whitespace-pre-wrap ${msg.from === "me" ? "ml-auto bg-li text-white" : "bg-white border border-slate-200"}`}>
+                    <div className="text-[11px] opacity-70 mb-0.5">{msg.from === "me" ? COMPANY.name + (msg.by === "auto" ? " (auto)" : "") : m.candidate.name}</div>{msg.text}
+                  </div>))}
+                <div ref={endRef} />
+              </div>
+              <div className="p-3 border-t border-slate-200 space-y-2">
+                <textarea value={text} onChange={e => setText(e.target.value)} rows={3} placeholder="Write a message…" className="w-full border border-slate-300 rounded px-3 py-2 text-sm" />
+                <div className="flex flex-wrap gap-2 justify-end">
+                  <button onClick={() => sendAs("candidate")} className="border border-slate-400 text-slate-700 font-semibold text-sm px-4 py-1.5 rounded-full hover:bg-slate-50">Reply as {(m.candidate.name || "candidate").split(" (")[0]} (demo)</button>
+                  <button onClick={() => sendAs("company")} className="bg-li text-white font-semibold text-sm px-4 py-1.5 rounded-full">Send as {COMPANY.name}</button>
+                </div>
+              </div>
+            </>)}
+          </section>
+        </div>
+      );
+    }
+
+    function StudioView({ apiKey, onPublish, onOpenKey, onReset }) {
+      const [form, setForm] = useState(EMPTY_FORM);
+      const [stage, setStage] = useState("idle"); // idle | drafting | review | publishing | published
+      const [draft, setDraft] = useState(null);
+      const [source, setSource] = useState(null);
+      const [logs, setLogs] = useState([{ t: Date.now(), agent: "System", msg: "Agents online. Waiting for a job brief." }]);
+      const [mediaError, setMediaError] = useState("");
+      const [dragging, setDragging] = useState(false);
+      const logRef = useRef(null);
+
+      const locked = stage === "drafting" || stage === "publishing";
+      const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
+      const log = (agent, msg) => setLogs(l => [...l, { t: Date.now(), agent, msg }]);
+      const setD = (k, v) => setDraft(d => ({ ...d, [k]: v }));
+
+      useEffect(() => { if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight; }, [logs]);
+
+      const handleFile = async (file) => {
+        setMediaError("");
+        try { setForm(f => ({ ...f, media: "" })); const url = await readImageFile(file); setForm(f => ({ ...f, media: url })); }
+        catch (err) { setMediaError(err.message); }
+      };
+
+      const generate = async () => {
+        if (!form.title.trim() || locked) return;
+        setStage("drafting");
+        setDraft(null);
+        const tone = TONES.find(t => t.id === form.tone).label;
+        log("Talent & Content Agent", `Received brief: "${form.title}" · ${form.workplace} · ${form.location || "no location"}`);
+        log("Talent & Content Agent", `Applying tone profile "${tone}" and LinkedIn reach heuristics…`);
+
+        const [result] = await Promise.all([runTalentAgent({ ...form, title: form.title.trim() }, apiKey.trim()), wait(1400)]);
+        if (result.note) log("System", `OpenAI unavailable (${result.note}). Switched to mock fallback generator.`);
+        log("Talent & Content Agent", `Draft ready via ${result.source}: ${result.draft.keywords.length} SEO keywords, ${result.draft.hashtags.length} hashtags.`);
+        log("HITL Gatekeeper", "Awaiting owner review and authorization.");
+        setSource(result.source);
+        setDraft(result.draft);
+        setStage("review");
+      };
+
+      const approve = async () => {
+        if (stage !== "review" || !draft.copy.trim()) return;
+        log("HITL Gatekeeper", `Approved by ${VIEWER.name}.`);
+        setStage("publishing");
+        log("LinkedIn Publishing Engine", `Publishing to ${COMPANY.name} feed and company page…`);
+        await wait(1300);
+
+        const tags = draft.hashtags.map(h => `#${h}`).join(" ");
+        onPublish({
+          id: `agent_${Date.now()}`,
+          createdAt: Date.now(),
+          body: tags ? `${draft.copy.trim()}\n\n${tags}` : draft.copy.trim(),
+          media: form.media,
+          job: {
+            title: form.title.trim(), department: form.department, location: draft.location || form.location,
+            workplace: form.workplace, employmentType: form.employmentType, salary: draft.salary, experience: draft.experience
+          },
+          keywords: draft.keywords,
+          reactions: { like: 0, celebrate: 0, love: 0, insightful: 0 },
+          myReaction: null, comments: [], reposts: 0, reposted: false, applicants: 0, byAgent: true
+        });
+        log("LinkedIn Publishing Engine", "Post is live. ✅");
+        setStage("published");
+      };
+
+      const discard = () => {
+        setDraft(null);
+        setStage("idle");
+        log("HITL Gatekeeper", "Draft rejected by owner.");
+      };
+
+      const startOver = () => {
+        setForm(EMPTY_FORM);
+        setDraft(null);
+        setStage("idle");
+        log("System", "Ready for a new job brief.");
+      };
+
+      const hook = draft?.copy.split("\n")[0] || "";
+      const input = "w-full border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-li focus:ring-1 focus:ring-li disabled:bg-slate-50";
+      const label = "block text-xs font-semibold text-slate-600 mb-1";
+
+      return (
+        <div className="space-y-4">
+          {/* Pipeline header */}
+          <Card className="p-4">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h1 className="text-lg font-semibold flex items-center gap-2"><Icon name="Sparkles" className="text-li" /> Agent Copilot Studio</h1>
+                <p className="text-xs text-slate-500">Multi-agent autonomous hiring & content workflow · posting as {COMPANY.name}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button onClick={onOpenKey} className={`inline-flex items-center gap-1.5 text-xs font-semibold rounded-full px-3 py-1.5 border ${apiKey ? "border-emerald-300 bg-emerald-50 text-emerald-800" : "border-slate-300 text-slate-600 hover:bg-slate-50"}`}>
+                  <Icon name="KeyRound" size={14} /> {apiKey ? "OpenAI key set" : "AI: auto (server → mock)"}
+                </button>
+                <button onClick={onReset} className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-slate-800 px-2 py-1.5">
+                  <Icon name="RotateCcw" size={13} /> Reset demo
+                </button>
+              </div>
+            </div>
+
+            <ol className="mt-4 grid sm:grid-cols-3 gap-2">
+              {STEPS.map((step, i) => {
+                const s = stepStatus(step.id, stage);
+                return (
+                  <li key={step.id} className={`relative rounded-lg border p-3 flex items-center gap-3 transition ${
+                    s === "running" ? "border-li bg-li-soft" : s === "done" ? "border-emerald-200 bg-emerald-50" : "border-slate-200"
+                  }`}>
+                    <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${
+                      s === "running" ? "bg-li text-white" : s === "done" ? "bg-emerald-600 text-white" : "bg-slate-100 text-slate-500"
+                    }`}>
+                      {s === "done" ? <Icon name="Check" size={18} /> : s === "running" && step.id !== "hitl" ? <Icon name="LoaderCircle" size={18} className="animate-spin" /> : <Icon name={step.icon} size={18} />}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-sm font-semibold truncate">{i + 1}. {step.name}</div>
+                      <div className="text-xs text-slate-500">
+                        {s === "running" ? (step.id === "hitl" ? "Waiting for your approval" : "Working…") : s === "done" ? "Completed" : step.desc}
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+
+            <div ref={logRef} className="mt-3 bg-slate-900 text-slate-200 rounded-md px-3 py-2 font-mono text-[11px] leading-5 h-24 overflow-y-auto">
+              {logs.map((l, i) => (
+                <div key={i}>
+                  <span className="text-slate-500">{new Date(l.t).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</span>{" "}
+                  <span className={l.agent === "System" ? "text-amber-300" : l.agent.startsWith("HITL") ? "text-emerald-300" : l.agent.startsWith("LinkedIn") ? "text-violet-300" : "text-sky-300"}>[{l.agent}]</span>{" "}
+                  {l.msg}
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <div className="grid lg:grid-cols-2 gap-4 items-start">
+            {/* INPUT PANEL */}
+            <Card className="p-4 space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h2 className="font-semibold flex items-center gap-2"><Icon name="Briefcase" size={18} className="text-li" /> Job brief</h2>
+                <div className="flex flex-wrap gap-1.5">
+                  <span className="text-xs text-slate-500 self-center">Quick fill:</span>
+                  {JOB_PRESETS.map(p => (
+                    <button key={p.label} disabled={locked} onClick={() => { const { label: _, ...rest } = p; setForm(rest); }}
+                            className="text-xs border border-slate-300 hover:border-li hover:text-li rounded-full px-2.5 py-1 disabled:opacity-40">
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <fieldset disabled={locked} className="space-y-3">
+                <div>
+                  <label className={label}>Job title *</label>
+                  <input value={form.title} onChange={set("title")} placeholder="e.g. Senior Full-Stack Engineer" className={input} />
+                </div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className={label}>Department</label>
+                    <input value={form.department} onChange={set("department")} placeholder="e.g. Engineering" className={input} />
+                  </div>
+                  <div>
+                    <label className={label}>Location</label>
+                    <input value={form.location} onChange={set("location")} placeholder="e.g. Subang Jaya, Selangor" className={input} />
+                  </div>
+                  <div>
+                    <label className={label}>Employment type</label>
+                    <select value={form.employmentType} onChange={set("employmentType")} className={input}>
+                      {EMPLOYMENT_TYPES.map(t => <option key={t}>{t}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className={label}>Workplace</label>
+                    <div className="grid grid-cols-3 gap-1">
+                      {WORKPLACES.map(w => (
+                        <button key={w} type="button" onClick={() => setForm(f => ({ ...f, workplace: w }))}
+                                className={`text-xs font-medium py-2 rounded-md border transition ${form.workplace === w ? "border-li bg-li-soft text-li" : "border-slate-300 hover:bg-slate-50"}`}>
+                          {w}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label className={label}>Key responsibilities & perks</label>
+                  <textarea value={form.details} onChange={set("details")} rows={5} placeholder={"- What the person will do\n- …\nPerks: flexible hours, learning budget"} className={`${input} resize-y`} />
+                </div>
+
+                {/* Media */}
+                <div>
+                  <label className={label}>Media attachment</label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {MEDIA_PRESETS.map(m => (
+                      <button key={m.label} type="button" onClick={() => setForm(f => ({ ...f, media: m.url }))}
+                              className={`relative rounded-md overflow-hidden border-2 transition ${form.media === m.url ? "border-li" : "border-transparent hover:border-slate-300"}`}>
+                        <SafeImg src={m.url.replace("w=1200", "w=300")} alt={m.label} className="w-full aspect-[4/3] object-cover" />
+                        <span className="absolute bottom-0 inset-x-0 bg-black/55 text-white text-[10px] py-0.5">{m.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex gap-2 mt-2">
+                    <div className="flex-1 relative">
+                      <Icon name="Link" size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <input value={form.media.startsWith("data:") ? "" : form.media} onChange={set("media")} placeholder={form.media.startsWith("data:") ? "Uploaded image attached" : "Paste image URL"} className={`${input} pl-8`} />
+                    </div>
+                    {form.media && (
+                      <button type="button" onClick={() => setForm(f => ({ ...f, media: "" }))} className="text-xs text-slate-500 hover:text-red-600 px-2">Remove</button>
+                    )}
+                  </div>
+                  <label
+                    onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+                    onDragLeave={() => setDragging(false)}
+                    onDrop={(e) => { e.preventDefault(); setDragging(false); handleFile(e.dataTransfer.files[0]); }}
+                    className={`mt-2 flex items-center gap-3 border-2 border-dashed rounded-md p-3 cursor-pointer transition ${dragging ? "border-li bg-li-soft" : "border-slate-300 hover:bg-slate-50"}`}
+                  >
+                    {form.media ? (
+                      <SafeImg src={form.media} alt="Selected media" fallback={<Icon name="Image" size={18} />} className="w-16 h-10 rounded object-cover" />
+                    ) : (
+                      <div className="w-16 h-10 rounded bg-slate-100 flex items-center justify-center text-slate-400"><Icon name="Upload" size={18} /></div>
+                    )}
+                    <span className="text-xs text-slate-600"><strong className="text-li">Upload a file</strong> or drag & drop an image here</span>
+                    <input type="file" accept="image/*" className="hidden" onChange={(e) => { handleFile(e.target.files[0]); e.target.value = ""; }} />
+                  </label>
+                  {mediaError && <p className="text-xs text-red-600 mt-1">{mediaError}</p>}
+                </div>
+
+                {/* Tone */}
+                <div>
+                  <label className={label}>Target tone</label>
+                  <div className="grid sm:grid-cols-3 gap-2">
+                    {TONES.map(t => (
+                      <button key={t.id} type="button" onClick={() => setForm(f => ({ ...f, tone: t.id }))}
+                              className={`text-left rounded-md border p-2.5 transition ${form.tone === t.id ? "border-li bg-li-soft" : "border-slate-300 hover:bg-slate-50"}`}>
+                        <div className={`text-xs font-semibold ${form.tone === t.id ? "text-li" : ""}`}>{t.label}</div>
+                        <div className="text-[11px] text-slate-500">{t.hint}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </fieldset>
+
+              <button onClick={generate} disabled={!form.title.trim() || locked}
+                      className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-li to-violet-600 hover:opacity-90 disabled:opacity-40 text-white font-semibold py-3 rounded-full transition shadow-sm">
+                {stage === "drafting"
+                  ? <><Icon name="LoaderCircle" size={18} className="animate-spin" /> Agent is drafting…</>
+                  : <>✨ {draft ? "Regenerate" : "Generate"} Job Announcement via AI Agent</>}
+              </button>
+            </Card>
+
+            {/* REVIEW & APPROVAL (HITL) */}
+            <Card className="overflow-hidden lg:sticky lg:top-[68px]">
+              <div className="px-4 py-3 border-b border-slate-200 flex items-center justify-between gap-2">
+                <h2 className="font-semibold flex items-center gap-2"><Icon name="ShieldCheck" size={18} className="text-emerald-700" /> Review & approve</h2>
+                {source && draft && (
+                  <span className={`text-[11px] font-semibold rounded-full px-2 py-0.5 ${source.startsWith("OpenAI") ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{source}</span>
+                )}
+              </div>
+
+              {stage === "idle" && !draft && (
+                <div className="p-10 text-center">
+                  <div className="w-14 h-14 mx-auto rounded-full bg-li-soft text-li flex items-center justify-center"><Icon name="Bot" size={26} /></div>
+                  <p className="font-semibold mt-3">No draft yet</p>
+                  <p className="text-sm text-slate-500 mt-1">Fill in the job brief (or use Quick fill) and let the Talent & Content Agent draft your announcement.</p>
+                </div>
+              )}
+
+              {stage === "drafting" && (
+                <div className="p-4 space-y-3">
+                  <div className="flex items-center gap-2 text-sm text-li font-semibold">
+                    <span className="relative flex h-2.5 w-2.5"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-li opacity-60" /><span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-li" /></span>
+                    Talent & Content Agent is drafting…
+                  </div>
+                  <div className="h-4 rounded shimmer w-11/12" />
+                  <div className="h-3 rounded shimmer w-full" />
+                  <div className="h-3 rounded shimmer w-5/6" />
+                  <div className="h-3 rounded shimmer w-3/4" />
+                  <div className="h-32 rounded shimmer w-full" />
+                  <div className="grid grid-cols-3 gap-2"><div className="h-14 rounded shimmer" /><div className="h-14 rounded shimmer" /><div className="h-14 rounded shimmer" /></div>
+                  <div className="flex gap-2"><div className="h-6 w-20 rounded-full shimmer" /><div className="h-6 w-24 rounded-full shimmer" /><div className="h-6 w-16 rounded-full shimmer" /></div>
+                </div>
+              )}
+
+              {stage === "published" && (
+                <div className="p-10 text-center">
+                  <div className="w-14 h-14 mx-auto rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center"><Icon name="CircleCheck" size={28} /></div>
+                  <p className="font-semibold mt-3">Published to LinkedIn</p>
+                  <p className="text-sm text-slate-500 mt-1">Your post is live on the Home feed and the {COMPANY.name} company page.</p>
+                  <button onClick={startOver} className="mt-4 border border-li text-li hover:bg-li-soft font-semibold text-sm px-4 py-1.5 rounded-full">Draft another job</button>
+                </div>
+              )}
+
+              {draft && (stage === "review" || stage === "publishing") && (
+                <div className="p-4 space-y-4">
+                  {/* Hook & Copy */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <img src={LOGO} alt="" className="w-8 h-8 rounded" />
+                      <div className="leading-tight">
+                        <div className="text-sm font-semibold">{COMPANY.name}</div>
+                        <div className="text-[11px] text-slate-500">Post to Anyone · 🌐</div>
+                      </div>
+                    </div>
+                    <textarea value={draft.copy} onChange={(e) => setD("copy", e.target.value)} disabled={stage !== "review"} rows={12}
+                              className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm leading-relaxed focus:outline-none focus:border-li resize-y disabled:bg-slate-50" />
+                    <div className="flex flex-wrap justify-between gap-2 text-[11px] mt-1">
+                      <span className={hook.length <= 150 ? "text-emerald-700" : "text-amber-700"}>
+                        {hook.length <= 150 ? "✓ Hook fits above “…see more”" : "⚠ Hook is long, may be cut off by “…see more”"} ({hook.length}/150)
+                      </span>
+                      <span className="text-slate-500">{draft.copy.length.toLocaleString()} / 3,000</span>
+                    </div>
+                  </div>
+
+                  {form.media && <SafeImg src={form.media} alt="Attached media" fallback={<Icon name="Image" size={28} />} className="w-full aspect-[1.91/1] object-cover rounded-md" />}
+
+                  {/* Job specs */}
+                  <div>
+                    <h3 className="text-xs font-semibold text-slate-600 mb-2 uppercase tracking-wide">Job specs</h3>
+                    <div className="grid sm:grid-cols-3 gap-2">
+                      {[["salary", "Salary estimate", "Banknote", "text-emerald-700 bg-emerald-50"], ["location", "Location", "MapPin", "text-li bg-li-soft"], ["experience", "Experience level", "GraduationCap", "text-violet-700 bg-violet-50"]].map(([k, l, icon, tint]) => (
+                        <div key={k} className="border border-slate-200 rounded-md p-2.5">
+                          <div className="flex items-center gap-1.5 text-[11px] text-slate-500 font-semibold">
+                            <span className={`w-5 h-5 rounded flex items-center justify-center ${tint}`}><Icon name={icon} size={12} /></span>{l}
+                          </div>
+                          <input value={draft[k]} onChange={(e) => setD(k, e.target.value)} disabled={stage !== "review"}
+                                 className="w-full text-sm font-semibold mt-1 bg-transparent focus:outline-none focus:bg-slate-50 rounded px-0.5" />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="text-[11px] text-slate-500 mt-1.5">{form.employmentType} · {form.workplace}{form.department && ` · ${form.department}`}</div>
+                  </div>
+
+                  {/* SEO */}
+                  <div className="space-y-2.5">
+                    <h3 className="text-xs font-semibold text-slate-600 uppercase tracking-wide flex items-center gap-1.5"><Icon name="TrendingUp" size={14} /> SEO & discoverability</h3>
+                    <div>
+                      <div className="text-[11px] text-slate-500 mb-1">Role keywords</div>
+                      <ChipEditor items={draft.keywords} onChange={(v) => setD("keywords", v)} placeholder="+ keyword" chipClass="bg-slate-100 text-slate-700" disabled={stage !== "review"} />
+                    </div>
+                    <div>
+                      <div className="text-[11px] text-slate-500 mb-1">Hashtags ({draft.hashtags.length}, aim for 5–8)</div>
+                      <ChipEditor items={draft.hashtags} onChange={(v) => setD("hashtags", v)} prefix="#" placeholder="+ hashtag" chipClass="bg-li-soft text-li" disabled={stage !== "review"} />
+                    </div>
+                  </div>
+
+                  {/* Approval CTA */}
+                  <div className="flex flex-col sm:flex-row gap-2 pt-1">
+                    <button onClick={approve} disabled={stage !== "review" || !draft.copy.trim()}
+                            className="flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white font-semibold py-2.5 rounded-full transition">
+                      {stage === "publishing"
+                        ? <><Icon name="LoaderCircle" size={18} className="animate-spin" /> Publishing to LinkedIn…</>
+                        : <><Icon name="ShieldCheck" size={18} /> Approve & Publish to LinkedIn</>}
+                    </button>
+                    <button onClick={discard} disabled={stage !== "review"} className="border border-slate-400 text-slate-600 hover:bg-slate-50 disabled:opacity-40 font-semibold text-sm px-4 py-2.5 rounded-full">
+                      Reject
+                    </button>
+                  </div>
+                </div>
+              )}
+            </Card>
+          </div>
+        </div>
+      );
+    }
+
+    // =====================================================================
+    // MODALS (Easy Apply, InMail, API key)
+    // =====================================================================
+    function Modal({ modal, onClose, onApplied, onInMailSent, apiKey, onSaveKey }) {
+      const [values, setValues] = useState({});
+      const [keyDraft, setKeyDraft] = useState(apiKey);
+      useEffect(() => {
+        setKeyDraft(apiKey);
+        setValues(modal?.type === "inmail" ? { message: `Hi ${COMPANY.name} team,\n\nI came across your ${modal.post.job.title} role and would love to learn more about it.\n\nBest regards` } : {});
+      }, [modal]);
+      if (!modal) return null;
+      const set = (k) => (e) => setValues(v => ({ ...v, [k]: e.target.value }));
+      const input = "w-full border border-slate-400 rounded px-3 py-2 text-sm focus:outline-none focus:border-li focus:ring-1 focus:ring-li";
+      const job = modal.post?.job;
+
+      return (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" onClick={onClose}>
+          <div className="bg-white rounded-lg w-full max-w-lg shadow-xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-5 py-3 border-b border-slate-200">
+              <h2 className="font-semibold">
+                {modal.type === "apply" && `Apply to ${COMPANY.name}`}
+                {modal.type === "inmail" && "New InMail"}
+                {modal.type === "apikey" && "OpenAI connection"}
+              </h2>
+              <button onClick={onClose} className="p-1.5 rounded-full hover:bg-slate-100" aria-label="Close"><Icon name="X" size={20} /></button>
+            </div>
+
+            {modal.type === "apply" && (
+              <form className="p-5 space-y-3" onSubmit={(e) => { e.preventDefault(); onApplied(modal.post, values); }}>
+                <div className="flex items-center gap-3 bg-slate-50 rounded-md p-3">
+                  <img src={LOGO} alt="" className="w-10 h-10 rounded" />
+                  <div><div className="font-semibold text-sm">{job.title}</div><div className="text-xs text-slate-500">{job.location} ({job.workplace})</div></div>
+                </div>
+                <div><label className="text-xs font-semibold text-slate-600">Full name *</label><input required value={values.name || ""} onChange={set("name")} className={input} /></div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div><label className="text-xs font-semibold text-slate-600">Email *</label><input required type="email" value={values.email || ""} onChange={set("email")} className={input} /></div>
+                  <div><label className="text-xs font-semibold text-slate-600">Phone</label><input value={values.phone || ""} onChange={set("phone")} className={input} /></div>
+                </div>
+                <div><label className="text-xs font-semibold text-slate-600">Skills (comma separated)</label><input value={values.skills || ""} onChange={set("skills")} placeholder="customer service, food handling, cashier" className={input} /></div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div><label className="text-xs font-semibold text-slate-600">Expected pay (MYR / hour)</label><input type="number" value={values.expected_pay || ""} onChange={set("expected_pay")} className={input} /></div>
+                  <div><label className="text-xs font-semibold text-slate-600">Where you live / study</label><input value={values.location || ""} onChange={set("location")} placeholder="Universiti Malaya, Kuala Lumpur" className={input} /></div>
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-slate-600">Days you can work</label>
+                  <div className="flex flex-wrap gap-2 mt-1">{["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d => (
+                    <label key={d} className={`text-xs border rounded-full px-2.5 py-1 cursor-pointer ${(values.availability || []).includes(d) ? "bg-li text-white border-li" : "border-slate-400"}`}>
+                      <input type="checkbox" className="hidden" checked={(values.availability || []).includes(d)} onChange={() => setValues(v => ({ ...v, availability: (v.availability || []).includes(d) ? v.availability.filter(x => x !== d) : [...(v.availability || []), d] }))} />{d}
+                    </label>))}</div>
+                </div>
+                <div className="flex gap-4 text-xs">{["food handler","typhoid"].map(c => (
+                  <label key={c} className="flex items-center gap-1.5"><input type="checkbox" checked={(values.certs || []).includes(c)} onChange={() => setValues(v => ({ ...v, certs: (v.certs || []).includes(c) ? v.certs.filter(x => x !== c) : [...(v.certs || []), c] }))} />{c === "typhoid" ? "Typhoid jab done" : "Food handler certificate"}</label>))}</div>
+                <div>
+                  <label className="text-xs font-semibold text-slate-600">Resume</label>
+                  <label className="flex items-center gap-2 border border-dashed border-slate-400 rounded px-3 py-2.5 text-sm text-slate-600 cursor-pointer hover:bg-slate-50">
+                    <Icon name="Upload" size={16} /> {values.resume || "Upload resume (PDF, DOCX)"}
+                    <input type="file" accept=".pdf,.doc,.docx" className="hidden" onChange={(e) => setValues(v => ({ ...v, resume: e.target.files[0]?.name }))} />
+                  </label>
+                </div>
+                <div className="flex justify-end gap-2 pt-2">
+                  <button type="button" onClick={onClose} className="border border-slate-400 text-slate-600 font-semibold text-sm px-4 py-1.5 rounded-full hover:bg-slate-50">Cancel</button>
+                  <button className="bg-li hover:bg-li-dark text-white font-semibold text-sm px-4 py-1.5 rounded-full">Submit application</button>
+                </div>
+              </form>
+            )}
+
+            {modal.type === "inmail" && (
+              <form className="p-5 space-y-3" onSubmit={(e) => { e.preventDefault(); onInMailSent(values); }}>
+                <div className="text-sm"><span className="text-slate-500">To:</span> <strong>{COMPANY.name} · Talent team</strong></div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div><label className="text-xs font-semibold text-slate-600">Your name *</label><input required value={values.name || ""} onChange={set("name")} className={input} /></div>
+                  <div><label className="text-xs font-semibold text-slate-600">Email</label><input type="email" value={values.email || ""} onChange={set("email")} className={input} /></div>
+                </div>
+                <div><label className="text-xs font-semibold text-slate-600">Subject</label><input defaultValue={`Interested in ${job.title}`} className={input} /></div>
+                <textarea value={values.message || ""} onChange={set("message")} rows={6} className={`${input} resize-y`} />
+                <div className="flex justify-end gap-2">
+                  <button type="button" onClick={onClose} className="border border-slate-400 text-slate-600 font-semibold text-sm px-4 py-1.5 rounded-full hover:bg-slate-50">Cancel</button>
+                  <button className="bg-li hover:bg-li-dark text-white font-semibold text-sm px-4 py-1.5 rounded-full inline-flex items-center gap-1.5"><Icon name="Send" size={14} /> Send</button>
+                </div>
+              </form>
+            )}
+
+            {modal.type === "apikey" && (
+              <div className="p-5 space-y-3">
+                <p className="text-sm text-slate-600">The Talent & Content Agent tries these in order, so the demo never breaks:</p>
+                <ol className="text-sm text-slate-700 space-y-1 list-decimal pl-5">
+                  <li>An OpenAI API key entered here (stored only in this browser)</li>
+                  <li>The key in <code className="bg-slate-100 px-1 rounded">.env</code> when served by <code className="bg-slate-100 px-1 rounded">node server.js</code></li>
+                  <li>The built-in mock generator (offline)</li>
+                </ol>
+                <input type="password" value={keyDraft} onChange={(e) => setKeyDraft(e.target.value)} placeholder="sk-… (optional)" className={input} />
+                <div className="flex justify-between gap-2 pt-1">
+                  <button onClick={() => onSaveKey("")} className="text-sm text-slate-500 hover:text-red-600">Clear key</button>
+                  <button onClick={() => onSaveKey(keyDraft.trim())} className="bg-li hover:bg-li-dark text-white font-semibold text-sm px-4 py-1.5 rounded-full">Save</button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // =====================================================================
+    // APP SHELL
+    // =====================================================================
+    function App() {
+      const [view, setView] = useState("feed"); // feed | jobs | company | studio | notifications
+      const [posts, setPosts] = useState(() => load(LS.posts, null) || makeSeedPosts());
+      const [notifs, setNotifs] = useState(() => load(LS.notifs, null) || makeSeedNotifs());
+      const [newPostId, setNewPostId] = useState(null);
+      const [toast, setToast] = useState(null);
+      const [modal, setModal] = useState(null);
+      const [apiKey, setApiKey] = useState(() => { try { return localStorage.getItem(LS.key) || ""; } catch { return ""; } });
+      const [query, setQuery] = useState("");
+      const [, setTick] = useState(0);
+
+      useEffect(() => { savePosts(posts); }, [posts]);
+      useEffect(() => {
+        const pull = async () => {
+          try {
+            const r = await fetch("/api/linkedin/posts?business_id=" + encodeURIComponent(BIZ_ID)).then(x => x.json());
+            setPosts(prev => {
+              const keep = prev.filter(p => !p.fromBizFlow);
+              const bf = r.posts.map(p => { const old = prev.find(x => x.id === p.id); return old ? { ...p, reactions: old.reactions, myReaction: old.myReaction, comments: old.comments } : p; });
+              const next = [...bf, ...keep].sort((a, b) => b.createdAt - a.createdAt);
+              return JSON.stringify(next.map(p => [p.id, p.applicants])) === JSON.stringify(prev.map(p => [p.id, p.applicants])) ? prev : next;
+            });
+          } catch { /* BizFlow not reachable */ }
+        };
+        pull(); const t = setInterval(pull, 4000); return () => clearInterval(t);
+      }, []);
+      useEffect(() => { save(LS.notifs, notifs); }, [notifs]);
+      useEffect(() => { window.scrollTo(0, 0); }, [view]);
+      useEffect(() => { if (view === "notifications") setNotifs(ns => ns.some(n => !n.read) ? ns.map(n => ({ ...n, read: true })) : ns); }, [view, notifs]);
+      // Refresh relative timestamps ("Just now" → "1m")
+      useEffect(() => { const t = setInterval(() => setTick(x => x + 1), 30000); return () => clearInterval(t); }, []);
+      // Keep multiple open tabs in sync
+      useEffect(() => {
+        const onStorage = (e) => {
+          if (e.key === LS.posts) setPosts(load(LS.posts, null) || makeSeedPosts());
+          if (e.key === LS.notifs) setNotifs(load(LS.notifs, null) || makeSeedNotifs());
+        };
+        window.addEventListener("storage", onStorage);
+        return () => window.removeEventListener("storage", onStorage);
+      }, []);
+
+      const showToast = (msg, icon = "CircleCheck") => {
+        const id = Date.now();
+        setToast({ id, msg, icon });
+        setTimeout(() => setToast(t => (t?.id === id ? null : t)), 3500);
+      };
+      const updatePost = (id, fn) => setPosts(ps => ps.map(p => (p.id === id ? fn(p) : p)));
+
+      const actions = {
+        react: (id, type) => updatePost(id, p => {
+          const reactions = { ...p.reactions };
+          if (p.myReaction) reactions[p.myReaction] -= 1;
+          const next = p.myReaction === type ? null : type;
+          if (next) reactions[next] = (reactions[next] || 0) + 1;
+          return { ...p, reactions, myReaction: next };
+        }),
+        comment: (id, text) => updatePost(id, p => ({
+          ...p, comments: [{ id: `c_${Date.now()}`, author: VIEWER.name, headline: VIEWER.headline, avatar: VIEWER.avatar, text, createdAt: Date.now() }, ...p.comments]
+        })),
+        repost: (id) => {
+          const p = posts.find(x => x.id === id);
+          updatePost(id, x => ({ ...x, reposted: !x.reposted, reposts: x.reposts + (x.reposted ? -1 : 1) }));
+          showToast(p?.reposted ? "Repost removed" : "Reposted to your feed", "Repeat2");
+        },
+        send: () => {
+          try { navigator.clipboard?.writeText(window.location.href); } catch {}
+          showToast("Link copied. Share it in a message.", "Send");
+        },
+        apply: (post) => setModal({ type: "apply", post }),
+        inmail: (post) => setModal({ type: "inmail", post }),
+        openCompany: () => setView("company")
+      };
+
+      const publish = (post) => {
+        setPosts(ps => [post, ...ps]);
+        setNotifs(ns => [{ id: `n_${Date.now()}`, icon: "Rocket", postId: post.id, createdAt: Date.now(), read: false,
+          text: `Your post “${post.job.title}” is live. The Publishing Engine shared it with ${fmt(COMPANY.followers)} followers.` }, ...ns]);
+        setNewPostId(post.id);
+        setQuery("");
+        setTimeout(() => {
+          setView("feed");
+          showToast("Your post is now live on LinkedIn", "Rocket");
+        }, 500);
+        setTimeout(() => setNewPostId(id => (id === post.id ? null : id)), 6000);
+      };
+
+      const resetDemo = () => {
+        setPosts(makeSeedPosts());
+        setNotifs(makeSeedNotifs());
+        showToast("Demo data reset", "RotateCcw");
+      };
+
+      const saveKey = (key) => {
+        setApiKey(key);
+        try { key ? localStorage.setItem(LS.key, key) : localStorage.removeItem(LS.key); } catch {}
+        setModal(null);
+        showToast(key ? "OpenAI key saved in this browser" : "OpenAI key cleared", "KeyRound");
+      };
+
+      const unread = notifs.filter(n => !n.read).length;
+      const NAV = [
+        { id: "feed", label: "Home", icon: "House" },
+        { id: "jobs", label: "Jobs", icon: "Briefcase" },
+        { id: "company", label: "Company", icon: "Building2" },
+        { id: "talent", label: "Talent", icon: "Users" },
+        { id: "studio", label: "Copilot Studio", icon: "Sparkles", accent: true },
+        { id: "notifications", label: "Notifications", icon: "Bell", badge: unread }
+      ];
+
+      return (
+        <div className="min-h-screen">
+          {/* TOP NAV */}
+          <header className="sticky top-0 z-40 bg-white border-b border-slate-200">
+            <div className="max-w-[1128px] mx-auto px-3 sm:px-4 h-[52px] flex items-center gap-2">
+              <button onClick={() => setView("feed")} className="w-[34px] h-[34px] rounded bg-li text-white font-bold text-xl leading-none flex items-center justify-center shrink-0" aria-label="Home">in</button>
+              <div className="hidden sm:flex items-center gap-2 bg-li-soft rounded px-3 h-[34px] w-44 lg:w-72">
+                <Icon name="Search" size={16} className="text-slate-600" />
+                <input value={query} onChange={(e) => { setQuery(e.target.value); if (view !== "feed") setView("feed"); }} placeholder="Search"
+                       className="bg-transparent text-sm outline-none w-full placeholder-slate-600" />
+              </div>
+              <nav className="ml-auto flex items-stretch h-full">
+                {NAV.map(item => {
+                  const active = view === item.id;
+                  return (
+                    <button key={item.id} onClick={() => setView(item.id)}
+                            className={`relative flex flex-col items-center justify-center min-w-[44px] sm:min-w-[64px] lg:min-w-[80px] px-1 border-b-2 transition ${
+                              active ? "border-slate-900 text-slate-900" : "border-transparent text-slate-500 hover:text-slate-900"
+                            }`}>
+                      <span className="relative">
+                        <Icon name={item.icon} size={22} className={item.accent && !active ? "text-violet-600" : ""} fill={active && item.icon !== "Sparkles" ? "currentColor" : "none"} strokeWidth={active ? 1.5 : 2} />
+                        {item.badge > 0 && <span className="absolute -top-1 -right-2 bg-red-600 text-white text-[10px] font-bold rounded-full min-w-[16px] h-4 px-1 flex items-center justify-center">{item.badge}</span>}
+                      </span>
+                      <span className="hidden md:block text-[12px] mt-0.5 whitespace-nowrap">{item.label}</span>
+                    </button>
+                  );
+                })}
+                <button onClick={() => setModal({ type: "apikey" })} className="flex flex-col items-center justify-center min-w-[44px] sm:min-w-[64px] px-1 text-slate-500 hover:text-slate-900 border-l border-slate-200 ml-1" title="AI settings">
+                  <Avatar src={VIEWER.avatar} name={VIEWER.name} className="w-6 h-6" />
+                  <span className="hidden md:flex items-center text-[12px] mt-0.5">Me <Icon name="ChevronDown" size={14} /></span>
+                </button>
+              </nav>
+            </div>
+          </header>
+
+          <main className="max-w-[1128px] mx-auto px-3 sm:px-4 py-6">
+            {view === "talent" && <TalentView />}
+            {view === "feed" && <FeedView posts={posts} query={query} newPostId={newPostId} actions={actions} go={setView} />}
+            {view === "jobs" && <div className="max-w-3xl mx-auto"><JobsList posts={posts} actions={actions} title={`Jobs at ${COMPANY.name}`} /></div>}
+            {view === "company" && <CompanyView posts={posts} newPostId={newPostId} actions={actions} />}
+            {view === "notifications" && <NotificationsView notifs={notifs} go={setView} />}
+            {/* Studio stays mounted so drafts and agent logs survive navigation */}
+            <div className={view === "studio" ? "" : "hidden"}>
+              <StudioView apiKey={apiKey} onPublish={publish} onOpenKey={() => setModal({ type: "apikey" })} onReset={resetDemo} />
+            </div>
+          </main>
+
+          {/* TOAST */}
+          {toast && (
+            <div key={toast.id} className="toast-in fixed bottom-5 left-4 sm:left-6 z-50 flex items-center gap-2.5 bg-slate-900 text-white text-sm font-medium pl-3 pr-4 py-3 rounded-lg shadow-2xl max-w-[calc(100vw-2rem)]">
+              <Icon name={toast.icon} size={18} className="text-emerald-400" /> {toast.msg}
+            </div>
+          )}
+
+          <Modal
+            modal={modal}
+            onClose={() => setModal(null)}
+            apiKey={apiKey}
+            onSaveKey={saveKey}
+            onApplied={(post, v) => {
+              updatePost(post.id, p => ({ ...p, applicants: p.applicants + 1 }));
+              setModal(null);
+              bfPost("/api/linkedin/apply", { business_id: BIZ_ID, job_id: post.job?.bizflow_job_id, ...v })
+                .then(r => showToast(`Application sent to ${COMPANY.name} — BizFlow is scoring it`)).catch(() => showToast(`Application sent to ${COMPANY.name}`));
+            }}
+            onInMailSent={(v) => {
+              setModal(null);
+              bfPost("/api/channels/linkedin/incoming", { business_id: BIZ_ID, contact: { handle: slug(v.email || v.name), name: v.name || "LinkedIn member" }, text: v.message || "" })
+                .then(() => showToast("InMail delivered to the owner's BizFlow inbox", "Mail")).catch(() => showToast("InMail sent", "Mail"));
+            }}
+          />
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

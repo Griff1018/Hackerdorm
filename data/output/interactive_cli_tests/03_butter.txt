@@ -1,0 +1,3 @@
+[department: Operations] Read scored supplier evidence for Butter; live web research must be supplied by WorkBuddy before this call when a refresh is required.
+[result] 4 supplier row(s) scored for Butter
+[evidence] data/output/supplier_butter.md

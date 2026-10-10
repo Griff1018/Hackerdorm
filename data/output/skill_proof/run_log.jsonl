@@ -1,0 +1,31 @@
+{"run_id": "run-2026-10-10-679f4a", "at": "2026-10-10T15:07:44.506061+08:00", "stage": "intake", "detail": "goal=Check this month's records in data/sample, tell me what needs attention, and prepare everything I need to act on it. mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-679f4a", "at": "2026-10-10T15:07:44.506085+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-679f4a", "at": "2026-10-10T15:07:44.525773+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-679f4a", "at": "2026-10-10T15:07:44.525787+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-679f4a", "at": "2026-10-10T15:07:44.526225+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-679f4a", "at": "2026-10-10T15:07:44.526263+08:00", "stage": "prioritise", "detail": "7 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-679f4a", "at": "2026-10-10T15:07:44.534554+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-679f4a", "at": "2026-10-10T15:07:44.535945+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P005", "status": "ok"}
+{"run_id": "run-2026-10-10-679f4a", "at": "2026-10-10T15:07:44.537592+08:00", "stage": "strategy", "detail": "market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...", "status": "ok"}
+{"run_id": "run-2026-10-10-679f4a", "at": "2026-10-10T15:07:44.538688+08:00", "stage": "marketing", "detail": "promo_draft.md written for P005 (draft only - not posted)", "status": "ok"}
+{"run_id": "run-2026-10-10-679f4a", "at": "2026-10-10T15:07:44.539201+08:00", "stage": "purchase", "detail": "no scored supplier research - purchase orders skipped", "status": "skipped"}
+{"run_id": "run-2026-10-10-679f4a", "at": "2026-10-10T15:07:44.541208+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-679f4a", "at": "2026-10-10T15:07:44.546526+08:00", "stage": "technology", "detail": "health check pass logged", "status": "ok"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.751849+08:00", "stage": "intake", "detail": "goal=Check this month's records in data/sample, tell me what needs attention, and prepare everything I need to act on it. mode=auto", "status": "ok"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.751877+08:00", "stage": "plan", "detail": "validate -> calculate -> actions -> reports -> verify (data=sample)", "status": "ok"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.771001+08:00", "stage": "inspect", "detail": "row counts {'products': 5, 'sales': 59, 'inventory': 5, 'expenses': 8, 'materials': 20, 'distinct_materials': 17}", "status": "ok"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.771017+08:00", "stage": "validate", "detail": "5 issue rows (3 error)", "status": "ok"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.771483+08:00", "stage": "calculate", "detail": "net revenue 2451.25, 54 eligible lines", "status": "ok"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.771523+08:00", "stage": "prioritise", "detail": "7 actions", "status": "ok"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.787940+08:00", "stage": "report", "detail": "business_snapshot.json, action_queue.csv, data_quality_report.md, daily_brief.md written", "status": "ok"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.803292+08:00", "stage": "operations", "detail": "ops_findings.json written; marketing handoff -> P005", "status": "ok"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.805548+08:00", "stage": "strategy", "detail": "market_brief.md written for: Is P002 (Iced Lemon Tea 500ml) priced competitively against what Malay...", "status": "ok"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.807199+08:00", "stage": "marketing", "detail": "promo_draft.md written for P005 (draft only - not posted)", "status": "ok"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.810332+08:00", "stage": "operations", "detail": "supplier_research.csv: 39 rows across 17 materials (scored by code)", "status": "ok"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.810359+08:00", "stage": "operations", "detail": "supplier coverage: 13/17 materials have at least one priced listing; no priced listings for: Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml", "status": "ok"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.810364+08:00", "stage": "operations", "detail": "no eligible supplier for: Butter, Chicken filling, Granola bar wrapper, Muffin cup, Paper cookie bag, Plastic cup 500ml (unavailable listings and substitutes are not recommendations)", "status": "gap"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.810367+08:00", "stage": "operations", "detail": "4 material(s) have no published comparable price and need a quotation - recorded as an open gap, not filled with an estimate", "status": "gap"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.819558+08:00", "stage": "purchase", "detail": "4 draft PO(s) written to po/ (purchasing budget 800.00 MYR)", "status": "ok"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.819573+08:00", "stage": "purchase", "detail": "3 material(s) not ordered - no supplier price found", "status": "gap"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.822218+08:00", "stage": "verify", "detail": "verification passed (7 checks)", "status": "ok"}
+{"run_id": "run-2026-10-10-9c4909", "at": "2026-10-10T15:07:53.830696+08:00", "stage": "technology", "detail": "health check pass logged", "status": "ok"}

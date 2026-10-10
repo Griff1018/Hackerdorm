@@ -1,0 +1,4 @@
+order_id,customer_id,channel,items,subtotal,discount,total,status,special_requests,escalated,created_at,updated_at
+ORD-CHAT-0001,C001,simulated_chat,"{""M001"": 2, ""M002"": 1}",16.50,0.00,16.50,confirmed,pickup at 12:30,no,2026-10-10T15:31:15.265376+08:00,2026-10-10T15:31:15.265377+08:00
+ORD-CHAT-0002,C001,simulated_chat,"{""M005"": 1}",4.00,0.00,4.00,escalated_to_owner,ALLERGY MENTION - escalate to owner; no safety guarantee,yes,2026-10-10T15:31:15.265480+08:00,2026-10-10T15:31:15.265482+08:00
+ORD-CHAT-0003,C002,simulated_chat,"{""M003"": 1}",5.00,0.00,5.00,cancelled,less spicy; reconfirmation not completed,no,2026-10-10T15:31:15.265494+08:00,2026-10-10T15:31:15.265495+08:00

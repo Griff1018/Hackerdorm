@@ -1,0 +1,14 @@
+{
+  "schema": "bizflow.marketplace_order.v1",
+  "external_order_id": "MP-20261010-0005",
+  "channel": "simulated_marketplace",
+  "created_at": "2026-10-10T15:45:40+08:00",
+  "buyer": {"buyer_id": "B-0005", "display_name": "Synthetic Buyer 5", "delivery_area": "Campus Block E"},
+  "items": [{"product_id": "P003", "product_name": "Banana Muffin", "quantity": 999, "unit_price": "5.00"}],
+  "voucher_or_bundle": {"promo_id": "", "discount": "0.00"},
+  "shipping": {"method": "standard", "fee": "3.00"},
+  "payment": {"method_type": "e-wallet", "status": "simulated_paid"},
+  "buyer_note": "Synthetic out-of-stock test.",
+  "displayed_total": "4998.00",
+  "synthetic": true
+}

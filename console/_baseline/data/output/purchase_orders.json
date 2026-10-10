@@ -1,0 +1,154 @@
+{
+  "purchase_orders": [
+    {
+      "order_id": "PO-2026-09-30-01",
+      "supplier_name": "Borong Runcit (listed on Borong)",
+      "source_url": "https://market.borong.com/v/borong-runcit/product/BABAS-MEAT-CURRY-POWDER-1KG/127729",
+      "retrieved_at": "2026-10-10T14:05:00+08:00",
+      "currency": "MYR",
+      "payment_type": "bank transfer (simulated - no real payment is ever made)",
+      "lines": [
+        {
+          "material": "Spice mix",
+          "quantity_needed": "120.00",
+          "packs": "1",
+          "pack_size": "1 kg",
+          "unit_price": "26.80",
+          "line_total": "26.80",
+          "supplier_score": "50.00",
+          "needs_review": false,
+          "review_reasons": []
+        }
+      ],
+      "total": "26.80",
+      "purchasing_budget": "800.00",
+      "budget_already_used": "0.00",
+      "budget_remaining_after_this": "800.00",
+      "over_budget": false,
+      "status": "received",
+      "paid_at": "2026-10-10T16:04:17.839631+08:00",
+      "status_history": [
+        {
+          "status": "paid",
+          "at": "2026-10-10T16:04:17.839631+08:00",
+          "simulated": true
+        },
+        {
+          "status": "received",
+          "at": "2026-10-10T16:04:18.659988+08:00",
+          "simulated": true
+        }
+      ],
+      "received_at": "2026-10-10T16:04:18.659988+08:00"
+    },
+    {
+      "order_id": "PO-2026-09-30-02",
+      "supplier_name": "Healthy Baker Malaysia",
+      "source_url": "https://www.healthybakermalaysia.com/product/premium-dark-chocolate-chip-coklat-chip-baking-chocolate-chips-premium-halal-wholesale-price",
+      "retrieved_at": "2026-10-10T14:05:00+08:00",
+      "currency": "MYR",
+      "payment_type": "bank transfer (simulated - no real payment is ever made)",
+      "lines": [
+        {
+          "material": "Chocolate chips",
+          "quantity_needed": "1440.00",
+          "packs": "2",
+          "pack_size": "1 kg",
+          "unit_price": "19.90",
+          "line_total": "39.80",
+          "supplier_score": "60.00",
+          "needs_review": true,
+          "review_reasons": [
+            "retail"
+          ]
+        }
+      ],
+      "total": "39.80",
+      "purchasing_budget": "800.00",
+      "budget_already_used": "0.00",
+      "budget_remaining_after_this": "773.20",
+      "over_budget": false,
+      "status": "draft"
+    },
+    {
+      "order_id": "PO-2026-09-30-03",
+      "supplier_name": "Image Magic",
+      "source_url": "https://imagemagic.com.my/food-grade-wrapping-paper/",
+      "retrieved_at": "2026-10-10T14:05:00+08:00",
+      "currency": "MYR",
+      "payment_type": "bank transfer (simulated - no real payment is ever made)",
+      "lines": [
+        {
+          "material": "Wax paper",
+          "quantity_needed": "12.00",
+          "packs": "1",
+          "pack_size": "100 pcs",
+          "unit_price": "50.00",
+          "line_total": "50.00",
+          "supplier_score": "60.00",
+          "needs_review": true,
+          "review_reasons": [
+            "not certified",
+            "warning"
+          ]
+        }
+      ],
+      "total": "50.00",
+      "purchasing_budget": "800.00",
+      "budget_already_used": "0.00",
+      "budget_remaining_after_this": "733.40",
+      "over_budget": false,
+      "status": "draft"
+    },
+    {
+      "order_id": "PO-2026-09-30-04",
+      "supplier_name": "PJ Grocer Sdn Bhd (listed on Borong)",
+      "source_url": "https://market.borong.com/v/pj-grocer/product/Blue-Key-Flour-25KG-KLANG-VALLEY-ONLY/136962",
+      "retrieved_at": "2026-10-10T14:05:00+08:00",
+      "currency": "MYR",
+      "payment_type": "bank transfer (simulated - no real payment is ever made)",
+      "lines": [
+        {
+          "material": "Flour",
+          "quantity_needed": "6240.00",
+          "packs": "1",
+          "pack_size": "25 kg",
+          "unit_price": "78.50",
+          "line_total": "78.50",
+          "supplier_score": "50.00",
+          "needs_review": false,
+          "review_reasons": []
+        }
+      ],
+      "total": "78.50",
+      "purchasing_budget": "800.00",
+      "budget_already_used": "0.00",
+      "budget_remaining_after_this": "683.40",
+      "over_budget": false,
+      "status": "draft"
+    }
+  ],
+  "not_ordered": [
+    {
+      "material_name": "Butter",
+      "quantity_needed": "1920.00",
+      "reason": "no supplier found for the specified material; substitute(s) exist but are shown as 'substitute - owner decides' only (see supplier_research.csv)"
+    },
+    {
+      "material_name": "Paper cookie bag",
+      "quantity_needed": "24.00",
+      "reason": "no supplier with a comparable price was found - needs a quotation"
+    },
+    {
+      "material_name": "Chicken filling",
+      "quantity_needed": "960.00",
+      "reason": "no available supplier - the priced option(s) are marked unavailable/inactive at source (not ordered)"
+    }
+  ],
+  "last_event": {
+    "action": "mark_received",
+    "po_id": "PO-2026-09-30-01",
+    "at": "2026-10-10T16:04:18.659988+08:00",
+    "simulated": true
+  }
+}

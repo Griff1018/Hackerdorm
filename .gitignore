@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+
+# Secrets — never commit API keys (the original mock apps kept an OpenAI key in .env)
+.env
+.env.*
+
+# Editor / OS / temp
+*.tmp
+.DS_Store
+Thumbs.db
+
+# WorkBuddy's own session memory (local to the WorkBuddy app)
+.workbuddy-ai/
+
+# Runtime state created while using the console (recreated with demo defaults on first start)
+data/workspace/
+data/output/console_runs/
+data/output/plans/
+data/output/console_audit.jsonl
+data/output/media/
+data/output/scraped/
+data/output/supplier_order_choices.json

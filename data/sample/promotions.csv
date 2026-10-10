@@ -1,0 +1,3 @@
+﻿promo_id,type,items,bundle_price,valid_from,valid_to,max_offers_per_order
+PR001,bundle,M001+M002,9.50,2026-09-01,2026-12-31,1
+PR002,cross-sell,M004+M002,9.50,2026-09-01,2026-12-31,1

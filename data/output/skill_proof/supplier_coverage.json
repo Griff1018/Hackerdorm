@@ -1,0 +1,175 @@
+{
+  "run_id": "run-2026-10-10-9c4909",
+  "materials_researched": 17,
+  "materials_with_at_least_one_priced_supplier": 13,
+  "materials_with_no_priced_supplier": [
+    "Granola bar wrapper",
+    "Muffin cup",
+    "Paper cookie bag",
+    "Plastic cup 500ml"
+  ],
+  "materials_with_no_eligible_supplier": [
+    "Butter",
+    "Chicken filling",
+    "Granola bar wrapper",
+    "Muffin cup",
+    "Paper cookie bag",
+    "Plastic cup 500ml"
+  ],
+  "coverage": {
+    "Banana": {
+      "tier": "light",
+      "suppliers_found": 1,
+      "suppliers_with_a_price": 1,
+      "eligible_suppliers_with_a_price": 1,
+      "unavailable_listings": 0,
+      "substitutes_only": false,
+      "recommended": 1
+    },
+    "Butter": {
+      "tier": "full",
+      "suppliers_found": 4,
+      "suppliers_with_a_price": 4,
+      "eligible_suppliers_with_a_price": 0,
+      "unavailable_listings": 0,
+      "substitutes_only": true,
+      "recommended": 0
+    },
+    "Chicken filling": {
+      "tier": "full",
+      "suppliers_found": 2,
+      "suppliers_with_a_price": 1,
+      "eligible_suppliers_with_a_price": 0,
+      "unavailable_listings": 1,
+      "substitutes_only": false,
+      "recommended": 0
+    },
+    "Chocolate chips": {
+      "tier": "full",
+      "suppliers_found": 3,
+      "suppliers_with_a_price": 3,
+      "eligible_suppliers_with_a_price": 3,
+      "unavailable_listings": 0,
+      "substitutes_only": false,
+      "recommended": 3
+    },
+    "Flour": {
+      "tier": "light",
+      "suppliers_found": 3,
+      "suppliers_with_a_price": 3,
+      "eligible_suppliers_with_a_price": 3,
+      "unavailable_listings": 0,
+      "substitutes_only": false,
+      "recommended": 3
+    },
+    "Granola bar wrapper": {
+      "tier": "light",
+      "suppliers_found": 1,
+      "suppliers_with_a_price": 0,
+      "eligible_suppliers_with_a_price": 0,
+      "unavailable_listings": 0,
+      "substitutes_only": false,
+      "recommended": 0
+    },
+    "Honey": {
+      "tier": "full",
+      "suppliers_found": 4,
+      "suppliers_with_a_price": 4,
+      "eligible_suppliers_with_a_price": 3,
+      "unavailable_listings": 0,
+      "substitutes_only": false,
+      "recommended": 3
+    },
+    "Lemon syrup": {
+      "tier": "light",
+      "suppliers_found": 1,
+      "suppliers_with_a_price": 1,
+      "eligible_suppliers_with_a_price": 1,
+      "unavailable_listings": 0,
+      "substitutes_only": false,
+      "recommended": 1
+    },
+    "Muffin cup": {
+      "tier": "light",
+      "suppliers_found": 1,
+      "suppliers_with_a_price": 0,
+      "eligible_suppliers_with_a_price": 0,
+      "unavailable_listings": 0,
+      "substitutes_only": false,
+      "recommended": 0
+    },
+    "Paper cookie bag": {
+      "tier": "light",
+      "suppliers_found": 2,
+      "suppliers_with_a_price": 0,
+      "eligible_suppliers_with_a_price": 0,
+      "unavailable_listings": 0,
+      "substitutes_only": false,
+      "recommended": 0
+    },
+    "Peanut butter": {
+      "tier": "full",
+      "suppliers_found": 2,
+      "suppliers_with_a_price": 1,
+      "eligible_suppliers_with_a_price": 1,
+      "unavailable_listings": 0,
+      "substitutes_only": false,
+      "recommended": 1
+    },
+    "Plastic cup 500ml": {
+      "tier": "light",
+      "suppliers_found": 1,
+      "suppliers_with_a_price": 0,
+      "eligible_suppliers_with_a_price": 0,
+      "unavailable_listings": 0,
+      "substitutes_only": false,
+      "recommended": 0
+    },
+    "Rolled oats": {
+      "tier": "light",
+      "suppliers_found": 3,
+      "suppliers_with_a_price": 3,
+      "eligible_suppliers_with_a_price": 3,
+      "unavailable_listings": 0,
+      "substitutes_only": false,
+      "recommended": 3
+    },
+    "Spice mix": {
+      "tier": "light",
+      "suppliers_found": 3,
+      "suppliers_with_a_price": 3,
+      "eligible_suppliers_with_a_price": 3,
+      "unavailable_listings": 0,
+      "substitutes_only": false,
+      "recommended": 3
+    },
+    "Sugar": {
+      "tier": "light",
+      "suppliers_found": 3,
+      "suppliers_with_a_price": 3,
+      "eligible_suppliers_with_a_price": 3,
+      "unavailable_listings": 0,
+      "substitutes_only": false,
+      "recommended": 3
+    },
+    "Tea bag": {
+      "tier": "light",
+      "suppliers_found": 3,
+      "suppliers_with_a_price": 3,
+      "eligible_suppliers_with_a_price": 3,
+      "unavailable_listings": 0,
+      "substitutes_only": false,
+      "recommended": 3
+    },
+    "Wax paper": {
+      "tier": "light",
+      "suppliers_found": 2,
+      "suppliers_with_a_price": 1,
+      "eligible_suppliers_with_a_price": 1,
+      "unavailable_listings": 0,
+      "substitutes_only": false,
+      "recommended": 1
+    }
+  },
+  "rule": "top 3 priced, available listings matching the specified material are recommended; unavailable listings and substitutes are never recommended; unpriced rows are never recommended"
+}

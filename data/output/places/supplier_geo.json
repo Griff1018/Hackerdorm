@@ -1,0 +1,57 @@
+[
+  {
+    "name": "FarmiHub",
+    "materials": [
+      "Chicken filling"
+    ],
+    "address": "23C, Jalan Zaaba, 70100 Seremban, Negeri Sembilan",
+    "lat": 2.7126291,
+    "lon": 101.9524502,
+    "source_url": "https://farmihub.com/poultry-wholesale/",
+    "directions_url": "https://www.google.com/maps/dir/?api=1&destination=2.7126291,101.9524502"
+  },
+  {
+    "name": "Healthy Baker Malaysia",
+    "materials": [
+      "Chocolate chips"
+    ],
+    "address": "ons Delivery & Shipping Information Contact Membership & Rewards 33, Jalan 20 , Taman Sri Kluang, KLUANG , 86000 , Johor",
+    "lat": 2.0343004,
+    "lon": 103.3273065,
+    "source_url": "https://www.healthybakermalaysia.com/product/premium-dark-chocolate-chip-coklat-chip-baking-chocolate-chips-premium-halal-wholesale-price",
+    "directions_url": "https://www.google.com/maps/dir/?api=1&destination=2.0343004,103.3273065"
+  },
+  {
+    "name": "Peng Kee Enterprise Sdn Bhd",
+    "materials": [
+      "Muffin cup"
+    ],
+    "address": "owing 1 to 18 of 18 (1 Pages) Facebook You may visit us at: Peng Kee Enterprise Sdn Bhd 274 Jalan Gurdwara, 10300 Penang",
+    "lat": 5.4134201,
+    "lon": 100.3366559,
+    "source_url": "https://pengkeeonline.com/baking-cup",
+    "directions_url": "https://www.google.com/maps/dir/?api=1&destination=5.4134201,100.3366559"
+  },
+  {
+    "name": "Panagawa Sdn Bhd",
+    "materials": [
+      "Plastic cup 500ml"
+    ],
+    "address": "Plo 527, Jalan Keluli 5, 81700 Pasir Gudang, Johor",
+    "lat": 1.4824109,
+    "lon": 103.9070509,
+    "source_url": "https://www.panagawa.com/showproducts/productid/6704503/500ml-pp-cup-ao500/",
+    "directions_url": "https://www.google.com/maps/dir/?api=1&destination=1.4824109,103.9070509"
+  },
+  {
+    "name": "Magnus Oriental",
+    "materials": [
+      "Wax paper"
+    ],
+    "address": "4, Lot 752, Jalan Subang 3, Taman Perindustrian Sungai Penaga, 47610 Subang Jaya, Selangor",
+    "lat": 3.052168,
+    "lon": 101.5831,
+    "source_url": "https://magnusoriental.com.my/products/bags-wraps-takeaway-packaging/greaseproof-liners",
+    "directions_url": "https://www.google.com/maps/dir/?api=1&destination=3.052168,101.5831"
+  }
+]

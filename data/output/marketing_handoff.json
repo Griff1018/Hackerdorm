@@ -1,0 +1,15 @@
+{
+  "run_id": "run-2026-10-10-584c22",
+  "trigger_product_id": "P005",
+  "trigger_product_name": "Granola Bar",
+  "reason": "34 units in stock but zero eligible sales in the 14-day demand window (2026-09-17..2026-09-30) - stock is not moving",
+  "facts_available": {
+    "product_name": "Granola Bar",
+    "units_sold": 6,
+    "net_revenue": "24.00",
+    "cogs_estimate": "9.00",
+    "gross_profit_estimate": "15.00",
+    "gross_margin_pct": "62.50"
+  },
+  "constraint": "draft only - never posted automatically"
+}

@@ -1,0 +1,5 @@
+audit_id,action,actor,decision,reason,timestamp,order_id
+AUD-MP-0001,deduct_stock,marketplace_seller,auto,validated marketplace order written to stock ledger,2026-10-10T15:43:24.522618+08:00,MP-20261010-0003
+AUD-MP-0002,ship_order,marketplace_seller,simulated,owner-side fulfilment and label only,2026-10-10T15:43:24.524524+08:00,MP-20261010-0003
+AUD-MP-0003,validate_total,marketplace_seller,blocked,displayed_total 0.00 does not match BizFlow recomputed total 7.50,2026-10-10T15:43:24.536002+08:00,MP-20261010-0004
+AUD-MP-0004,validate_order,marketplace_seller,blocked,stock is insufficient,2026-10-10T15:43:24.547509+08:00,MP-20261010-0005
