@@ -1,4 +1,4 @@
-# CAPABILITIES — what BizFlow can do (Section G.13 — living document)
+# CAPABILITIES — what Enterprise Buddy can do (Section G.13 — living document)
 
 Updated: end of **Sprint 3B** (2026-10-10). Updated again at the end of every sprint.
 Rule: a capability is marked **built and tested** only with evidence from an actual check.
@@ -10,7 +10,7 @@ Legend — `built and tested` · `built, not tested` · `planned` · `dropped`
 
 | capability | department | status | evidence | known limits |
 |---|---|---|---|---|
-| Read and validate the 5 CSV inputs (schema, types, enums, ranges, dates) | Operations | **built and tested** | `app/bizflow_core.py` `validate()`; run flags 5 issue rows (3 error) | duplicates are excluded, never auto-merged |
+| Read and validate the 5 CSV inputs (schema, types, enums, ranges, dates) | Operations | **built and tested** | `app/enterprise_buddy_core.py` `validate()`; run flags 5 issue rows (3 error) | duplicates are excluded, never auto-merged |
 | Data-quality issue list (file, row/id, issue, severity, resolution) | Operations | **built and tested** | `data/output/data_quality_report.md` written each run | severity-tagged; resolution is a draft |
 | Sales / COGS / gross profit / margin / recorded expenses | Reporting | **built and tested** | verifier recomputed net 2451.25, COGS 856.80, expenses 1105.70 (pass) | gross profit is an **estimate**; expenses never netted off |
 | Per-product performance table | Reporting | **built and tested** | `business_snapshot.json` per-product rollups | margin N/A when revenue is zero |
@@ -35,7 +35,7 @@ Legend — `built and tested` · `built, not tested` · `planned` · `dropped`
 | FR-04 recruitment assistant and hiring kit | People | **built and tested** | `job_ad_part_time_campus_snack_assistant.md` + `hiring_kit.md`; pay-range/fair-wording test pass | synthetic role; owner confirms Malaysia minimum-wage compliance; no real applicants |
 | FR-05 simulated social feed preview | Demo site | **built and tested** | `demo/social_feed.html` + `social_feed_preview.json`; generic simulated screen test pass | preview only; no second store; no fake engagement or platform connection |
 | FR-06 marketplace seller side | Operations | **built and tested** | `fr06_sample_run_console.txt`; valid order completed/shipped, tampered total rejected, out-of-stock rejected, simulated label/current stock/review summary written | external store not connected yet; own synthetic inbox contract tested first |
-| Interactive WorkBuddy toolkit routing | Orchestrator | **built and tested** | `app/bizflow_cli.py` exposes brief, stock, suppliers, po, order, faq, refund, marketplace, reviews, campaign, jobad, market, techcheck, verify and full; 12 prompt routes recorded in `docs/INTERACTIVE_DEMO_TESTS.md` | WorkBuddy supplies natural-language understanding/plan narration; deterministic code owns numbers and writes |
+| Interactive WorkBuddy toolkit routing | Orchestrator | **built and tested** | `app/enterprise_buddy_cli.py` exposes brief, stock, suppliers, po, order, faq, refund, marketplace, reviews, campaign, jobad, market, techcheck, verify and full; 12 prompt routes recorded in `docs/INTERACTIVE_DEMO_TESTS.md` | WorkBuddy supplies natural-language understanding/plan narration; deterministic code owns numbers and writes |
 
 ## 2. Infrastructure / evidence capabilities
 
@@ -48,7 +48,7 @@ Legend — `built and tested` · `built, not tested` · `planned` · `dropped`
 | Deterministic Python runtime with exact decimal money | Platform | **built and tested** | feasibility check F2/F3: `0.1+0.2 = 0.3` exactly; tiny CSV sum 11.90 | – |
 | Built-in web research | Platform | **built and tested** | feasibility check F5: 5 results with URLs, retrieved 2026-10-10 | results must carry source + retrieval date; cached fallback labelled |
 | Sub-agent execution (Analyst / Verifier split) | Platform | **built and tested** (execution only) | feasibility check F7: two sub-agents wrote `tests/_probe/probe_A.txt` and `probe_B.txt` | **parallel** invocation in one message is not yet tested (U3) |
-| WorkBuddy Automation (scheduling) exists | Platform | **built and tested** (configuration) | hourly automation `BizFlow hourly Technology health check` created and active; view proof recorded in `docs/TECH_AUTOMATION_PROOF.md` | scheduled firing remains pending until the first hourly callback is observed (U1) |
+| WorkBuddy Automation (scheduling) exists | Platform | **built and tested** (configuration) | hourly automation `Enterprise Buddy hourly Technology health check` created and active; view proof recorded in `docs/TECH_AUTOMATION_PROOF.md` | scheduled firing remains pending until the first hourly callback is observed (U1) |
 | Local MCP server support | Platform | **not verified** | feasibility check F10/F11: no `mcp.json`; docs page returned empty | do not depend on it; built-ins first (Section D) |
 | Hourly Technology Automation producing logged runs | Technology | **built, not tested** | active hourly configuration exists; `tech_health_log.csv` has on-demand proof only | U1 scheduled firing has not been independently observed; needs laptop awake and WorkBuddy running (G.12) |
 | Slide preparation inside WorkBuddy | Presentation | planned (Sprint 5) | – | path not yet verified (U5) |

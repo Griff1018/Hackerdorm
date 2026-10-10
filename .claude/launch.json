@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "bizflow-console",
+      "name": "enterprise-buddy-console",
       "runtimeExecutable": "python",
       "runtimeArgs": ["console/server.py"],
       "port": 8090

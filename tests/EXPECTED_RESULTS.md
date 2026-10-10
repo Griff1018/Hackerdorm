@@ -1,4 +1,4 @@
-# EXPECTED RESULTS (golden values) — BizFlow
+# EXPECTED RESULTS (golden values) — Enterprise Buddy
 
 **Regenerated 2026-10-10 after the Sprint 1 revisions** (demo dataset: September only, 4 seeded
 defects; the other 9 moved to `tests/fixtures/invalid_data/`).

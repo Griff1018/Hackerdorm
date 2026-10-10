@@ -1,8 +1,8 @@
-# Sprint 3B Checkpoint — BizFlow
+# Sprint 3B Checkpoint — Enterprise Buddy
 
 ## Scope completed
 
-- **FR-06 full seller side:** processed BizFlow-owned synthetic inbox files; recomputed totals from the
+- **FR-06 full seller side:** processed Enterprise Buddy-owned synthetic inbox files; recomputed totals from the
   catalogue; rejected a tampered total; rejected an out-of-stock order; wrote `orders.csv`,
   `current_stock.csv`, `stock_ledger.csv`, status histories, pick/pack list, simulated shipping label,
   and audit entries; processed delivered/receipt events; wrote review summary with exact quotes, themes,
@@ -20,7 +20,7 @@
 | sample | result |
 |---|---|
 | `MP-20261010-0003` | valid order → received → confirmed → packing → shipped → delivered → completed |
-| `MP-20261010-0004` | displayed total MYR 0.00 rejected; BizFlow recomputed MYR 7.50 |
+| `MP-20261010-0004` | displayed total MYR 0.00 rejected; Enterprise Buddy recomputed MYR 7.50 |
 | `MP-20261010-0005` | quantity 999 rejected out of stock; stock unchanged |
 | `RV-0003` | packaging theme/action evidence retained as an exact quote |
 | `RV-0004` | allergy mention escalated as P1; no safety claim |

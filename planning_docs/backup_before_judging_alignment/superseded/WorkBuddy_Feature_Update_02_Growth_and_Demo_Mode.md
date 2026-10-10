@@ -1,8 +1,8 @@
-# BizFlow Feature Update 02 — Social Media Promotion, Recruitment Assistant & Demo Mode
+# Enterprise Buddy Feature Update 02 — Social Media Promotion, Recruitment Assistant & Demo Mode
 
 **For:** Tencent WorkBuddy, sent by the user at a sprint checkpoint/gate  
 **Date:** 2026-10-10  
-**Applies to:** `BizFlow_WorkBuddy_Master_Instructions.md` (Section A feature-request rule, Sections G.9, G.13, G.16, G.17); works with Feature Update 01 if it was sent.
+**Applies to:** `EnterpriseBuddy_WorkBuddy_Master_Instructions.md` (Section A feature-request rule, Sections G.9, G.13, G.16, G.17); works with Feature Update 01 if it was sent.
 
 ---
 
@@ -151,7 +151,7 @@ Never cut verification, honest badges/labels, or the two rehearsals to make room
 
 - **Slide 5 (live demo):** first show **Live Mode** (the real run), then switch to **Demo Mode** for the full-vision walkthrough, saying aloud “this part is Demo Mode”.
 - **Slide 7 (vision):** add the People department (recruitment) and the social media campaign planner, using the same LIVE / PROTOTYPE / CONCEPT badges.
-- **Speaker note:** “Everything marked LIVE ran for real today; PROTOTYPE and CONCEPT show where BizFlow goes next.”
+- **Speaker note:** “Everything marked LIVE ran for real today; PROTOTYPE and CONCEPT show where Enterprise Buddy goes next.”
 
 ---
 

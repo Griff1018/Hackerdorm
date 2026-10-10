@@ -1,4 +1,4 @@
-"""BizFlow automations: auto-reorder from suppliers and scheduled social posting.
+"""Enterprise Buddy automations: auto-reorder from suppliers and scheduled social posting.
 
 Auto-reorder: rules fire on a schedule (weekday + time, or every N days) or when stock runs low
 (product stock at/below its reorder point, from ops_findings.json). Each firing creates an order draft
@@ -155,7 +155,7 @@ def set_stock(bid: str, material: str, patch: dict) -> dict:
 
 def topup_packs(stock: dict, pack: str) -> tuple[int, str] | None:
     """Packs needed to bring stock back to 2 x the low level (deterministic)."""
-    from bizflow_supplier import parse_amount_unit
+    from enterprise_buddy_supplier import parse_amount_unit
     import math
     parsed = parse_amount_unit(pack or "")
     if not parsed or parsed[2] is None or not stock or parsed[1] != stock.get("unit"):
@@ -169,7 +169,7 @@ def topup_packs(stock: dict, pack: str) -> tuple[int, str] | None:
 
 
 def _listing_po(rule):
-    """A purchase-order-shaped view of a rule that buys from a supplier listing (no BizFlow PO)."""
+    """A purchase-order-shaped view of a rule that buys from a supplier listing (no Enterprise Buddy PO)."""
     L = rule["listing"]
     packs = int(L.get("packs", 1))
     tp = topup_packs(stock_of(rule["business_id"], rule["material"]), L.get("pack")) if rule["trigger"].get("type") == "low_stock" else None
@@ -183,11 +183,11 @@ def _listing_po(rule):
 
 
 def explain(rule) -> dict:
-    """Quantity, cost and the reasoning chain, all from BizFlow files (no model arithmetic)."""
+    """Quantity, cost and the reasoning chain, all from Enterprise Buddy files (no model arithmetic)."""
     po = _po(rule["po_id"]) if rule.get("po_id") else _listing_po(rule) if rule.get("listing") else None
     ops = _read_json(OUTPUT / "ops_findings.json", {}).get("stock_and_replenishment", {})
     if not po:
-        return {"ok": False, "why": [f"Purchase order {rule['po_id']} not found — run the BizFlow pipeline first."]}
+        return {"ok": False, "why": [f"Purchase order {rule['po_id']} not found — run the Enterprise Buddy pipeline first."]}
     line = next((l for l in po["lines"] if l["material"].lower() == rule["material"].lower()), po["lines"][0])
     users = [m for m in _materials() if m["material_name"].lower() == line["material"].lower()]
     why, sources = [], [f"data/output/purchase_orders.json ({po['order_id']})", "data/output/ops_findings.json", "data/sample/materials.csv"]
@@ -351,7 +351,7 @@ def decide(order_id: str, approve: bool, mark_paid=None) -> dict:
         conf = (f"Payment confirmation (SIMULATED): {o['supplier']} — {o['quantity']} {o['material']}, MYR {o['total_myr']}, ref {o['po_id']}. "
                 f"Please confirm delivery date. Thank you!")
         outbox_add(d, o["id"], o["contact"]["name"], o["contact"]["channel"], o["contact"].get("phone", ""), conf, "payment confirmation to supplier")
-        summary = (f"BizFlow: you approved {o['po_id']} — {o['quantity']} {o['material']} from {o['supplier']}, MYR {o['total_myr']} (simulated payment).\n"
+        summary = (f"Enterprise Buddy: you approved {o['po_id']} — {o['quantity']} {o['material']} from {o['supplier']}, MYR {o['total_myr']} (simulated payment).\n"
                    "Why: " + " ".join(o["why"][:3]) + "\nVerify: " + ", ".join(o["sources"][-2:]))
         tg = tg_send(summary)
         d["outbox"].append({"id": "M" + uuid.uuid4().hex[:6], "order_id": o["id"], "at": iso(), "to": "Owner (you)", "channel": "telegram",
@@ -362,7 +362,7 @@ def decide(order_id: str, approve: bool, mark_paid=None) -> dict:
 
 
 def create_rule(business_id: str, material: str, listing: dict | None, product_id: str | None) -> dict:
-    """Turn on auto-reorder for an ingredient: reuse its BizFlow purchase order if one exists, else its best listing."""
+    """Turn on auto-reorder for an ingredient: reuse its Enterprise Buddy purchase order if one exists, else its best listing."""
     with LOCK:
         d = load()
         existing = next((r for r in d["rules"] if r["business_id"] == business_id and r["material"].lower() == material.lower()), None)

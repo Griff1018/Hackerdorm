@@ -10,5 +10,5 @@
   "part_time_pay_range_myr": "12.00-15.00 per hour (owner-set; confirm compliance before posting)",
   "preferred_suppliers": [],
   "currency": "MYR",
-  "_note": "Synthetic demo profile. It stores no account number, card number, e-wallet number, password, PIN or OTP. If any of those are offered they are refused and dropped - see app/bizflow_profile.py FORBIDDEN_FIELDS. NOTE: 'monthly_budget' is the whole operating envelope (rent, fuel, wages, supplies...). 'purchasing_budget' is the separate envelope BizFlow checks purchase orders against - it is NOT reduced by rent/fuel or other recorded expenses."
+  "_note": "Synthetic demo profile. It stores no account number, card number, e-wallet number, password, PIN or OTP. If any of those are offered they are refused and dropped - see app/enterprise_buddy_profile.py FORBIDDEN_FIELDS. NOTE: 'monthly_budget' is the whole operating envelope (rent, fuel, wages, supplies...). 'purchasing_budget' is the separate envelope Enterprise Buddy checks purchase orders against - it is NOT reduced by rent/fuel or other recorded expenses."
 }

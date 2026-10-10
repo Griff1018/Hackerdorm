@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BizFlow - synthetic sample data generator (sales.csv only).
+Enterprise Buddy - synthetic sample data generator (sales.csv only).
 
 All other sample CSVs (products, inventory, expenses, materials) are hand-authored
 files in data/sample/ and are deliberately NOT touched by this script.

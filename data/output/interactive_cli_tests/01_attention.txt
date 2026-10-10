@@ -1,7 +1,7 @@
 [department: Reporting] Read the latest verified daily brief to identify what needs owner attention.
 [result] latest daily brief is available
 [evidence] data/output/daily_brief.md
-# DAILY BUSINESS BRIEF - BizFlow
+# DAILY BUSINESS BRIEF - Enterprise Buddy
 
 **SYNTHETIC DEMONSTRATION DATA - not a real business.**
 

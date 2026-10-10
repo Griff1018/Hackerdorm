@@ -1,7 +1,7 @@
 [department: Verifier] Read the latest verification report; if new numbers are needed, rerun the deterministic pipeline.
 [result] latest verification report read
 [evidence] data/output/verification_report.md
-# VERIFICATION REPORT - BizFlow (Verifier department)
+# VERIFICATION REPORT - Enterprise Buddy (Verifier department)
 
 Verified at 2026-10-10T16:03:20.582411+08:00 · status **PASSED**
 

@@ -134,13 +134,13 @@
         const hash = window.location.hash.slice(1);
         return ["feed", "messages", "profile"].includes(hash) ? hash : "feed";
       }); // 'feed' | 'messages' | 'profile'
-      // Posts come from BizFlow (served by console/server.py at /instagram/); likes/saves stay local
+      // Posts come from Enterprise Buddy (served by console/server.py at /instagram/); likes/saves stay local
       const [posts, setPosts] = useState([]);
       const [seller, setSeller] = useState(INITIAL_SELLER);
       const [newPostId, setNewPostId] = useState(null);
       const mainRef = useRef(null);
 
-      // Pull BizFlow's published posts every 3 s and pop up any new one
+      // Pull Enterprise Buddy's published posts every 3 s and pop up any new one
       useEffect(() => {
         let known = null;
         const wanted = new URLSearchParams(location.search).get("new");
@@ -162,21 +162,21 @@
             if (known === null && wanted && ids.includes(wanted)) pop(wanted);
             if (known) { const fresh = ids.find(id => !known.has(id)); if (fresh) pop(fresh); }
             known = new Set(ids);
-          } catch { /* BizFlow server not reachable */ }
+          } catch { /* Enterprise Buddy server not reachable */ }
         };
         pull();
         const t = setInterval(pull, 3000);
         return () => clearInterval(t);
       }, []);
 
-      // Direct messages: this mock is the CUSTOMER's view. DMs go to BizFlow's Online Requests inbox,
-      // and the shop owner's replies (sent from BizFlow) come back here.
+      // Direct messages: this mock is the CUSTOMER's view. DMs go to Enterprise Buddy's Online Requests inbox,
+      // and the shop owner's replies (sent from Enterprise Buddy) come back here.
       const qp = new URLSearchParams(location.search);
       const ME = { handle: qp.get("as") || "aisyah.um", name: qp.get("name") || "Aisyah (demo customer)" };
       const BIZ = qp.get("business_id") || "campus-crumb";
       const shopChat = (msgs) => [{
         id: "chat_seller",
-        user: { username: seller.username, name: seller.name, avatar: seller.avatar, status: "Replies via BizFlow" },
+        user: { username: seller.username, name: seller.name, avatar: seller.avatar, status: "Replies via Enterprise Buddy" },
         messages: msgs
       }];
       const [conversations, setConversations] = useState(() => shopChat([]));
@@ -193,7 +193,7 @@
           try {
             const th = await fetch(`/api/channels/instagram/thread?handle=${encodeURIComponent(ME.handle)}&business_id=${BIZ}`).then(r => r.json());
             setConversations(shopChat(toMock(th)));
-          } catch { /* BizFlow not reachable */ }
+          } catch { /* Enterprise Buddy not reachable */ }
         };
         pull();
         const t = setInterval(pull, 3000);
@@ -239,7 +239,7 @@
         setConversations(prev => prev.map(c => c.id === activeChatId ? { ...c, messages: [...c.messages, newMsg] } : c));
         setInputMessage("");
 
-        // Deliver to the shop's BizFlow inbox; the owner replies from BizFlow
+        // Deliver to the shop's Enterprise Buddy inbox; the owner replies from Enterprise Buddy
         fetch("/api/channels/instagram/incoming", {
           method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ contact: ME, text: newMsg.text, business_id: BIZ })

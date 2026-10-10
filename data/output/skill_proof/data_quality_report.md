@@ -1,4 +1,4 @@
-# DATA QUALITY REPORT - BizFlow
+# DATA QUALITY REPORT - Enterprise Buddy
 
 Period 2026-09-01 .. 2026-09-30 (inclusive). Currency MYR.
 

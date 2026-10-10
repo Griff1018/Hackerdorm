@@ -1,6 +1,6 @@
 # Technology Automation proof — 2026-10-10
 
-- Automation: **BizFlow hourly Technology health check**
+- Automation: **Enterprise Buddy hourly Technology health check**
 - Status: **ACTIVE**
 - Schedule: every hour
 - Scope: project `C:\Users\Chew Chee Kin\WorkBuddy AI\2026-10-10-13-15-01`

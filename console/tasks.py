@@ -1,10 +1,10 @@
 """Repetitive tasks: everyday jobs and reports for a student seller or a small business.
 
-Each task has a title and an editable prompt, and is either AI-automated (BizFlow runs the prompt through the
+Each task has a title and an editable prompt, and is either AI-automated (Enterprise Buddy runs the prompt through the
 WorkBuddy CLI with read-only toolkit tools) or manual (the owner ticks it off). "Execute all AI-automated tasks"
 runs every AI task, three at a time, and stores each result on its card.
 
-Daily list: once a day (or on demand) BizFlow turns these routine cards plus the business's current state into today's
+Daily list: once a day (or on demand) Enterprise Buddy turns these routine cards plus the business's current state into today's
 concrete checklist. The routine cards are the standing instructions for that generation.
 """
 from __future__ import annotations
@@ -26,10 +26,10 @@ COMMON = [
     ("Daily sales & cash summary", "Give me today's short sales summary from my latest brief: revenue, best and worst seller, gross margin, and anything unusual.", "ai"),
     ("Low stock check", "Which ingredients and products are running low or below my low level? Read data/workspace/ingredient_stock.json and use the stock command. List what to reorder first.", "ai"),
     ("Unanswered customer messages", "Read data/workspace/inbox.json. List customer messages that still need a reply (last message from the customer), oldest first, with a one-line suggested reply using menu prices only.", "ai"),
-    ("Supplier price watch", "Run python -m app.bizflow_cli prices and tell me which of my ingredients got cheaper or dearer and what that means for my costs. One bullet per change.", "ai"),
+    ("Supplier price watch", "Run python -m app.enterprise_buddy_cli prices and tell me which of my ingredients got cheaper or dearer and what that means for my costs. One bullet per change.", "ai"),
     ("Profit report", "Write my profit report from the latest brief and data/output/business_snapshot.json (period totals and per-product figures): revenue, cost of goods, gross profit and margin, top and bottom product by profit, and one action for next week. Do not add up sales rows yourself.", "ai"),
     ("Plan this week's social posts", "Suggest 3 social posts for this week (what to show, which day, which product) based on what is overstocked or selling slowly. Drafts only.", "ai"),
-    ("Pay suppliers and bills", "Pay any approved purchase orders and unpaid expenses yourself (BizFlow never pays).", "manual"),
+    ("Pay suppliers and bills", "Pay any approved purchase orders and unpaid expenses yourself (Enterprise Buddy never pays).", "manual"),
     ("Recount stock", "Count ingredients and products and update the counts in Automations → Ingredients.", "manual"),
 ]
 STUDENT = [

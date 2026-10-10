@@ -11,7 +11,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "app"))
-from bizflow_po_actions import mark_paid, mark_received  # noqa: E402
+from enterprise_buddy_po_actions import mark_paid, mark_received  # noqa: E402
 
 
 class PurchaseReceiveLoop(unittest.TestCase):

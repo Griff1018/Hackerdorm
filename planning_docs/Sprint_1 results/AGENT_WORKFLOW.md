@@ -1,4 +1,4 @@
-# AGENT WORKFLOW — what BizFlow plans and does (Section G.13 — living document)
+# AGENT WORKFLOW — what Enterprise Buddy plans and does (Section G.13 — living document)
 
 Updated: end of **Sprint 1** (2026-10-10).
 This describes the run the **product** will perform. It is **not** the build process: the
@@ -112,7 +112,7 @@ In every other case the agent applies the documented default, logs it and contin
 
 ## 9. Build-time checkpoints vs runtime autonomy (Section G.7)
 
-**Build time:** while BizFlow is being built, WorkBuddy stops after every sprint, reports and waits
+**Build time:** while Enterprise Buddy is being built, WorkBuddy stops after every sprint, reports and waits
 for the team's approval. This is a *team* control, not product behaviour.
 
 **Runtime:** the owner's single goal prompt runs the whole chain in §1 without intermediate

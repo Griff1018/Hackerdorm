@@ -1,0 +1,543 @@
+{
+ "CANCELLATION": [
+  "Hi, I want to cancel my order {sn}, ordered wrong variation.",
+  "Can cancel order {sn}? Changed my mind sorry.",
+  "Please cancel {sn}, I accidentally ordered twice."
+ ],
+ "CANCEL_REASONS": [
+  "Need to change delivery address",
+  "Need to modify order",
+  "Found cheaper elsewhere",
+  "Change of mind",
+  "Others / Change my mind"
+ ],
+ "COMPLAINT": {
+  "packaging": [
+   "I just received order {sn}, the {item} is BROKEN. Packaging so thin. I want a refund.",
+   "Item arrived damaged!! Order {sn}. How to settle this?",
+   "Barang sampai pecah, order {sn}. Saya nak refund."
+  ],
+  "quality": [
+   "The {item} I bought (order {sn}) already cannot work after a few days. Very disappointed.",
+   "Order {sn}: left earbud cannot charge. Can replace or refund?",
+   "Product defective, order {sn}. Need replacement please."
+  ],
+  "sizing": [
+   "Size too small, order {sn}. Can exchange to bigger size?",
+   "The shirt doesn’t fit, size chart wrong. Order {sn}. Can return?"
+  ],
+  "accuracy": [
+   "I received wrong item/colour for order {sn}. Please check.",
+   "Order {sn} different from the picture."
+  ],
+  "delivery": [
+   "Delivery so slow for order {sn}, very disappointed."
+  ]
+ },
+ "FOLLOWUP": [
+  "Hello?? anyone there?",
+  "Seller please reply",
+  "?",
+  "Hello, still waiting for your reply.",
+  "Helo seller, tolong reply 🙏"
+ ],
+ "ISSUE_GENERIC": {
+  "quality": [
+   "Quality not good, spoiled after few days use.",
+   "Barang cepat rosak. Kecewa.",
+   "Not durable, broke after one week."
+  ],
+  "packaging": [
+   "Packaging very thin, item damaged when received.",
+   "Box crushed, item dented. Please improve packing."
+  ],
+  "sizing": [
+   "Size not accurate, too small.",
+   "Ukuran tak sama dengan size chart."
+  ],
+  "delivery": [
+   "Delivery very slow, waited more than one week.",
+   "Parcel stuck for many days, lambat sangat.",
+   "Courier late, took 9 days to arrive."
+  ],
+  "accuracy": [
+   "Item different from picture.",
+   "Colour not same as photo, quite disappointed."
+  ],
+  "value": [
+   "Too expensive for this quality.",
+   "Not worth the price, can get cheaper elsewhere."
+  ],
+  "service": [
+   "Seller slow to reply my chat.",
+   "Asked seller many times, no response."
+  ]
+ },
+ "ISSUE_ITEM": {
+  "mug": {
+   "packaging": [
+    "Mug arrived cracked 😭 Packaging only one thin layer of bubble wrap.",
+    "Received broken, handle came off. Please pack fragile items properly!",
+    "Cawan pecah bila sampai. Packing terlalu nipis untuk barang kaca.",
+    "Mug chipped at the rim, box was not padded at all.",
+    "Second time order, again arrived with crack. Packaging must improve."
+   ],
+   "quality": [
+    "Glaze has small black dots, finishing not neat."
+   ]
+  },
+  "tee": {
+   "sizing": [
+    "Size runs small! I usually wear M but L also tight. Not oversized at all.",
+    "Ordered XL but fits like L. Please update size chart.",
+    "Kecik sangat, tak oversized langsung. Kena ambil 1 size up.",
+    "Length ok but chest very tight. Size chart not accurate.",
+    "Not the oversized fit as advertised, more like regular fit and small."
+   ],
+   "quality": [
+    "Shrink a lot after first wash."
+   ]
+  },
+  "buds": {
+   "quality": [
+    "Left earbud stopped working after 4 days. Cannot charge anymore.",
+    "Battery drains super fast, only 1 hour then die. Not 6 hours.",
+    "Left side no sound already after one week. Very disappointed.",
+    "Connection keep disconnecting, left earbud not charging in case.",
+    "Earbud kiri rosak lepas seminggu. Battery pun cepat habis.",
+    "Previously bought this model and it was good, but this new batch quality very bad."
+   ]
+  },
+  "cable": {
+   "quality": [
+    "Cable stopped fast charging after 2 weeks."
+   ]
+  },
+  "board": {
+   "quality": [
+    "Board cracked after washing."
+   ],
+   "value": [
+    "Can find cheaper set elsewhere now."
+   ]
+  },
+  "tumbler": {
+   "value": [
+    "Price increased so much compared to last time I bought. Not worth RM49."
+   ],
+   "quality": [
+    "Lid leaks a little."
+   ]
+  },
+  "lamp": {
+   "quality": [
+    "Battery cannot last long as advertised."
+   ]
+  },
+  "case": {
+   "accuracy": [
+    "Received wrong model, I ordered iPhone 15 Pro but got iPhone 15."
+   ]
+  },
+  "sheet": {
+   "accuracy": [
+    "Colour more dark grey than picture. Material is polyester not cotton."
+   ],
+   "quality": [
+    "Fabric thin and pilling after wash."
+   ]
+  }
+ },
+ "ITEM_PRAISE": {
+  "mug": [
+   "Mug very pretty, matte finish really nice. Coffee stays warm long.",
+   "Cawan cantik sangat, warna sage green lawa!"
+  ],
+  "tee": [
+   "Fabric thick and soft, not see through. Nice oversized cut.",
+   "Baju tebal, selesa pakai. Warna beige cantik."
+  ],
+  "buds": [
+   "Sound quality good for the price, bass ok. Connect to iPhone easily.",
+   "Earbuds ok, battery tahan lama."
+  ],
+  "cable": [
+   "Charging very fast with my iPhone 15. Cable feels durable.",
+   "Braided cable quality good, charge laju."
+  ],
+  "board": [
+   "Bamboo boards solid and thick. Good set."
+  ],
+  "tumbler": [
+   "Ice still not melted after 1 day! Very good tumbler.",
+   "Tumbler cantik, ais tahan lama."
+  ],
+  "lamp": [
+   "Lamp brightness adjustable, battery lasts long. Great for studying.",
+   "Lampu terang, mata tak sakit."
+  ],
+  "case": [
+   "Case fits perfectly, buttons clicky, very clear. Corners strong.",
+   "Case jernih, tak kuning. Fit iPhone 15 Pro perfect."
+  ],
+  "sheet": [
+   "Bedsheet soft, ok for the price."
+  ],
+  "diffuser": [
+   "Diffuser very quiet, nice wood design. Room smells great."
+  ],
+  "yoga": [
+   "Mat grip good, no smell. Thickness comfortable."
+  ],
+  "backpack": [
+   "Bag can fit my 15.6\" laptop with space left. Many compartments."
+  ],
+  "sunscreen": [
+   "No white cast, light texture. Good for oily skin!"
+  ],
+  "clips": [
+   "Clips strong hold, colours very nice."
+  ],
+  "notebook": [
+   "Paper thick, my pens no bleed. Love the kraft cover."
+  ],
+  "bottle": [
+   "My son loves the dino design. No leaking."
+  ],
+  "socks": [
+   "Socks comfortable, good thickness."
+  ],
+  "umbrella": [
+   "Auto open close works smoothly. Strong umbrella."
+  ],
+  "towel": [
+   "Towels very absorbent, good for kitchen."
+  ],
+  "fan": [
+   "Fan small but strong wind. Battery ok."
+  ],
+  "tripod": [
+   "Tripod stable, remote works far. Good for TikTok live."
+  ],
+  "deskmat": [
+   "Desk mat big, stitching neat. Looks clean on my setup."
+  ]
+ },
+ "ORDER_STATUS": [
+  "Hi seller, when will you ship my order {sn}?",
+  "Hello, my order {sn} still not shipped yet. Bila nak pos?",
+  "Dah 2 hari order {sn} belum ship lagi, boleh check?",
+  "Can you ship my order {sn} faster? I need it by weekend."
+ ],
+ "POSITIVE": [
+  "Item received in good condition. Fast delivery, seller responsive. Recommended!",
+  "Barang sampai cepat, packing kemas. Quality pun ok. Terima kasih seller!",
+  "Very good quality for this price. Will repeat order 👍",
+  "Same as picture, nice. Delivery took 2 days only.",
+  "Good seller, item well packed. 5 stars!",
+  "Puas hati, berbaloi beli. Recommended seller 😊",
+  "Quality is better than expected, worth it.",
+  "Received already, everything ok. Thank you!",
+  "Second time buying, still good quality. Fast shipping too.",
+  "Love it! Exactly as described.",
+  "Murah dan bagus. Will buy again.",
+  "Nice product, my wife very happy."
+ ],
+ "PRESALE": [
+  "Hi, still have stock?",
+  "Can ship today if I order now?",
+  "Buy 3 got discount or not?",
+  "Hi seller, any voucher available?",
+  "Can COD to Kuching?",
+  "Hello, is this original?",
+  "Ada stok lagi tak?"
+ ],
+ "RETURN_REASONS": {
+  "packaging": {
+   "reason": "DAMAGED",
+   "text": "Item arrived damaged / broken"
+  },
+  "quality": {
+   "reason": "NOT_FUNCTIONAL",
+   "text": "Item is defective / not working"
+  },
+  "sizing": {
+   "reason": "DIFFERENT_DESCRIPTION",
+   "text": "Size does not match description"
+  },
+  "accuracy": {
+   "reason": "WRONG_ITEM",
+   "text": "Received wrong item / variation"
+  }
+ },
+ "SHIPPING_DELAY": [
+  "My parcel {sn} tracking not moving for {days} days already. Please check with courier.",
+  "Hi, order {sn} stuck at {hub} since {days} days ago. What happened?",
+  "Parcel saya {sn} tak bergerak dah {days} hari. Tolong check.",
+  "Still haven’t received my order {sn}. Tracking no update. Is it lost?"
+ ],
+ "SHORT_POS": [
+  "",
+  "",
+  "Good",
+  "Ok",
+  "Nice",
+  "Bagus",
+  "Good quality",
+  "Fast delivery",
+  "Recommended"
+ ],
+ "STAFF_REPLY": {
+  "product_question": [
+   "Hi dear, yes it is suitable 😊 You may refer to the description for full specs. Thank you!",
+   "Hi! Yes can, please check the size/spec chart in the description ya."
+  ],
+  "presale": [
+   "Hi, yes ready stock! Order before 3pm we ship same day 😊",
+   "Hi dear, currently no extra voucher, but free shipping above RM30!"
+  ],
+  "order_status": [
+   "Hi, sorry for the wait! Your order will be shipped out today 🙏",
+   "Hi dear, we will arrange shipment within today, thank you for your patience."
+  ],
+  "shipping_delay": [
+   "Hi, sorry about that. We have raised a ticket with the courier, please allow 1-2 more days 🙏"
+  ],
+  "complaint": [
+   "So sorry for the bad experience! Please submit a return/refund request with photos and we will help you."
+  ],
+  "return_refund": [
+   "Very sorry about this! Please submit a return/refund request in the app with photos, we will approve it."
+  ],
+  "cancellation": [
+   "Hi, noted. Please submit the cancellation request in the app and we will approve it."
+  ],
+  "followup": [
+   "Hi, sorry for the late reply! How can we help? 😊"
+  ],
+  "other": [
+   "Hi, thank you for your message! How can we help you? 😊"
+  ]
+ },
+ "THANKS": [
+  "Ok thanks!",
+  "Noted, thank you 🙏",
+  "Alright, thanks seller.",
+  "Ok terima kasih"
+ ],
+ "CARRIERS": [
+  {
+   "name": "SPX Express",
+   "prefix": "SPXMY",
+   "w": 50,
+   "stuck": 0.012,
+   "failed": 0.02,
+   "lost": 0.002,
+   "cost": [
+    4.9,
+    8.9
+   ]
+  },
+  {
+   "name": "J&T Express",
+   "prefix": "JNTMY",
+   "w": 22,
+   "stuck": 0.03,
+   "failed": 0.025,
+   "lost": 0.004,
+   "cost": [
+    5.2,
+    9.5
+   ]
+  },
+  {
+   "name": "Ninja Van",
+   "prefix": "NVMY",
+   "w": 13,
+   "stuck": 0.018,
+   "failed": 0.03,
+   "lost": 0.003,
+   "cost": [
+    5,
+    9.2
+   ]
+  },
+  {
+   "name": "Pos Laju",
+   "prefix": "ER",
+   "w": 10,
+   "stuck": 0.025,
+   "failed": 0.025,
+   "lost": 0.003,
+   "cost": [
+    5.5,
+    9
+   ]
+  },
+  {
+   "name": "Flash Express",
+   "prefix": "FLMY",
+   "w": 5,
+   "stuck": 0.02,
+   "failed": 0.03,
+   "lost": 0.003,
+   "cost": [
+    4.8,
+    9
+   ]
+  }
+ ],
+ "CITIES": [
+  {
+   "city": "Kuala Lumpur",
+   "state": "Kuala Lumpur",
+   "zip": "50450",
+   "group": "west",
+   "hub": "KL Central Hub",
+   "w": 14
+  },
+  {
+   "city": "Petaling Jaya",
+   "state": "Selangor",
+   "zip": "47301",
+   "group": "west",
+   "hub": "Petaling Jaya DC",
+   "w": 12
+  },
+  {
+   "city": "Shah Alam",
+   "state": "Selangor",
+   "zip": "40150",
+   "group": "west",
+   "hub": "Shah Alam Sorting Centre",
+   "w": 10
+  },
+  {
+   "city": "Subang Jaya",
+   "state": "Selangor",
+   "zip": "47500",
+   "group": "west",
+   "hub": "Petaling Jaya DC",
+   "w": 8
+  },
+  {
+   "city": "Cheras",
+   "state": "Selangor",
+   "zip": "43200",
+   "group": "west",
+   "hub": "KL Central Hub",
+   "w": 6
+  },
+  {
+   "city": "Johor Bahru",
+   "state": "Johor",
+   "zip": "80100",
+   "group": "west",
+   "hub": "Johor Bahru Hub",
+   "w": 9
+  },
+  {
+   "city": "George Town",
+   "state": "Penang",
+   "zip": "10200",
+   "group": "west",
+   "hub": "Penang Prai Hub",
+   "w": 7
+  },
+  {
+   "city": "Ipoh",
+   "state": "Perak",
+   "zip": "30450",
+   "group": "west",
+   "hub": "Ipoh Hub",
+   "w": 5
+  },
+  {
+   "city": "Melaka",
+   "state": "Melaka",
+   "zip": "75000",
+   "group": "west",
+   "hub": "Melaka Hub",
+   "w": 4
+  },
+  {
+   "city": "Seremban",
+   "state": "Negeri Sembilan",
+   "zip": "70000",
+   "group": "west",
+   "hub": "Seremban Hub",
+   "w": 4
+  },
+  {
+   "city": "Kuantan",
+   "state": "Pahang",
+   "zip": "25000",
+   "group": "west",
+   "hub": "Kuantan Hub",
+   "w": 3
+  },
+  {
+   "city": "Alor Setar",
+   "state": "Kedah",
+   "zip": "05000",
+   "group": "west",
+   "hub": "Alor Setar Hub",
+   "w": 3
+  },
+  {
+   "city": "Kota Bharu",
+   "state": "Kelantan",
+   "zip": "15000",
+   "group": "west",
+   "hub": "Kota Bharu Hub",
+   "w": 3
+  },
+  {
+   "city": "Kota Kinabalu",
+   "state": "Sabah",
+   "zip": "88000",
+   "group": "east",
+   "hub": "Kota Kinabalu Gateway",
+   "w": 4
+  },
+  {
+   "city": "Kuching",
+   "state": "Sarawak",
+   "zip": "93000",
+   "group": "east",
+   "hub": "Kuching Gateway",
+   "w": 4
+  },
+  {
+   "city": "Miri",
+   "state": "Sarawak",
+   "zip": "98000",
+   "group": "east",
+   "hub": "Miri Hub",
+   "w": 2
+  }
+ ],
+ "ORIGIN_HUB": "Shah Alam Sorting Centre",
+ "PAYMENT_METHODS": [
+  [
+   "ShopeePay",
+   35
+  ],
+  [
+   "Online Banking",
+   25
+  ],
+  [
+   "Credit/Debit Card",
+   15
+  ],
+  [
+   "Cash on Delivery",
+   18
+  ],
+  [
+   "SPayLater",
+   7
+  ]
+ ]
+}

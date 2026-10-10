@@ -1,8 +1,8 @@
-# BizFlow Feature Update 01 — Sales & Customer Ops, Demo Mode, Social Media Promotion & Recruitment
+# Enterprise Buddy Feature Update 01 — Sales & Customer Ops, Demo Mode, Social Media Promotion & Recruitment
 
 **For:** Tencent WorkBuddy, sent by the user at a sprint checkpoint/gate  
 **Date:** 2026-10-10  
-**Applies to:** `BizFlow_WorkBuddy_Master_Instructions` (Section A feature-request rule; Sections G.9, G.13, G.14)  
+**Applies to:** `EnterpriseBuddy_WorkBuddy_Master_Instructions` (Section A feature-request rule; Sections G.9, G.13, G.14)  
 **Contains four feature requests:** FR-01 Sales & Customer Operations layer · FR-02 Demo Mode · FR-03 Social media promotion · FR-04 Recruitment assistant
 
 ---
@@ -32,7 +32,7 @@ Each request is a **user feature request**, handled with the feature-request rul
 
 ## 1. The idea
 
-BizFlow becomes a **multi-channel business agent, not just a chatbot connected to WhatsApp**. A new customer-facing layer sits in front of the existing departments:
+Enterprise Buddy becomes a **multi-channel business agent, not just a chatbot connected to WhatsApp**. A new customer-facing layer sits in front of the existing departments:
 
 - customer conversations create **orders**;
 - orders **check and update stock** through the Operations department;
@@ -267,7 +267,7 @@ Today Marketing drafts **one** promo post. FR-03 turns this into a small **campa
 
 - **Slide 5 (live demo):** first show **Live Mode** (the real run, only built-and-tested features), then switch to **Demo Mode** for the full-vision walkthrough, saying aloud which mode is on screen.
 - **Slide 7 (vision):** add the People department (recruitment) and the social media campaign planner, using the same LIVE / PROTOTYPE / CONCEPT badges.
-- **Speaker note:** “Everything marked LIVE ran for real today; PROTOTYPE and CONCEPT show where BizFlow goes next.”
+- **Speaker note:** “Everything marked LIVE ran for real today; PROTOTYPE and CONCEPT show where Enterprise Buddy goes next.”
 - Update `docs/DEMO_SCRIPT.md` with the exact scripted customer messages and Demo Mode steps; never improvise prices live.
 
 ---

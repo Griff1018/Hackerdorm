@@ -1,4 +1,4 @@
-# TECHNOLOGY HEALTH CHECK - BizFlow
+# TECHNOLOGY HEALTH CHECK - Enterprise Buddy
 
 Checked at 2026-10-10T15:31:15.260547+08:00 · status **PASS**
 

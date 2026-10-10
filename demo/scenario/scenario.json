@@ -1,8 +1,8 @@
 {
-  "title": "Campus Crumb - three-minute BizFlow visual walkthrough",
+  "title": "Campus Crumb - three-minute Enterprise Buddy visual walkthrough",
   "synthetic": true,
   "steps": [
-    {"title":"1. One owner prompt","badge":"LIVE FEATURE","body":"The owner asks BizFlow to check this month's records and prepare everything needed to act.","visual":{"type":"table","rows":[["OWNER PROMPT","DEPARTMENTS","OUTPUT"],["Check my records","Operations + Reporting","Daily brief"],["Prepare actions","Verifier + Technology","Evidence"],["Keep me safe","Controls","Drafts only"]]}},
+    {"title":"1. One owner prompt","badge":"LIVE FEATURE","body":"The owner asks Enterprise Buddy to check this month's records and prepare everything needed to act.","visual":{"type":"table","rows":[["OWNER PROMPT","DEPARTMENTS","OUTPUT"],["Check my records","Operations + Reporting","Daily brief"],["Prepare actions","Verifier + Technology","Evidence"],["Keep me safe","Controls","Drafts only"]]}},
     {"title":"2. Departments collaborate","badge":"LIVE FEATURE","body":"Departments run in a documented handoff chain and report evidence after each action.","visual":{"type":"table","rows":[["Operations","Reporting","Strategy"],["Stock + suppliers","Metrics + actions","Market hypothesis"],["Marketing","Verifier","Technology"],["Draft post","Recompute","Health check"]]}},
     {"title":"3. Supplier comparison","badge":"LIVE FEATURE","body":"Supplier research is scored by code. Unavailable listings and material substitutes are never recommended.","visual":{"type":"table","rows":[["SUPPLIER","SCORE","DECISION"],["Exact active listing","60.00","Eligible"],["Inactive listing","70.00","Blocked"],["Spread as butter","77.00","Substitute only"]]}},
     {"title":"4. Daily brief","badge":"LIVE FEATURE","body":"The owner receives checked metrics, data-quality findings, and prioritised actions with evidence.","visual":{"type":"table","rows":[["METRIC","VALUE","SOURCE"],["Net revenue","MYR 2,451.25","snapshot"],["Actions","7","action queue"],["Verifier","PASSED","verification"]]}},
@@ -11,6 +11,6 @@
     {"title":"7. Social campaign","badge":"LIVE FEATURE","body":"The campaign planner produces a one-week set of platform drafts. Nothing is posted automatically.","visual":{"type":"post","body":"Granola Bar — check today's Campus Crumb menu and message us to order.","tags":"#CampusCrumb #CampusSnacks"}},
     {"title":"8. People department","badge":"LIVE FEATURE","body":"The People department creates a fair-worded synthetic job ad and hiring kit using the owner-set pay range.","visual":{"type":"people","body":"MYR 12.00–15.00/hour · owner confirms compliance before posting"}},
     {"title":"9. Marketplace seller","badge":"LIVE FEATURE","body":"The seller-side processor validates orders, recomputes totals, prepares a simulated label, and summarises reviews.","visual":{"type":"label","body":"MP-20261010-0003 · received → confirmed → packing → shipped → completed"}},
-    {"title":"10. Owner approval","badge":"LIVE FEATURE","body":"BizFlow ends with drafts and evidence. The owner approves, edits, rejects, or pays; BizFlow never moves real money.","visual":{"type":"po","title":"Final owner review","body":"Approve / reject / mark paid / mark received · no real payment or posting"}}
+    {"title":"10. Owner approval","badge":"LIVE FEATURE","body":"Enterprise Buddy ends with drafts and evidence. The owner approves, edits, rejects, or pays; Enterprise Buddy never moves real money.","visual":{"type":"po","title":"Final owner review","body":"Approve / reject / mark paid / mark received · no real payment or posting"}}
   ]
 }

@@ -1,6 +1,6 @@
-"""Business analytics for the BizFlow dashboard — deterministic numbers + problems with actions.
+"""Business analytics for the Enterprise Buddy dashboard — deterministic numbers + problems with actions.
 
-Every figure comes from BizFlow files: the pipeline's validated sales lines (same filters as the brief),
+Every figure comes from Enterprise Buddy files: the pipeline's validated sales lines (same filters as the brief),
 products, expenses, stock findings, ingredient stock, customer orders from the inbox, automations, to-dos
 and checkpoints. Each problem the dashboard raises carries a concrete action and a question the owner can
 send to the agent with one click.
@@ -42,7 +42,7 @@ def _f(x) -> float:
 
 def _sales():
     """Validated sales lines from the pipeline (duplicates, refunds, cancellations, unknown products removed)."""
-    import bizflow_core as core
+    import enterprise_buddy_core as core
     cfg = core.Config(data_dir=SAMPLE, output_dir=OUTPUT)
     v = core.validate(SAMPLE, cfg)
     return core.eligible_lines(v, cfg), v, cfg
@@ -145,7 +145,7 @@ def _recorded_dashboard(bid: str, out: dict, lines: list[dict]):
     if out["kpis"]["cost_coverage_pct"] < 100:
         miss = [p["name"] for p in products_out if not p["cost_known"]]
         P.append({"level": "warning", "icon": "🧮", "title": f"Profit is missing for {len(miss)} product{'s' if len(miss) > 1 else ''}",
-                  "detail": "Add what one " + ", ".join(miss[:3]) + " costs you to make (⚙️ Settings → Shop menu) so BizFlow can show real profit.",
+                  "detail": "Add what one " + ", ".join(miss[:3]) + " costs you to make (⚙️ Settings → Shop menu) so Enterprise Buddy can show real profit.",
                   "action": "Add costs", "drawer": "settings"})
     if len(products_out) > 1:
         top = products_out[0]
@@ -159,7 +159,7 @@ def _recorded_dashboard(bid: str, out: dict, lines: list[dict]):
                   "ask": f"My busiest day so far is {busy['day']}. Plan my prep and stock for next week."})
     if n_days < 7:
         P.append({"level": "info", "icon": "📝", "title": f"{len(lines)} sale line{'s' if len(lines) != 1 else ''} recorded on {n_days} day{'s' if n_days != 1 else ''}",
-                  "detail": "Record every sale for a week and BizFlow can show reliable best products and busy days.", "action": "Record a sale", "drawer": "sale"})
+                  "detail": "Record every sale for a week and Enterprise Buddy can show reliable best products and busy days.", "action": "Record a sale", "drawer": "sale"})
 
 
 def business_dashboard(bid: str) -> dict:
@@ -238,7 +238,7 @@ def business_dashboard(bid: str) -> dict:
                           "action": "Reorder now", "ask": f"{s['name']} runs out in {s['days']:.1f} days. What exactly should I buy or make, from which supplier, and how much will it cost?"})
             elif s["state"] == "stale":
                 P.append({"level": "warning", "icon": "🔢", "title": f"{s['name']} stock count is {s['age_days']} days old",
-                          "detail": "BizFlow can't tell when it will run out until you recount it.", "action": "Recount stock",
+                          "detail": "Enterprise Buddy can't tell when it will run out until you recount it.", "action": "Recount stock",
                           "ask": f"Help me recount {s['name']} and tell me what to do with the new number."})
             elif s["state"] == "over":
                 P.append({"level": "warning", "icon": "📦", "title": f"Too much {s['name']} — {s['days']:.0f} days of stock",
@@ -284,7 +284,7 @@ def business_dashboard(bid: str) -> dict:
         out.update({"kpis": None, "sources": ["data/workspace/inbox.json", "data/workspace/todos.json", "data/workspace/checkpoints.json"]})
         P.append({"level": "info", "icon": "🧾", "title": "No sales records yet",
                   "detail": "Orders from Online Requests and your online shop are counted below. Record your first sales to unlock profit, best-product and busy-day analytics.",
-                  "action": "Record a sale", "drawer": "sale", "ask": "How should I record my sales so BizFlow can show my profit, best products and busiest days?"})
+                  "action": "Record a sale", "drawer": "sale", "ask": "How should I record my sales so Enterprise Buddy can show my profit, best products and busiest days?"})
 
     o = out["orders"]
     if o["pending"]:

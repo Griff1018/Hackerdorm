@@ -1,4 +1,4 @@
-# AGENT WORKFLOW — what BizFlow plans and does (Section G.13 — living document)
+# AGENT WORKFLOW — what Enterprise Buddy plans and does (Section G.13 — living document)
 
 Updated: end of **Sprint 3A** (2026-10-10).
 This describes the run the **product** will perform. It is **not** the build process: the
@@ -23,14 +23,14 @@ Items are marked **[planned]** until they are actually implemented and tested.
         ▼
  [1] PLAN    ── writes the run plan (stages, tools, expected outputs) into the run log
         ▼
- [2] INSPECT ── headers, row counts, types, schema mapping      function: bizflow_core.validate()
+ [2] INSPECT ── headers, row counts, types, schema mapping      function: enterprise_buddy_core.validate()
         ▼
- [3] VALIDATE─ issues with file/row/id/severity                 function: bizflow_core.validate()
+ [3] VALIDATE─ issues with file/row/id/severity                 function: enterprise_buddy_core.validate()
         ▼
- [4] CALCULATE ── snapshot metrics, per-product rollups         function: bizflow_core.calculate()
+ [4] CALCULATE ── snapshot metrics, per-product rollups         function: enterprise_buddy_core.calculate()
         │
         ├─► Operations ── stock, replenishment, materials ──► supplier_research.csv
-        │        functions: bizflow_core.calculate() + web research + bizflow_supplier.score_material()
+        │        functions: enterprise_buddy_core.calculate() + web research + enterprise_buddy_supplier.score_material()
         ├─► Reporting ── snapshot, action queue, quality report, daily brief
         ├─► Strategy  ── one market-check question ──► market_brief.md   **built**
         ├─► Sales & Marketing ── promo draft from the Operations handoff  **built (unsent)**
@@ -80,7 +80,7 @@ The run log records which department produced or checked each output.
 | tool | kind | used by | status |
 |---|---|---|---|
 | file read / write | WorkBuddy built-in | all | confirmed (F1) |
-| Python deterministic modules (`bizflow_core.validate`, `bizflow_core.calculate`, `bizflow_supplier.score_material`, `bizflow_tech.run_check`, `bizflow_marketplace.process_inbox`) | WorkBuddy code execution | Operations, Reporting, Marketplace, Technology | modules built and tested (`app/bizflow_*.py`, 3B suite) |
+| Python deterministic modules (`enterprise_buddy_core.validate`, `enterprise_buddy_core.calculate`, `enterprise_buddy_supplier.score_material`, `enterprise_buddy_tech.run_check`, `enterprise_buddy_marketplace.process_inbox`) | WorkBuddy code execution | Operations, Reporting, Marketplace, Technology | modules built and tested (`app/enterprise_buddy_*.py`, 3B suite) |
 | built-in web search | WorkBuddy built-in | Operations (suppliers), Strategy (market check) | confirmed working (F5, retrieved 2026-10-10) |
 | WorkBuddy Automation, hourly | WorkBuddy built-in | Technology | configuration active; scheduled callback must be checked after 16:35 before U1 is promoted |
 | team MCP server | optional, only for missing capability | fallback | **not verified** (U2) — built-ins come first (Section D) |
@@ -165,7 +165,7 @@ In every other case the agent applies the documented default, logs it and contin
 For any owner request, WorkBuddy first states its understanding and a short department plan. Before each
 local operation it names the acting department and reason; after it reads the command result and names the
 evidence file; it adapts when a supplier is unavailable, an order needs confirmation, or a verifier check
-fails. The routing surface is `python -m app.bizflow_cli` with subcommands:
+fails. The routing surface is `python -m app.enterprise_buddy_cli` with subcommands:
 
 `brief` · `stock` · `suppliers <material>` · `po draft|mark-paid|mark-received` · `order <message>` ·
 `faq <question>` · `refund <order> <amount>` · `marketplace` · `reviews` · `campaign <product>` · `jobad` ·
@@ -176,7 +176,7 @@ claims. The run ends with completed actions, owner approvals, unresolved gaps an
 
 ## 12. Build-time checkpoints vs runtime autonomy (Section G.7)
 
-**Build time:** while BizFlow is being built, WorkBuddy stops after every sprint, reports and waits
+**Build time:** while Enterprise Buddy is being built, WorkBuddy stops after every sprint, reports and waits
 for the team's approval. This is a *team* control, not product behaviour.
 
 **Runtime:** the owner's single goal prompt runs the whole chain in §1 without intermediate

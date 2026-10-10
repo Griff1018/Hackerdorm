@@ -1,5 +1,5 @@
 {
-  "schema": "bizflow.marketplace_status.v1",
+  "schema": "enterprise_buddy.marketplace_status.v1",
   "external_order_id": "MP-20261010-0004",
   "order_id": "ORD-MP-20261010-0004",
   "status": "rejected_invalid",
@@ -13,7 +13,7 @@
   "courier": "SimuExpress (simulated)",
   "label_path": null,
   "message_to_buyer": "Simulated status update only.",
-  "reason": "displayed_total 0.00 does not match BizFlow recomputed total 7.50",
+  "reason": "displayed_total 0.00 does not match Enterprise Buddy recomputed total 7.50",
   "updated_at": "2026-10-10T15:43:24.535996+08:00",
   "synthetic": true
 }

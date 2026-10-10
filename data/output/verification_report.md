@@ -1,4 +1,4 @@
-# VERIFICATION REPORT - BizFlow (Verifier department)
+# VERIFICATION REPORT - Enterprise Buddy (Verifier department)
 
 Verified at 2026-10-10T16:03:20.582411+08:00 · status **PASSED**
 

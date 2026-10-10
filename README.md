@@ -1,21 +1,21 @@
-# BizFlow — The AI Operations Agent for Microbusinesses
+# Enterprise Buddy — The AI Operations Agent for Microbusinesses
 
 ## Quick start
 
 ```bash
 python console/server.py
 ```
-Open `http://127.0.0.1:8090` (BizFlow), `/instagram/` (mock Instagram) and `/linkedin/` (mock LinkedIn).
+Open `http://127.0.0.1:8090` (Enterprise Buddy), `/instagram/` (mock Instagram) and `/linkedin/` (mock LinkedIn).
 Needs Python 3.11+ (standard library only) and the WorkBuddy / CodeBuddy CLI (`codebuddy`) installed and logged in.
 
 ## Repository layout
 
 | folder | what it is |
 |---|---|
-| `console/` | BizFlow Agent Console — web app + server (`server.py`), agent rules, automations, inbox, tasks, workspace |
-| `app/` | Deterministic BizFlow toolkit (`python -m app.bizflow_cli …`): pipeline, suppliers, map, scraper, guides, POs |
+| `console/` | Enterprise Buddy Agent Console — web app + server (`server.py`), agent rules, automations, inbox, tasks, workspace |
+| `app/` | Deterministic Enterprise Buddy toolkit (`python -m app.enterprise_buddy_cli …`): pipeline, suppliers, map, scraper, guides, POs |
 | `data/sample/` | Synthetic demo business data (Campus Crumb) · `data/guides/` official how-to guides · `data/output/` toolkit outputs |
-| `instagram_mock/`, `linkedin_mock/` | Demo social apps, served by the console and connected to BizFlow (no API keys) |
+| `instagram_mock/`, `linkedin_mock/` | Demo social apps, served by the console and connected to Enterprise Buddy (no API keys) |
 | `docs/` | Project docs, test log (`AGENT_CONSOLE_TESTS.md`), channel API (`DEMO_CHANNELS_API.md`) |
 | `planning_docs/` | WorkBuddy master instructions, prompts and feature requests used to build the project |
 | `tests/`, `scripts/`, `skills/`, `demo/` | Unit tests, data scripts, the WorkBuddy skill, the original demo site |
@@ -31,7 +31,7 @@ Track: **Track 2 — WorkBuddy Track: Agentic Solutions.** Built and presented i
 
 ## What it will do
 
-One prompt from a student seller → BizFlow validates their CSV records, computes explainable metrics,
+One prompt from a student seller → Enterprise Buddy validates their CSV records, computes explainable metrics,
 researches suppliers for every raw material, checks the market, keeps the demo site healthy,
 independently verifies its own numbers, and hands back a prioritised, evidence-backed action queue —
 drafts only, nothing sent, ordered or paid.
@@ -67,7 +67,7 @@ message asking for this server because browsers block the local generated-file f
 python console/server.py
 ```
 
-Then open `http://127.0.0.1:8090`. Type any request; the WorkBuddy CLI plans live using the BizFlow toolkit
+Then open `http://127.0.0.1:8090`. Type any request; the WorkBuddy CLI plans live using the Enterprise Buddy toolkit
 (read-only commands only), the plan waits for your approval, and only approved items are executed by the
 console from a fixed whitelist. "Reset demo state" restores the purchase orders and other changed files.
 Requires the `codebuddy` CLI to be installed and logged in.
@@ -75,7 +75,7 @@ Tabs in the console: **Agent** (live plan → approve → execute), **Market map
 supply shops from OpenStreetMap, no API key), **Suppliers** (scraped image, item name, current listed price,
 online/offline ordering; "Buy this…" asks Online → delivery location on a map, or Offline → shop on a map with
 directions), **Guides** (official how-to for SSM, food handler + typhoid, council licence, campus permission,
-halal, MeSTI, tax, and BizFlow actions). New toolkit commands: `nearby "<area>" [--kind suppliers]`,
+halal, MeSTI, tax, and Enterprise Buddy actions). New toolkit commands: `nearby "<area>" [--kind suppliers]`,
 `scrape [url]`, `guide "<topic>"`, `po list`. Tests: `docs/AGENT_CONSOLE_TESTS.md`.
 
 ## Quick commands
@@ -83,8 +83,8 @@ halal, MeSTI, tax, and BizFlow actions). New toolkit commands: `nearby "<area>" 
 ```bash
 python scripts/generate_sample_data.py                     # regenerate data/sample/sales.csv
 python tests/compute_expected_standalone.py                # golden values for data/sample
-python -m app.bizflow_cli brief                            # route one owner request to Reporting
-python -m app.bizflow_cli full                             # run the complete deterministic toolkit
+python -m app.enterprise_buddy_cli brief                            # route one owner request to Reporting
+python -m app.enterprise_buddy_cli full                             # run the complete deterministic toolkit
 python tests/compute_expected_standalone.py \
     --data tests/fixtures/golden_mini --name golden_mini   # golden values for the mini fixture
 ```

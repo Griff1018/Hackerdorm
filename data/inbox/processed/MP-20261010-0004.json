@@ -1,5 +1,5 @@
 {
-  "schema": "bizflow.marketplace_order.v1",
+  "schema": "enterprise_buddy.marketplace_order.v1",
   "external_order_id": "MP-20261010-0004",
   "channel": "simulated_marketplace",
   "created_at": "2026-10-10T15:45:20+08:00",

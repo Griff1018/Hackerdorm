@@ -13,8 +13,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "app"))
 
-from bizflow_customer import run_tier_b_demo  # noqa: E402
-from bizflow_marketplace import recompute  # noqa: E402
+from enterprise_buddy_customer import run_tier_b_demo  # noqa: E402
+from enterprise_buddy_marketplace import recompute  # noqa: E402
 
 
 class Sprint3AFeatures(unittest.TestCase):

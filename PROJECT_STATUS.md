@@ -1,4 +1,4 @@
-# PROJECT STATUS — BizFlow
+# PROJECT STATUS — Enterprise Buddy
 
 Last update: **2026-10-10 16:22, Sprint 3D feasibility gate** (blocked: WorkBuddy CLI unavailable).
 
@@ -29,9 +29,9 @@ Hard deadline: **09:30, 2026-10-11** (target submission 09:00).
 
 ## What Sprint 2 produced
 
-- **Engine** `app/run_bizflow.py` wired with all six departments: Operations → Reporting →
+- **Engine** `app/run_enterprise_buddy.py` wired with all six departments: Operations → Reporting →
   Strategy → Marketing → Verifier, plus the continuous Technology health check.
-- **Operations supplier research** (`bizflow_supplier.py` + `scripts/build_supplier_research.py`):
+- **Operations supplier research** (`enterprise_buddy_supplier.py` + `scripts/build_supplier_research.py`):
   39 scored rows across 17 materials, G.11 scoring done **by code**. Full tier (100) = price 40 +
   delivery 20 + MOQ 15 + reliability 15 + location 10; light tier (65) = price 40 + reliability 15 +
   location 10. `docs/SUPPLIER_RESEARCH_PLAN.md` lists which tier applies to each of the 17 materials
@@ -44,19 +44,19 @@ Hard deadline: **09:30, 2026-10-11** (target submission 09:00).
   causal conclusion is claimed.
 - **Marketing draft** (`promo_draft.md`): P005 handoff under the complete G.9 rule (stock on hand AND
   zero eligible sales OR overstock cover), **unsent**, with do-not-claim guardrails.
-- **Technology health check** (`bizflow_tech.py` + `demo/index.html`, `demo/shop_page.html`):
+- **Technology health check** (`enterprise_buddy_tech.py` + `demo/index.html`, `demo/shop_page.html`):
   status **PASS** (13 pass / 0 warn / 0 err). Fixed link-resolution to be page-relative and the
   shop-page stock matcher collision on "6pcs".
 - **Verifier** (`verification_report.md`): independent recomputation, **PASSED** (7 checks).
-- **Business profile** (`data/business_profile.json` + `bizflow_profile.py`): synthetic, rejects
+- **Business profile** (`data/business_profile.json` + `enterprise_buddy_profile.py`): synthetic, rejects
   FORBIDDEN_FIELDS (card/account/password/pin/otp/cvv/api_key/secret/token).
-- **Ready-to-pay purchase orders** (`bizflow_purchase.py`): 4 draft POs in `data/output/po/`,
+- **Ready-to-pay purchase orders** (`enterprise_buddy_purchase.py`): 4 draft POs in `data/output/po/`,
   `purchase_plan.md`, `purchase_orders.json`. POs use the separate `purchasing_budget` (MYR 800.00),
   not recorded rent/fuel expenses; over-budget/unapproved POs do not consume later headroom. Butter has
   substitutes only, Chicken filling has no available eligible priced supplier.
 - **Sprint 2.1 safety fixes:** unavailable/inactive listings never recommended or ordered; material
   mismatches never recommended; 24 unittest tests pass; P005 G.9 zero-sales marketing branch is tested.
-- **BizFlow Skill:** `skills/bizflow-pipeline/SKILL.md` created and packaged as `data/output/bizflow-pipeline.zip`.
+- **Enterprise Buddy Skill:** `skills/enterprise-buddy-pipeline/SKILL.md` created and packaged as `data/output/enterprise-buddy-pipeline.zip`.
   Fresh owner-prompt proof is in `data/output/fresh_chat_skill_proof/` and exits 0.
 - **Sprint 3A:** full Demo Mode and FR-01 Tier B are built and tested. Evidence is in `demo/scenario/`,
   `demo/index.html`, `data/output/customer_demo/`, and `tests/test_features.py`.
@@ -64,8 +64,8 @@ Hard deadline: **09:30, 2026-10-11** (target submission 09:00).
   produced 5 platform drafts; FR-04 produced the owner-set MYR 12.00–15.00/hour job ad and hiring kit;
   FR-05 produced a generic social-feed preview only. No second store was built and no external marketplace
   store path was supplied, so connection remains pending.
-- **Sprint 3C:** `app/bizflow_cli.py` now routes free-form owner intents to deterministic department commands;
-  `skills/bizflow-pipeline/SKILL.md` now requires understanding/plan, before/after department narration,
+- **Sprint 3C:** `app/enterprise_buddy_cli.py` now routes free-form owner intents to deterministic department commands;
+  `skills/enterprise-buddy-pipeline/SKILL.md` now requires understanding/plan, before/after department narration,
   adaptation, verification, and approval/file-link closeout. Demo Live Mode renders current outputs and
   polls activity; Demo Mode renders visual cards for all ten steps. `docs/INTERACTIVE_DEMO_TESTS.md` records
   12 prompt/tool routes. Paid-to-received PO loop is tested and updates derived stock without editing inventory.csv.
@@ -86,7 +86,7 @@ Hard deadline: **09:30, 2026-10-11** (target submission 09:00).
 | `tests/test_po_actions.py` (1 test) | PASS — paid PO → received ledger → current_stock update; inventory.csv unchanged |
 | Interactive toolkit routes | PASS — 12 prompt/tool routes recorded in `docs/INTERACTIVE_DEMO_TESTS.md` |
 | Fresh Skill owner prompt | PASS — full selected pipeline wrapper, exit 0, Verifier passed |
-| `bizflow_profile` forbidden-field rejection | PASS |
+| `enterprise_buddy_profile` forbidden-field rejection | PASS |
 
 ## Known gaps (open items for Sprint 3+)
 

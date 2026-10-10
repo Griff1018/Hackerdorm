@@ -1,7 +1,7 @@
-"""Everything the chat agent can SEE and DO inside the BizFlow app.
+"""Everything the chat agent can SEE and DO inside the Enterprise Buddy app.
 
 - snapshot(bid)      → a compact text picture of the whole app for one business (or all), put into every prompt
-- dataset(bid, name) → one table of real BizFlow data; the chat draws it as a chart or table (numbers never come from the AI)
+- dataset(bid, name) → one table of real Enterprise Buddy data; the chat draws it as a chart or table (numbers never come from the AI)
 - execute(bid, act)  → one in-app action the owner asked for (record a customer / sale / menu item, connect an app,
                        complete an order, set the goal). Each returns an undo record. Nothing here moves money,
                        posts, or messages anyone — those stay approval-only plan steps.
@@ -86,11 +86,35 @@ def customers(bid: str) -> list[dict]:
         c.setdefault("channels", set()).add(o.get("channel", ""))
         if not c.get("phone") and o.get("phone"):
             c["phone"] = o["phone"]
+    for c in shopee_customers(bid):  # buyers of a connected Shopee shop
+        old = by.get(c["name"].lower())
+        if old:
+            old["orders"] += c["orders"]
+            old["spent"] = round(old["spent"] + c["spent"], 2)
+            old["last_order"] = max(old["last_order"], c["last_order"])
+            old.setdefault("channels", set()).add("shopee")
+            old["shopee_buyer_id"] = c["shopee_buyer_id"]
+        else:
+            by[c["name"].lower()] = dict(c, channels={"shopee"})
     out = []
     for c in by.values():
         c["channels"] = ", ".join(sorted(x for x in c.pop("channels", set()) if x))
         out.append(c)
     return sorted(out, key=lambda c: (-c["spent"], c["name"]))
+
+
+def shopee_customers(bid: str) -> list[dict]:
+    """Everyone who bought from the connected (demo) Shopee shop: orders, spend, last order, last item."""
+    b = ws.business(bid) or {}
+    if not b.get("shopee_shop") or not appset.connected(bid, "shopee"):
+        return []
+    import sim  # shopee_mock/sim.py (on sys.path via the console server)
+    rows = sim.all_("""SELECT b.buyer_user_id, b.username, b.name, b.phone, b.city, b.state, COUNT(o.order_sn) n, SUM(o.total_amount) spent, MAX(o.create_time) last
+                       FROM orders o JOIN buyers b ON b.buyer_user_id = o.buyer_user_id
+                       WHERE o.order_status != 'CANCELLED' AND b.buyer_user_id > 1 GROUP BY b.buyer_user_id""")
+    return [{"id": f"SB{r['buyer_user_id']}", "business_id": bid, "name": r["name"], "phone": r["phone"], "notes": f"Shopee @{r['username']} · {r['city']}, {r['state']}",
+             "tags": ["Shopee"], "source": "Shopee", "orders": r["n"], "spent": round(r["spent"] or 0, 2), "last_order": sim.date_key(r["last"]),
+             "shopee_buyer_id": r["buyer_user_id"], "shopee_username": r["username"]} for r in rows]
 
 
 def _save_customers(rows):
@@ -109,7 +133,7 @@ def add_customer(bid: str, data: dict) -> dict:
         else:
             row[k] = str(v or "").strip()[:300]
     if FORBIDDEN.search(row.get("notes", "")):
-        row["notes"] = "(removed: BizFlow does not store ID, bank, card or password details)"
+        row["notes"] = "(removed: Enterprise Buddy does not store ID, bank, card or password details)"
     with LOCK:
         rows = _read(CUSTOMERS, [])
         old = next((c for c in rows if c.get("business_id") == bid and c["name"].lower() == name.lower()), None)
@@ -407,7 +431,7 @@ def execute(bid: str, act: dict) -> dict:
             app = str(act.get("app", "")).lower().replace(" ", "")
             prev = next((c for c in appset.connections(bid) if c["id"] == app), None)
             if not prev:
-                return {"ok": False, "text": f"BizFlow can't connect to '{act.get('app')}' yet."}
+                return {"ok": False, "text": f"Enterprise Buddy can't connect to '{act.get('app')}' yet."}
             c = appset.set_connection(bid, app, t == "connect_app", str(act.get("handle") or prev.get("handle") or ""))
             if t == "connect_app" and c["kind"] == "merchant" and app != "shop":
                 seed_reviews(bid, app)

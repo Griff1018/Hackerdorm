@@ -1,4 +1,4 @@
-# BizFlow Agent Console — one container: the Python console server + the CodeBuddy (WorkBuddy) CLI it drives.
+# Enterprise Buddy Agent Console — one container: the Python console server + the CodeBuddy (WorkBuddy) CLI it drives.
 # Deploy on Render as a Docker web service (see render.yaml / docs/DEPLOY_RENDER.md).
 FROM python:3.13-slim-bookworm
 
@@ -14,8 +14,8 @@ RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
 WORKDIR /app
 COPY . .
 
-# Listen on all interfaces; Render supplies PORT. The agent runs `python -m app.bizflow_cli …`, so `python` must exist (it does here).
-ENV BIZFLOW_HOST=0.0.0.0 \
+# Listen on all interfaces; Render supplies PORT. The agent runs `python -m app.enterprise_buddy_cli …`, so `python` must exist (it does here).
+ENV ENTERPRISE_BUDDY_HOST=0.0.0.0 \
     PYTHONUNBUFFERED=1 \
     PYTHONUTF8=1 \
     PYTHONIOENCODING=utf-8

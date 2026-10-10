@@ -2,9 +2,9 @@
 
 Channels plug in through a tiny HTTP contract (see docs/DEMO_CHANNELS_API.md):
   POST /api/channels/<channel>/incoming   {"contact": {"handle", "name"}, "text", "business_id"?}
-  GET  /api/channels/<channel>/thread?handle=...  -> the thread, so the demo app can show BizFlow's replies
+  GET  /api/channels/<channel>/thread?handle=...  -> the thread, so the demo app can show Enterprise Buddy's replies
   POST /api/channels/linkedin/candidates  [candidate, ...]   (demo LinkedIn pushes profiles)
-The owner reads and replies in BizFlow. Nothing here contacts a real person.
+The owner reads and replies in Enterprise Buddy. Nothing here contacts a real person.
 
 Recruiting: the owner sets a role (skills, days, pay, area). The engine re-scores every candidate it can see
 (pushed by the demo LinkedIn, fetched from LINKEDIN_DEMO_URL, or the labelled synthetic seed) with a fixed,
@@ -103,6 +103,19 @@ def incoming(channel: str, contact: dict, text: str, bid: str = "campus-crumb") 
         th = _thread(d, bid, channel, contact)
         th["messages"].append({"id": "m" + uuid.uuid4().hex[:6], "from": "them", "text": text, "at": now()})
         th["unread"] = th.get("unread", 0) + 1
+        th["updated_at"] = now()
+        save(d)
+        return th
+
+
+def outreach(channel: str, contact: dict, text: str, bid: str, by: str = "owner") -> dict:
+    """Start (or continue) a chat from the shop's side, e.g. a win-back message to a customer who has not ordered lately."""
+    if channel not in CHANNELS:
+        raise ValueError("unknown channel")
+    with LOCK:
+        d = load()
+        th = _thread(d, bid, channel, contact)
+        th["messages"].append({"id": "m" + uuid.uuid4().hex[:6], "from": "me", "text": str(text).strip()[:2000], "at": now(), "by": by})
         th["updated_at"] = now()
         save(d)
         return th

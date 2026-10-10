@@ -1,5 +1,5 @@
 {
-  "schema": "bizflow.marketplace_status.v1",
+  "schema": "enterprise_buddy.marketplace_status.v1",
   "external_order_id": "MP-20261010-0005",
   "order_id": "ORD-MP-20261010-0005",
   "status": "rejected_out_of_stock",

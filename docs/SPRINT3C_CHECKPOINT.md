@@ -1,10 +1,10 @@
-# Sprint 3C Checkpoint — Interactive BizFlow inside WorkBuddy
+# Sprint 3C Checkpoint — Interactive Enterprise Buddy inside WorkBuddy
 
 ## Completed
 
 ### 1. Deterministic toolkit
 
-Added `app/bizflow_cli.py` with these selectable subcommands:
+Added `app/enterprise_buddy_cli.py` with these selectable subcommands:
 
 `brief` · `stock` · `suppliers <material>` · `po draft|mark-paid|mark-received` · `order <message>` ·
 `faq <question>` · `refund <order> <amount>` · `marketplace` · `reviews` · `campaign <product>` · `jobad` ·
@@ -40,7 +40,7 @@ failure remain active.
 
 ### 4. Paid → received loop
 
-`app/bizflow_po_actions.py` provides owner-controlled simulated state transitions:
+`app/enterprise_buddy_po_actions.py` provides owner-controlled simulated state transitions:
 
 ```text
 draft → paid → received
@@ -68,7 +68,7 @@ Opening the page without a server shows a friendly instruction instead of preten
 - Toolkit help exposes all requested subcommands.
 - Twelve interactive routes are recorded in `docs/INTERACTIVE_DEMO_TESTS.md` with the prompt, department
   plan, command, evidence file and result.
-- Skill package revalidated at `data/output/bizflow-pipeline.zip`.
+- Skill package revalidated at `data/output/enterprise-buddy-pipeline.zip`.
 - Project source CSVs remained protected; received-stock test confirms `inventory.csv` byte identity.
 
 ## Known limits

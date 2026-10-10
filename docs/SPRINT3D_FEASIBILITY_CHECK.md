@@ -1,4 +1,4 @@
-# Sprint 3D feasibility check — BizFlow Agent Console
+# Sprint 3D feasibility check — Enterprise Buddy Agent Console
 
 **Date:** 2026-10-10 16:21 GMT+8
 **Result:** **FAIL — blocked before build**
@@ -34,10 +34,10 @@ used.
 ### 3. Restricted-tool test
 
 Not run because the CLI executable is unavailable. The intended headless test would use the documented
-non-interactive permission flag and restrict tools to the BizFlow toolkit, for example:
+non-interactive permission flag and restrict tools to the Enterprise Buddy toolkit, for example:
 
 ```text
-codebuddy -y -p "Run the BizFlow brief command and report its evidence file." --output-format stream-json --allowedTools "python -m app.bizflow_cli brief"
+codebuddy -y -p "Run the Enterprise Buddy brief command and report its evidence file." --output-format stream-json --allowedTools "python -m app.enterprise_buddy_cli brief"
 ```
 
 This command is **not claimed to have run**.

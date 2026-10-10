@@ -3,7 +3,7 @@
 data/workspace/settings.json  — {"app": {...}, "connections": {bid: {app_id: {...}}}, "shop_menu": {bid: [...]}}
 data/workspace/sales_log.json — sales the owner records by hand (walk-in / bazaar / cash sales)
 
-Connections are SIMULATED links: BizFlow only stores the public page or shop handle the owner types.
+Connections are SIMULATED links: Enterprise Buddy only stores the public page or shop handle the owner types.
 It never asks for or stores passwords, tokens, bank or card details.
 """
 from __future__ import annotations
@@ -23,7 +23,7 @@ MODES = ("approve_at_end", "ask_me", "auto")
 STYLES = ("smart", "plan")
 DEFAULT_APP = {"mode": "approve_at_end", "answer_style": "smart", "owner_name": "", "currency": "MYR"}
 
-# kind: social / merchant. live = a demo app in this project that really exchanges data with BizFlow.
+# kind: social / merchant. live = a demo app in this project that really exchanges data with Enterprise Buddy.
 APPS = [
     {"id": "instagram", "kind": "social", "name": "Instagram", "icon": "📸", "live": True, "portal": "/instagram/",
      "what": "Scheduled posts go out to your feed; DMs land in Messages."},
@@ -35,10 +35,10 @@ APPS = [
      "what": "Share your posts to your page (simulated link)."},
     {"id": "tiktok", "kind": "social", "name": "TikTok", "icon": "🎵", "live": False, "portal": None,
      "what": "Post short videos from your campaign drafts (simulated link)."},
-    {"id": "shop", "kind": "merchant", "name": "BizFlow Shop (your website)", "icon": "🛍️", "live": True, "portal": "/shop/",
+    {"id": "shop", "kind": "merchant", "name": "Enterprise Buddy Shop (your website)", "icon": "🛍️", "live": True, "portal": "/shop/",
      "what": "Your own online ordering page. Orders land in Orders and count in the Dashboard."},
-    {"id": "shopee", "kind": "merchant", "name": "Shopee", "icon": "🧡", "live": False, "portal": None,
-     "what": "Marketplace orders and reviews (simulated link)."},
+    {"id": "shopee", "kind": "merchant", "name": "Shopee", "icon": "🧡", "live": True, "portal": "/shopee/",
+     "what": "The demo Shopee shop (storefront + Seller Centre). Its orders, buyers, chats and reviews flow into Enterprise Buddy; the Shopee agent proposes actions you approve."},
     {"id": "grabfood", "kind": "merchant", "name": "GrabFood", "icon": "🟢", "live": False, "portal": None,
      "what": "Delivery orders from GrabFood (simulated link)."},
     {"id": "foodpanda", "kind": "merchant", "name": "foodpanda", "icon": "🩷", "live": False, "portal": None,

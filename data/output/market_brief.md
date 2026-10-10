@@ -1,4 +1,4 @@
-# MARKET CHECK BRIEF - BizFlow (Strategy department)
+# MARKET CHECK BRIEF - Enterprise Buddy (Strategy department)
 
 **Desk research only. Not validated with real customers.**
 

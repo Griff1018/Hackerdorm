@@ -1,4 +1,4 @@
-# Sample dataset notes — BizFlow
+# Sample dataset notes — Enterprise Buddy
 
 **SYNTHETIC DEMONSTRATION DATA.** No real business, person, address, payment identifier or
 transaction is described. Any screen, slide or report that shows this data must carry the same label.

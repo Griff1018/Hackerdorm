@@ -1,4 +1,4 @@
-"""Businesses and saved conversations for the BizFlow console (JSON files, standard library only).
+"""Businesses and saved conversations for the Enterprise Buddy console (JSON files, standard library only).
 
 data/workspace/businesses.json        — the owner's businesses (Campus Crumb is the one with sample data)
 data/workspace/conversations/<id>.json — one chat; each turn points at a console run (data/output/console_runs)
@@ -220,7 +220,7 @@ def business_context(bid: str) -> str:
     if bid == ALL:
         lines = ["The owner is asking about ALL their businesses together:"]
         for b in businesses():
-            lines.append(f"- {b['name']} ({b['type']}), area: {b['area']}" + (" — has BizFlow sample data (brief/stock/po commands)" if b.get("uses_sample_data") else " — new, no sales data yet"))
+            lines.append(f"- {b['name']} ({b['type']}), area: {b['area']}" + (" — has Enterprise Buddy sample data (brief/stock/po commands)" if b.get("uses_sample_data") else " — new, no sales data yet"))
         lines.append("Compare them, say which needs attention first, and only use toolkit numbers for the business that has sample data.")
         return "\n".join(lines)
     b = business(bid) or DEFAULT_BUSINESS
@@ -253,7 +253,7 @@ def business_context(bid: str) -> str:
     if b.get("uses_sample_data"):
         ctx.append("This is the business whose data the toolkit commands brief/stock/po list/suppliers/verify read.")
     else:
-        ctx.append("This business is NEW: BizFlow has NO sales, stock or purchase-order data for it. Do NOT use brief, stock, "
+        ctx.append("This business is NEW: Enterprise Buddy has NO sales, stock or purchase-order data for it. Do NOT use brief, stock, "
                    "po list or verify (those belong to Campus Crumb). Use nearby (with this business's area), guide, scrape, "
                    "market, WebSearch and WebFetch; quote researched prices only with their source URL.")
     ctx.append(f"Default area for map lookups: \"{b['area']}\".")
@@ -275,9 +275,9 @@ START_STEPS = [
     {"id": "suppliers", "icon": "📦", "title": "Find suppliers and compare prices",
      "detail": "Compare listed prices, online vs in-shop buying.", "ask": "Find suppliers for my ingredients near {area} and compare prices.", "tab": "suppliers"},
     {"id": "firstorder", "icon": "🛒", "title": "Buy your first stock", "detail": "Approve a purchase order; you pay the supplier yourself.", "guides": ["pay-supplier-po"], "tab": "automations"},
-    {"id": "launch", "icon": "📣", "title": "Launch on social media", "detail": "Upload photos; BizFlow writes captions and hashtags and posts on schedule.", "tab": "automations", "guides": ["post-campaign"]},
+    {"id": "launch", "icon": "📣", "title": "Launch on social media", "detail": "Upload photos; Enterprise Buddy writes captions and hashtags and posts on schedule.", "tab": "automations", "guides": ["post-campaign"]},
     {"id": "autopilot", "icon": "🔁", "title": "Turn on auto-reorder and track sales",
-     "detail": "Let BizFlow draft supplier orders when stock runs low — you approve payment.", "tab": "automations"},
+     "detail": "Let Enterprise Buddy draft supplier orders when stock runs low — you approve payment.", "tab": "automations"},
 ]
 RUN_STEPS = [
     {"id": "today", "icon": "📊", "title": "Check what needs attention today", "detail": "Low stock, stale counts, data problems.", "ask": "What needs my attention today?"},
@@ -423,9 +423,9 @@ def history_text(cid: str, runs: dict, limit=4) -> str:
         items = "; ".join(f"{i.get('item_id')} {i.get('title')} [{i.get('status')}]" for i in plan.get("plan_items", [])[:8])
         lines.append(f"- Owner asked: {t['request']}")
         if r.get("answer") or plan.get("understanding"):
-            lines.append(f"  BizFlow answered: {(r.get('answer') or plan.get('understanding'))[:600]}")
+            lines.append(f"  Enterprise Buddy answered: {(r.get('answer') or plan.get('understanding'))[:600]}")
         if items:
             lines.append(f"  Plan items: {items}")
         if plan.get("questions"):
-            lines.append("  BizFlow asked the owner: " + "; ".join(q["question"] for q in plan["questions"]))
+            lines.append("  Enterprise Buddy asked the owner: " + "; ".join(q["question"] for q in plan["questions"]))
     return "\n".join(lines)

@@ -22,3 +22,10 @@ data/output/console_audit.jsonl
 data/output/media/
 data/output/scraped/
 data/output/supplier_order_choices.json
+
+# Mock Shopee world + Shopee agent state (recreated from data/shopee/shopee_seed.db.gz)
+data/shopee/shopee.db
+data/shopee/shopee.db-*
+data/shopee/shopee.tmp
+data/shopee/agent.json
+data/shopee/agent.tmp

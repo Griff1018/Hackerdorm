@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Order Online — BizFlow Shop (demo)</title>
+<title>Order Online — Enterprise Buddy Shop (demo)</title>
 <style>
 :root{--ink:#1d2b24;--muted:#5f6f66;--line:#e2e8e4;--bg:#f7f5ef;--card:#fff;--brand:#1f4d3a;--accent:#e8a33d}
 *{box-sizing:border-box}
@@ -47,7 +47,7 @@ input,textarea,select.f{width:100%;font-size:15px;padding:8px;border:1px solid v
 </style>
 </head>
 <body>
-<div class="demo">DEMO SHOP · synthetic business · no real payment — orders go to the owner's BizFlow app</div>
+<div class="demo">DEMO SHOP · synthetic business · no real payment — orders go to the owner's Enterprise Buddy app</div>
 <header><div class="in"><span class="em" id="em">🛍️</span><div><h1 id="nm">Loading…</h1><div class="sub" id="sub"></div></div>
   <select id="pick" aria-label="Switch shop (demo)"></select></div></header>
 <main id="main">
@@ -89,7 +89,7 @@ async function load() {
   const g = $("#grid"); g.replaceChildren();
   $("#cart").hidden = !d.open || !MENU.length;
   if (!d.open) { g.append(Object.assign(h("div", "closed"), { innerHTML: "<h2>😴 Closed for online orders</h2><p>This shop is not taking online orders right now. Please message the seller directly.</p>" })); return; }
-  if (!MENU.length) { g.append(Object.assign(h("div", "closed"), { innerHTML: "<h2>🧾 Menu coming soon</h2><p>The owner hasn't added items yet (BizFlow → ⚙️ Settings → Online shop menu).</p>" })); return; }
+  if (!MENU.length) { g.append(Object.assign(h("div", "closed"), { innerHTML: "<h2>🧾 Menu coming soon</h2><p>The owner hasn't added items yet (Enterprise Buddy → ⚙️ Settings → Online shop menu).</p>" })); return; }
   MENU.forEach(m => {
     const c = h("div", "item"); c.append(h("div", "pic", ICON(m.item)), h("b", null, m.item), h("div", "price", money(m.price)));
     if (m.note) c.append(h("div", "note", m.note));
@@ -119,7 +119,7 @@ $("#go").onclick = async () => {
   const o = d.order; $("#form").hidden = true; const ok = $("#ok"); ok.hidden = false; ok.replaceChildren();
   ok.append(h("h3", null, "✅ Order sent!"), h("div", null, "Order " + o.id + " · " + money(o.total)),
     h("div", "small", o.items.map(i => i.qty + "× " + i.item).join(", ") + " · " + o.fulfilment + (o.when ? " " + o.when : "")),
-    h("p", "small", "The seller sees it in BizFlow right away and will confirm. Pay on " + o.fulfilment + "."));
+    h("p", "small", "The seller sees it in Enterprise Buddy right away and will confirm. Pay on " + o.fulfilment + "."));
   const again = h("button", "go", "Order something else"); again.onclick = () => { ok.hidden = true; $("#form").hidden = false; $("#note").value = ""; load(); }; ok.append(again);
 };
 load();

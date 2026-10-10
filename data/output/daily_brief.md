@@ -1,4 +1,4 @@
-# DAILY BUSINESS BRIEF - BizFlow
+# DAILY BUSINESS BRIEF - Enterprise Buddy
 
 **SYNTHETIC DEMONSTRATION DATA - not a real business.**
 

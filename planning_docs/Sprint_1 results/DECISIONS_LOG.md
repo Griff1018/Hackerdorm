@@ -1,4 +1,4 @@
-# DECISIONS LOG — BizFlow
+# DECISIONS LOG — Enterprise Buddy
 
 Format: date · decision · options considered · who approved · impact.
 Section C of the master instructions: user decisions outrank this document; this document outranks

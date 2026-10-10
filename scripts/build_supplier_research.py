@@ -517,9 +517,9 @@ def main() -> int:
         for r in rows:
             w.writerow({c: r.get(c, "") for c in RAW_COLUMNS})
 
-    # Columns the scoring engine expects (RESEARCH_COLUMNS in app/bizflow_supplier.py)
+    # Columns the scoring engine expects (RESEARCH_COLUMNS in app/enterprise_buddy_supplier.py)
     sys.path.insert(0, str(ROOT / "app"))
-    from bizflow_supplier import RESEARCH_COLUMNS  # noqa: E402
+    from enterprise_buddy_supplier import RESEARCH_COLUMNS  # noqa: E402
 
     with OUT.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=RESEARCH_COLUMNS, lineterminator="\n", extrasaction="ignore")

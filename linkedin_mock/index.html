@@ -126,12 +126,12 @@
       }
     ];
 
-    // --- BizFlow integration: this page is the business's LinkedIn company page ---
+    // --- Enterprise Buddy integration: this page is the business's LinkedIn company page ---
     const BIZ_ID = new URLSearchParams(location.search).get("business_id") || "campus-crumb";
     try {
       const x = new XMLHttpRequest(); x.open("GET", "/api/linkedin/bootstrap?business_id=" + encodeURIComponent(BIZ_ID), false); x.send();
       const bf = JSON.parse(x.responseText); Object.assign(COMPANY, bf.company); Object.assign(VIEWER, bf.viewer);
-    } catch { /* opened without BizFlow */ }
+    } catch { /* opened without Enterprise Buddy */ }
     LS.posts += "_" + BIZ_ID; LS.notifs += "_" + BIZ_ID;
     const bfPost = (url, body) => fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).then(r => r.json());
     const slug = (t) => String(t || "candidate").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
@@ -172,7 +172,7 @@
       ];
     }
 
-    function makeSeedNotifs() { return [{ id: "n0", icon: "Sparkles", text: "Jobs you create in BizFlow → Automations → Recruiting appear here automatically.", createdAt: Date.now(), read: false }]; }
+    function makeSeedNotifs() { return [{ id: "n0", icon: "Sparkles", text: "Jobs you create in Enterprise Buddy → Automations → Recruiting appear here automatically.", createdAt: Date.now(), read: false }]; }
     function makeSeedNotifsNexora() {
       const now = Date.now();
       return [
@@ -830,7 +830,7 @@ ${form.details || "-"}`;
 
 
     // =====================================================================
-    // TALENT (BizFlow): suitable candidates + messaging, both sides for the demo
+    // TALENT (Enterprise Buddy): suitable candidates + messaging, both sides for the demo
     // =====================================================================
     function TalentView() {
       const [data, setData] = useState({ matches: [], jobs: [], candidates_seen: 0 });
@@ -863,9 +863,9 @@ ${form.details || "-"}`;
           <section className="bg-white rounded-lg border border-slate-200 overflow-hidden">
             <div className="p-4 border-b border-slate-200">
               <div className="font-semibold">Suitable candidates</div>
-              <div className="text-xs text-slate-500">{job ? `For ${job.title} · scored by BizFlow · ${data.candidates_seen} profiles seen` : "Create a role in BizFlow → Automations → Recruiting"}</div>
+              <div className="text-xs text-slate-500">{job ? `For ${job.title} · scored by Enterprise Buddy · ${data.candidates_seen} profiles seen` : "Create a role in Enterprise Buddy → Automations → Recruiting"}</div>
             </div>
-            {data.matches.length === 0 && <div className="p-4 text-sm text-slate-500">No matches yet — BizFlow keeps looking every minute.</div>}
+            {data.matches.length === 0 && <div className="p-4 text-sm text-slate-500">No matches yet — Enterprise Buddy keeps looking every minute.</div>}
             {data.matches.map(x => (
               <button key={x.handle} onClick={() => setSel(x)} className={`w-full text-left px-4 py-3 border-b border-slate-100 hover:bg-slate-50 flex gap-3 items-center ${sel && sel.handle === x.handle ? "bg-li-soft" : ""}`}>
                 <div className="w-11 h-11 rounded-full bg-gradient-to-br from-li to-violet-600 text-white flex items-center justify-center font-semibold shrink-0">{(x.candidate.name || "?").slice(0, 1)}</div>
@@ -885,7 +885,7 @@ ${form.details || "-"}`;
                 <ul className="text-xs text-slate-600 mt-1 list-disc pl-5">{(m.why || []).map((w, i) => <li key={i}>{w}</li>)}</ul>
               </div>
               <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-slate-50">
-                {(thread.messages || []).length === 0 && <div className="text-sm text-slate-500">No messages yet. Send one as {COMPANY.name}, or from BizFlow → ✉ Message on LinkedIn.</div>}
+                {(thread.messages || []).length === 0 && <div className="text-sm text-slate-500">No messages yet. Send one as {COMPANY.name}, or from Enterprise Buddy → ✉ Message on LinkedIn.</div>}
                 {(thread.messages || []).map(msg => (
                   <div key={msg.id} className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm whitespace-pre-wrap ${msg.from === "me" ? "ml-auto bg-li text-white" : "bg-white border border-slate-200"}`}>
                     <div className="text-[11px] opacity-70 mb-0.5">{msg.from === "me" ? COMPANY.name + (msg.by === "auto" ? " (auto)" : "") : m.candidate.name}</div>{msg.text}
@@ -1391,12 +1391,12 @@ ${form.details || "-"}`;
           try {
             const r = await fetch("/api/linkedin/posts?business_id=" + encodeURIComponent(BIZ_ID)).then(x => x.json());
             setPosts(prev => {
-              const keep = prev.filter(p => !p.fromBizFlow);
+              const keep = prev.filter(p => !p.fromEnterpriseBuddy);
               const bf = r.posts.map(p => { const old = prev.find(x => x.id === p.id); return old ? { ...p, reactions: old.reactions, myReaction: old.myReaction, comments: old.comments } : p; });
               const next = [...bf, ...keep].sort((a, b) => b.createdAt - a.createdAt);
               return JSON.stringify(next.map(p => [p.id, p.applicants])) === JSON.stringify(prev.map(p => [p.id, p.applicants])) ? prev : next;
             });
-          } catch { /* BizFlow not reachable */ }
+          } catch { /* Enterprise Buddy not reachable */ }
         };
         pull(); const t = setInterval(pull, 4000); return () => clearInterval(t);
       }, []);
@@ -1545,13 +1545,13 @@ ${form.details || "-"}`;
             onApplied={(post, v) => {
               updatePost(post.id, p => ({ ...p, applicants: p.applicants + 1 }));
               setModal(null);
-              bfPost("/api/linkedin/apply", { business_id: BIZ_ID, job_id: post.job?.bizflow_job_id, ...v })
-                .then(r => showToast(`Application sent to ${COMPANY.name} — BizFlow is scoring it`)).catch(() => showToast(`Application sent to ${COMPANY.name}`));
+              bfPost("/api/linkedin/apply", { business_id: BIZ_ID, job_id: post.job?.enterprise_buddy_job_id, ...v })
+                .then(r => showToast(`Application sent to ${COMPANY.name} — Enterprise Buddy is scoring it`)).catch(() => showToast(`Application sent to ${COMPANY.name}`));
             }}
             onInMailSent={(v) => {
               setModal(null);
               bfPost("/api/channels/linkedin/incoming", { business_id: BIZ_ID, contact: { handle: slug(v.email || v.name), name: v.name || "LinkedIn member" }, text: v.message || "" })
-                .then(() => showToast("InMail delivered to the owner's BizFlow inbox", "Mail")).catch(() => showToast("InMail sent", "Mail"));
+                .then(() => showToast("InMail delivered to the owner's Enterprise Buddy inbox", "Mail")).catch(() => showToast("InMail sent", "Mail"));
             }}
           />
         </div>

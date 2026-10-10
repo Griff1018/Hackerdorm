@@ -1,4 +1,4 @@
-# PURCHASE PLAN - BizFlow (draft purchase orders)
+# PURCHASE PLAN - Enterprise Buddy (draft purchase orders)
 
 **SIMULATED. No order is placed and no money moves.** Each PO below is a draft the owner reviews and pays the supplier directly.
 
@@ -28,6 +28,6 @@ These lines scored well on price but carry a caveat recorded from the source (re
 
 ## Rule
 
-Quantities are rounded up to the supplier's stated pack size. A PO over the remaining budget is never approved automatically, and no PO is ever sent or paid by BizFlow.
+Quantities are rounded up to the supplier's stated pack size. A PO over the remaining budget is never approved automatically, and no PO is ever sent or paid by Enterprise Buddy.
 
 **Budget rule (explicit).** Each PO is checked only against the **purchasing budget** (`business_profile.json` → `purchasing_budget`), which is a *separate* envelope from the operating budget that covers rent, fuel and wages. Recorded expenses such as rent and fuel are **never** deducted from the purchasing budget. POs are paid one at a time: a PO already flagged over-budget is **not** approved and is **not** counted against the remaining budget when checking later POs.

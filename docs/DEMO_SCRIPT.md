@@ -1,4 +1,4 @@
-# BizFlow demo script — Sprint 3C
+# Enterprise Buddy demo script — Sprint 3C
 
 ## Start
 
@@ -18,7 +18,7 @@ latest real generated files; Demo Mode is the labelled, reproducible walkthrough
 3. Open **Attention**: top three action rows and daily brief.
 4. Open **Suppliers**: score breakdown, source links, unavailable/substitute/no-eligible cases.
 5. Open **POs**: show a draft, local mark-paid/mark-received controls, and explain the persistent toolkit commands.
-6. Run `python -m app.bizflow_cli po mark-paid <PO>` then `python -m app.bizflow_cli po mark-received <PO>`
+6. Run `python -m app.enterprise_buddy_cli po mark-paid <PO>` then `python -m app.enterprise_buddy_cli po mark-received <PO>`
    when the owner approves; show `purchase_stock_ledger.csv` and `current_stock.csv` changing without editing inventory.csv.
 7. Open **Customer ops**: order board and chat bubbles; highlight the allergy/refund permission boundary.
 8. Open **Campaign** and **People**: LIVE FEATURE draft outputs, not automatic posting or hiring.
@@ -39,7 +39,7 @@ Use one free-form request such as:
 WorkBuddy states understanding and plan, says Customer Operations is acting, runs:
 
 ```bash
-python -m app.bizflow_cli order "A customer wants 2 cookies and a lemon tea for pickup at 3pm"
+python -m app.enterprise_buddy_cli order "A customer wants 2 cookies and a lemon tea for pickup at 3pm"
 ```
 
 Then it summarises the pending cart and evidence file. It does not confirm until the customer confirms.

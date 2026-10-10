@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BizFlow</title>
+<title>Enterprise Buddy</title>
+<script>
+// No session yet → the login page first. Signing in and "Continue as guest" both lead here to the same shared data.
+try { if (!localStorage.getItem("enterprise_buddy.session")) location.replace("/login"); } catch (e) {}
+</script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
@@ -627,7 +631,11 @@ input,select,textarea{border-color:#d9d2c3}
 .rvhead,.review{background:#fff}
 /* nav icons, alerts */
 .nav .ic{width:18px;text-align:center;font-size:14px}
-.alertbtn{position:relative}
+.alertbtn{position:relative;margin-left:auto}
+.who-user{display:flex;align-items:center;gap:8px;padding:4px 10px}
+.who-user .av{width:24px;height:24px;border-radius:50%;background:#e6ece2;color:#243b32;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none}
+.who-user .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;color:#e9efe9}
+.who-user button{background:transparent;border:1px solid #3b5a4b;color:#cfe0d4;font-size:12px;padding:3px 9px}
 .alertpop{position:absolute;top:calc(100% + 8px);right:0;z-index:50;width:400px;max-height:70vh;overflow:auto;background:#fff;border:1px solid #e4ddcf;border-radius:10px;box-shadow:0 12px 30px #0002;padding:8px}
 .alertpop .prob{margin-top:6px}
 .toasts{position:fixed;right:18px;bottom:18px;z-index:300;display:flex;flex-direction:column;gap:8px;max-width:380px}
@@ -648,11 +656,36 @@ input,select,textarea{border-color:#d9d2c3}
 .crow{position:relative}
 div.todo.done{opacity:1}div.todo.done b{text-decoration:line-through;color:#71717a}div.todo.done .tiny{color:#a1a1aa}
 @media (max-width:1000px),(max-height:720px){.inner{padding:16px}.top{padding:10px 16px}.composer{padding:8px 16px}.setwrap{grid-template-columns:1fr}.setnav{position:static;flex-direction:row;flex-wrap:wrap}.srow{grid-template-columns:1fr;gap:8px}}
+/* customers: fetch reviews + win-back */
+.cuout{margin:4px 0 12px}.cunote{background:#f0fdf4;color:#166534;border-radius:10px;padding:8px 12px;font-size:14px;margin:6px 0}
+.wbcard{border:1.5px solid #e4ddcf;border-radius:14px;padding:12px 14px;background:#fff;display:flex;flex-direction:column;gap:8px}
+.wblist{max-height:420px;overflow:auto;display:flex;flex-direction:column;gap:6px}
+.wbrow{display:flex;gap:10px;align-items:flex-start;border:1px solid #eee7da;border-radius:10px;padding:8px 10px;font-weight:400;cursor:pointer}
+.wbrow input{margin-top:4px}.wbrow .tiny{color:#52525b;margin-top:3px}
+/* Shopee page */
+.sphead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}.sphead h2{margin:0 0 2px}
+.sphead a{font-size:14px;font-weight:600;text-decoration:none;padding:6px 10px;border-radius:9px;background:#fff1ec;color:#c2410c}
+.spkpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:12px 0}
+.spkpi{background:#fff;border:1px solid #eee7da;border-radius:12px;padding:9px 12px;display:flex;flex-direction:column}.spkpi b{font-size:19px}.spkpi span{font-size:12.5px;color:#71717a}
+.spkpi.bad b{color:#b91c1c}.spkpi.warn b{color:#92400e}.spkpi.good b{color:#166534}
+.sptabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid #e4ddcf;margin:6px 0 12px}
+.sptabs button{background:transparent;color:#52525b;border-radius:9px 9px 0 0;padding:8px 13px;font-weight:600}.sptabs button.on{background:#fff1ec;color:#c2410c;box-shadow:inset 0 -2px 0 #ee4d2d}
+.spsec{background:#fff;border:1px solid #eee7da;border-radius:14px;padding:8px 12px;margin-bottom:10px}.spsec>summary{cursor:pointer;font-weight:700;padding:4px 0}
+.spcard{border:1px solid #eee7da;border-left:4px solid #ee4d2d;border-radius:10px;padding:10px 12px;margin:8px 0;display:flex;flex-direction:column;gap:5px}
+.spcard.sens{border-left-color:#b91c1c;background:#fffafa}
+.sptags{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}.spimpact{font-size:14px}
+.spev summary{font-size:12.5px;color:#1d4ed8;cursor:pointer}
+.spedit{display:flex;flex-direction:column;gap:3px}.spedit textarea,.spedit input{width:100%;font-size:14px}
+.spres{font-size:13.5px;font-weight:600;padding:6px 10px;border-radius:8px;background:#f4f4f5}.spres.executed{background:#f0fdf4;color:#166534}.spres.failed{background:#fef2f2;color:#b91c1c}.spres.expired{background:#fffbeb;color:#92400e}
+.spfind{border-left:4px solid #a1a1aa;padding:6px 10px;margin:6px 0;background:#fafafa;border-radius:0 8px 8px 0}
+.spfind.critical{border-left-color:#b91c1c}.spfind.warning{border-left-color:#d97706}.spfind.positive{border-left-color:#16a34a}.spfind.info{border-left-color:#2563eb}
+.spsum h3{margin:4px 0}.spsum p{margin:0 0 4px;color:#3f3f46}
+.sptablewrap{overflow:auto;max-height:420px}.splog{font-size:13px;padding:3px 0;border-bottom:1px solid #f4f4f5}.splog.failed{color:#b91c1c}.splog.executed{color:#166534}
 </style>
 </head>
 <body>
 <aside class="side">
-  <div class="brand"><span class="logo">B</span><b>BizFlow</b><span class="dot" id="cli" title="Agent backend"></span></div>
+  <div class="brand"><span class="logo">E</span><b>Enterprise Buddy</b><span class="dot" id="cli" title="Agent backend"></span></div>
   <div class="ws"><select id="wspick" aria-label="Workspace"></select><button class="sm soft" id="addbiz" title="Add a business">+</button></div>
   <div id="bizsel" hidden><select id="bizpick" aria-label="Business"></select></div>
   <button class="newchat" id="newchat" hidden>New chat</button>
@@ -660,6 +693,7 @@ div.todo.done{opacity:1}div.todo.done b{text-decoration:line-through;color:#7171
   <div class="convs" id="convs"></div>
   <div class="sidefoot">
     <div class="nav"><button id="settingsbtn" data-tab="settings"><span class="lab">Settings</span></button></div>
+    <div class="who-user"><span class="av" id="userav">G</span><span class="nm" id="username">Guest</span><button id="signout" title="Sign out">Sign out</button></div>
     <div class="note">Simulated actions · synthetic data</div>
     <button id="reset" hidden>Reset demo data</button>
   </div>
@@ -669,7 +703,6 @@ div.todo.done{opacity:1}div.todo.done b{text-decoration:line-through;color:#7171
   <div class="top">
     <div class="who"><span id="wemoji" hidden></span><div><div class="ptitle" id="ptitle"></div><span id="wname" class="small"></span> <span id="wsub" hidden></span></div></div>
     <button class="sm soft" id="otchip" hidden></button>
-    <span class="sim">Simulated · no real money moves</span>
     <span class="alertbtn"><button class="sm soft" id="alertbtn" onclick="openAlerts(event)">Alerts</button></span>
     <button class="sm soft" id="goalchip" hidden></button>
   </div>
@@ -694,7 +727,7 @@ div.todo.done{opacity:1}div.todo.done b{text-decoration:line-through;color:#7171
     <div class="scroll" id="thread"><div class="inner" id="threadInner"></div></div>
     <div class="composer"><div class="review" id="review" hidden></div><div class="cbox" id="cbox">
       <div id="replychip" class="replychip" hidden><span id="replytxt"></span><button class="sm ghost" id="replyx">✕</button></div>
-      <textarea id="q" placeholder="Ask BizFlow anything about your business…"></textarea>
+      <textarea id="q" placeholder="Ask Enterprise Buddy anything about your business…"></textarea>
       <div class="crow">
         <span class="hint">Enter to send · Shift+Enter for a new line · nothing happens until you approve</span>
         <select id="mode" aria-label="Involvement" hidden><option value="approve_at_end">I approve at the end</option><option value="ask_me">Ask me along the way</option><option value="auto">Auto (drafts pre-approved)</option></select>
@@ -735,7 +768,7 @@ div.todo.done{opacity:1}div.todo.done b{text-decoration:line-through;color:#7171
     <div class="bar" style="height:10px;margin-top:10px"><i id="dybar" style="background:#3c8a5d;width:0"></i></div>
     <div id="dylist" style="margin-top:12px"></div>
     <details class="rmsec" id="dyroutines" style="margin-top:22px">
-      <summary><b>Routines</b> <span class="small">— what BizFlow includes when it writes your daily list</span></summary>
+      <summary><b>Routines</b> <span class="small">— what Enterprise Buddy includes when it writes your daily list</span></summary>
       <div class="small" style="margin:6px 0 8px">Edit, add or remove routines; tomorrow's list (or Regenerate) follows them. AI routines can also be run on their own for a full report.</div>
       <div class="small" id="taskprog"></div>
       <div id="tasklist"></div>
@@ -745,7 +778,7 @@ div.todo.done{opacity:1}div.todo.done b{text-decoration:line-through;color:#7171
 
   <section class="view" id="v-roadmap"><div class="scroll"><div class="inner">
     <h2 style="margin:0 0 4px" id="rmtitle">Task Checklist</h2>
-    <p class="empty">Checkpoints are the milestones BizFlow's AI saved when you finished a job. Below them: the approved plan steps still to do (grouped by area) and what your automations are doing.</p>
+    <p class="empty">Checkpoints are the milestones Enterprise Buddy's AI saved when you finished a job. Below them: the approved plan steps still to do (grouped by area) and what your automations are doing.</p>
     <div class="bar" style="height:14px"><i id="rmbar" style="background:#3c8a5d;width:0"></i></div>
     <div class="small" id="rmcount" style="margin:4px 0 14px"></div>
     <div id="rmsecs"></div>
@@ -769,6 +802,7 @@ div.todo.done{opacity:1}div.todo.done b{text-decoration:line-through;color:#7171
   <section class="view" id="v-money"><div class="scroll"><div class="inner" id="moneypage"></div></div></section>
   <section class="view" id="v-inventory"><div class="scroll"><div class="inner" id="invpage"></div></div></section>
   <section class="view" id="v-settings"><div class="scroll"><div class="inner"><div class="setwrap"><div class="setnav" id="setnav"></div><div class="setpane" id="setpane"></div></div></div></div></section>
+  <section class="view" id="v-shopee"><div class="scroll"><div class="inner" style="max-width:1240px" id="spbox"></div></div></section>
   <section class="view" id="v-customers"><div class="scroll"><div class="inner" style="max-width:1200px" id="custbox"></div></div></section>
 
   <section class="view" id="v-activity"><div class="scroll"><div class="inner" style="max-width:1200px">
@@ -787,25 +821,25 @@ div.todo.done{opacity:1}div.todo.done b{text-decoration:line-through;color:#7171
 const $ = s => document.querySelector(s);
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 const ext = (text, url) => { const a = el("a", null, text); a.href = url; a.target = "_blank"; a.rel = "noopener"; return a; };
-const store = { get(k, d) { try { const v = localStorage.getItem("bizflow." + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
-                set(k, v) { try { localStorage.setItem("bizflow." + k, JSON.stringify(v)); } catch {} } };
+const store = { get(k, d) { try { const v = localStorage.getItem("enterprise_buddy." + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+                set(k, v) { try { localStorage.setItem("enterprise_buddy." + k, JSON.stringify(v)); } catch {} } };
 async function api(path, body) {
   const r = await fetch(path, body !== undefined ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : {});
   const j = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(j.error || ("HTTP " + r.status));
   return j;
 }
-// The owner uses BizFlow, not its backend: turn toolkit commands and file paths into plain words
+// The owner uses Enterprise Buddy, not its backend: turn toolkit commands and file paths into plain words
 const CMD_WORDS = { brief: "your daily brief (Dashboard)", stock: "the stock check", "po list": "your purchase orders", "po": "your purchase orders",
-  suppliers: "the supplier comparison", verify: "BizFlow's number check", techcheck: "the shop-page health check", nearby: "the market map",
-  guide: "BizFlow Guides", market: "market research", scrape: "the supplier page check", prices: "the price watch", order: "order taking",
-  campaign: "the campaign planner", jobad: "the job-ad writer", faq: "your shop policies", marketplace: "marketplace orders", reviews: "customer reviews", appdata: "your BizFlow data" };
+  suppliers: "the supplier comparison", verify: "Enterprise Buddy's number check", techcheck: "the shop-page health check", nearby: "the market map",
+  guide: "Enterprise Buddy Guides", market: "market research", scrape: "the supplier page check", prices: "the price watch", order: "order taking",
+  campaign: "the campaign planner", jobad: "the job-ad writer", faq: "your shop policies", marketplace: "marketplace orders", reviews: "customer reviews", appdata: "your Enterprise Buddy data" };
 function plainWords(t) {
   return String(t || "")
-    .replace(/[`'"]?\s*python3? -m app\.bizflow_cli\s+(po list|[a-z-]+)[^`'"\n.;,)]*[`'"]?/gi, (m, c) => CMD_WORDS[c.toLowerCase()] || "BizFlow")
+    .replace(/[`'"]?\s*python3? -m app\.enterprise_buddy_cli\s+(po list|[a-z-]+)[^`'"\n.;,)]*[`'"]?/gi, (m, c) => CMD_WORDS[c.toLowerCase()] || "Enterprise Buddy")
     .replace(/\(?\s*(?:evidence:\s*)?`?(?:data|demo)\/[\w\/.\-]+(?::\d+(?:-\d+)?)?`?\s*\)?/gi, "")
-    .replace(/\b[\w-]+\.(?:csv|json|jsonl|md)\b/gi, m => ({ "sales.csv": "your sales records", "expenses.csv": "your expense records", "menu.csv": "your menu", "inventory.csv": "your stock records" })[m.toLowerCase()] || "your BizFlow records")
-    .replace(/\b(?:run|execute|type in|type)\s+(?=your daily brief|the (?:stock check|supplier comparison|price watch|market map|shop-page health check)|BizFlow's number check)/gi, "check ")
+    .replace(/\b[\w-]+\.(?:csv|json|jsonl|md)\b/gi, m => ({ "sales.csv": "your sales records", "expenses.csv": "your expense records", "menu.csv": "your menu", "inventory.csv": "your stock records" })[m.toLowerCase()] || "your Enterprise Buddy records")
+    .replace(/\b(?:run|execute|type in|type)\s+(?=your daily brief|the (?:stock check|supplier comparison|price watch|market map|shop-page health check)|Enterprise Buddy's number check)/gi, "check ")
     .replace(/\s+([.,;:])/g, "$1")
     .replace(/\s{2,}/g, " ");
 }
@@ -859,8 +893,8 @@ function sourcesBlock(run, it, into, open) {
   if (own.length) own.forEach(u => s.append(srcRow(u)));
   else {
     const pages = all.filter(x => x.type === "page"), searches = all.filter(x => x.type === "search");
-    if (pages.length) { s.append(el("div", "tiny", "Pages BizFlow read for this plan:")); pages.forEach(x => s.append(srcRow(x.url))); }
-    if (searches.length) { s.append(el("div", "tiny", "Searches BizFlow ran:")); searches.forEach(x => { const r = el("div", "srow"); r.append(el("span", null, ""), ext(x.query, x.url)); s.append(r); }); }
+    if (pages.length) { s.append(el("div", "tiny", "Pages Enterprise Buddy read for this plan:")); pages.forEach(x => s.append(srcRow(x.url))); }
+    if (searches.length) { s.append(el("div", "tiny", "Searches Enterprise Buddy ran:")); searches.forEach(x => { const r = el("div", "srow"); r.append(el("span", null, ""), ext(x.query, x.url)); s.append(r); }); }
   }
   m.append(s); into.append(m);
 }
@@ -909,6 +943,7 @@ function renderSide() {
   if (!all) { const t = biz().owner_type; $("#otchip").textContent = t === "student" ? "Student" : t === "small_business" ? "Small business" : "Student or business?"; }
   $("#goalchip").hidden = all; if (!all) { const g = biz().goal; $("#goalchip").textContent = "Goals"; $("#goalchip").title = g ? "Your goal: " + g : "Set a goal — it shapes every plan"; }
   TABS = [["chat", "💬", "Chat"], ["money", "💰", "Money Flow"], ["daily", "📅", "Today"], ["-", "", "Tools"], ["orders", "📦", "Orders"], ["inventory", "🧺", "Inventory"], ["customers", "👥", "Customers"],
+          ...(biz().shopee_shop ? [["shopee", "🧡", "Shopee"]] : []),
           ["requests", "📨", "Messages"], ["automations", "⚙️", "Automations"], ["roadmap", "✅", "Task Checklist"], ["map", "🗺️", "Market map"], ["suppliers", "🏪", "Suppliers"], ["activity", "🧠", "Activity"]];
   if (!TABS.some(t => t[0] === S.tab) && S.tab !== "settings") S.tab = TABS[0][0];
   PULSE = null; renderNav(); pollPulse();
@@ -985,6 +1020,7 @@ function refreshCurrent() {
   else if (S.tab === "daily") renderDaily();
   else if (S.tab === "automations" && AU_SUB === "log") renderAuLog();
   else if (S.tab === "activity") renderActivity();
+  else if (S.tab === "shopee") renderShopee(true);
 }
 
 async function loadConvs() {
@@ -1052,6 +1088,7 @@ function showTab(id) {
   if (id === "roadmap") renderRoadmap();
   if (id === "dashboard") renderDashboard();
   if (id === "customers") renderCustomers();
+  if (id === "shopee") renderShopee();
   if (id === "daily") renderDaily();
   if (id === "automations") renderAutomations();
   if (id === "activity") renderActivity();
@@ -1120,8 +1157,8 @@ $("#dlgx").onclick = () => $("#dlg").close();
 
 // ================================================================ settings, connections, online shop, sales log
 let APPSET = { mode: "approve_at_end", answer_style: "smart" };
-const MODE_TXT = { approve_at_end: ["I approve at the end", "BizFlow researches and plans; nothing happens until you approve each step."],
-  ask_me: ["Ask me along the way", "BizFlow asks before each bigger decision."],
+const MODE_TXT = { approve_at_end: ["I approve at the end", "Enterprise Buddy researches and plans; nothing happens until you approve each step."],
+  ask_me: ["Ask me along the way", "Enterprise Buddy asks before each bigger decision."],
   auto: ["Auto (drafts pre-approved)", "Drafts and to-dos are pre-approved; payments, posts and orders still need your OK."] };
 const STYLE_TXT = { smart: ["Just help me (recommended)", "Small questions and how-tos get a direct answer with one-click buttons. Bigger jobs get a step-by-step plan."],
   plan: ["Always make a plan", "Every request becomes a plan you review step by step."] };
@@ -1167,15 +1204,15 @@ async function renderSettings() {
     const tx = el("div"); tx.append(el("b", null, t), el("span", null, dsc)); l.append(i, tx); w.append(l); }); return w; };
   const single = bid !== "all";
   if (SET_CAT === "assistant") {
-    const g = group("Assistant", "How BizFlow answers and how much it does on its own. Applies to every business.");
+    const g = group("Assistant", "How Enterprise Buddy answers and how much it does on its own. Applies to every business.");
     row(g, "Reply style", "Small requests are answered or done directly; bigger jobs become a plan.", radios("style", STYLE_TXT, APPSET.answer_style, v => saveAppSettings({ answer_style: v })));
-    row(g, "Approval", "When BizFlow makes a plan or changes your records.", radios("mode", MODE_TXT, APPSET.mode, v => saveAppSettings({ mode: v })));
+    row(g, "Approval", "When Enterprise Buddy makes a plan or changes your records.", radios("mode", MODE_TXT, APPSET.mode, v => saveAppSettings({ mode: v })));
   }
   if (SET_CAT === "connections") {
     if (!single) { group("Connected apps", "Choose a business in the sidebar — each business connects its own accounts."); return; }
     const kinds = [["social", "Social", "Posts, DMs and hiring."], ["merchant", "Selling", "Orders and reviews from marketplaces and your own shop."], ["payments", "Payments", "Money received shows up in Money Flow, matched to orders."]];
     kinds.forEach(([k, t, sub]) => {
-      const g = group(t, sub + " BizFlow only stores a public page or account nickname — never passwords, PINs or bank details.");
+      const g = group(t, sub + " Enterprise Buddy only stores a public page or account nickname — never passwords, PINs or bank details.");
       d.connections.filter(a => a.kind === k).forEach(a => {
         const r = el("div", "conrow"), l = el("div"); l.append(el("b", null, a.name), el("span", "tag2" + (a.live ? " blue" : ""), a.live ? "live demo" : "simulated"));
         l.lastChild.style.marginLeft = "8px"; l.append(el("div", "d", a.what));
@@ -1190,7 +1227,7 @@ async function renderSettings() {
   }
   if (SET_CAT === "shop") {
     if (!single) { group("Online shop", "Choose a business in the sidebar to edit its online shop."); return; }
-    const g = group("Online shop menu", "What customers can order on " + (b ? b.name : "your") + "'s online shop. Cost is private — it lets BizFlow show real profit.");
+    const g = group("Online shop menu", "What customers can order on " + (b ? b.name : "your") + "'s online shop. Cost is private — it lets Enterprise Buddy show real profit.");
     const tbl = el("table", "tbl menutbl"), hr = el("tr"); ["Item", "Price (MYR)", "Cost (MYR)", "Note for customers", ""].forEach(x => hr.append(el("th", null, x))); tbl.append(hr);
     const addRow = (m = {}) => { const tr = el("tr"); const mk = (v, cls, type) => { const i = el("input", cls); if (type) { i.type = type; i.step = "0.01"; i.min = "0"; } i.value = v == null ? "" : v; const td = el("td"); td.append(i); tr.append(td); return i; };
       mk(m.item); mk(m.price, "n", "number"); mk(m.cost, "n", "number"); mk(m.note); const x = el("button", "sm ghost", "Remove"); x.onclick = () => tr.remove(); const td = el("td"); td.append(x); tr.append(td); tbl.append(tr); };
@@ -1203,8 +1240,8 @@ async function renderSettings() {
     const r = el("div", "row"); r.style.marginTop = "10px"; r.append(add, save, open, msg); g.append(tbl, r);
   }
   if (SET_CAT === "portals") {
-    const g = group("Demo pages", "The customer side of the demo — open in a new tab, place an order or send a message, and watch it arrive in BizFlow.");
-    [["WhatsApp", "Chat as a customer (BizFlow's AI replies) and see supplier orders BizFlow sent.", () => openTarget("whatsapp")],
+    const g = group("Demo pages", "The customer side of the demo — open in a new tab, place an order or send a message, and watch it arrive in Enterprise Buddy.");
+    [["WhatsApp", "Chat as a customer (Enterprise Buddy's AI replies) and see supplier orders Enterprise Buddy sent.", () => openTarget("whatsapp")],
      ["Online shop", "Customers browse your menu and order for pickup or delivery.", () => window.open(shopLink(), "_blank")], ["Instagram", "Your feed with auto-posts; DMs land in Messages.", () => window.open(igLink(), "_blank")],
      ["LinkedIn", "Job posts and candidates for hiring.", () => window.open("/linkedin/", "_blank")]].forEach(([t, dsc, fn]) => { const bt = el("button", "sm soft", "Open"); bt.onclick = fn; row(g, t, dsc, bt); });
   }
@@ -1343,7 +1380,7 @@ async function renderMoney() {
   box.append(rows.length ? t : el("div", "empty", "No entries."));
 }
 
-// ---------------- Inventory: ingredients (planned by BizFlow or added by you)
+// ---------------- Inventory: ingredients (planned by Enterprise Buddy or added by you)
 function rerenderIng() { if (S.tab === "inventory") renderInventory(); else renderAutomations(); }
 async function renderInventory() {
   const box = $("#invpage"), bid = curBid();
@@ -1351,11 +1388,11 @@ async function renderInventory() {
   [AUTO, ING] = await Promise.all([api("/api/automations?business_id=" + encodeURIComponent(bid)), api("/api/ingredients?business_id=" + encodeURIComponent(bid))]);
   box.replaceChildren();
   const ings = ING.ingredients || [], low = ings.filter(i => i.low);
-  const ph = el("div", "ph"), l = el("div"); l.append(el("h2", null, "Inventory"), el("div", "small", "Ingredients BizFlow planned for you and ones you added. Set the low level and BizFlow can reorder automatically."));
+  const ph = el("div", "ph"), l = el("div"); l.append(el("h2", null, "Inventory"), el("div", "small", "Ingredients Enterprise Buddy planned for you and ones you added. Set the low level and Enterprise Buddy can reorder automatically."));
   const acts = el("div", "acts"), addb = el("button", "sm", "Add ingredient"); if (!allb) acts.append(addb); ph.append(l, acts); box.append(ph);
   const k = el("div", "kgrid"); const kp = (lab, v, sub, cls) => { const c = el("div", "k " + (cls || "")); c.append(el("div", "l", lab), el("div", "v", v), el("div", "s", sub || "")); k.append(c); };
   kp("Ingredients", String(ings.length)); kp("Low", String(low.length), low.slice(0, 3).map(i => i.material).join(", "), low.length ? "neg" : "");
-  kp("Auto-reorder on", String(ings.filter(i => i.rule && i.rule.enabled).length)); kp("Planned by BizFlow", String(ings.filter(i => (i.stock || {}).planned_by === "agent").length)); box.append(k);
+  kp("Auto-reorder on", String(ings.filter(i => i.rule && i.rule.enabled).length)); kp("Planned by Enterprise Buddy", String(ings.filter(i => (i.stock || {}).planned_by === "agent").length)); box.append(k);
   const form = el("div", "panel"); form.hidden = true; form.append(el("h3", null, "Add ingredient"));
   const g = el("div", "fgrid"); const fld = (lab, inp) => { const x = el("label", null, lab); x.append(inp); g.append(x); return inp; };
   const nm = fld("Name", el("input")), q = fld("In stock", el("input")), u = fld("Unit", el("input")), th = fld("Low at", el("input")), sp = fld("Supplier (optional)", el("input"));
@@ -1366,7 +1403,7 @@ async function renderInventory() {
   addb.onclick = () => { form.hidden = !form.hidden; if (!form.hidden) nm.focus(); };
   const pend = AUTO.orders.filter(o => o.status === "awaiting_approval");
   if (pend.length) { box.append(el("h3", "sech", "Supplier orders waiting for your OK")); pend.forEach(o => box.append(orderCard(o))); }
-  if (!ings.length) { box.append(el("div", "empty", "No ingredients yet. Add one, or ask BizFlow in Chat to plan what you need.")); return; }
+  if (!ings.length) { box.append(el("div", "empty", "No ingredients yet. Add one, or ask Enterprise Buddy in Chat to plan what you need.")); return; }
   const list = el("div", "inglist"); [...low, ...ings.filter(i => !i.low)].forEach(i => list.append(ingredientRow(i))); box.append(list);
 }
 
@@ -1376,14 +1413,14 @@ async function renderAttention() {
   let probs = [];
   try { const d = await api("/api/dashboard?business_id=" + encodeURIComponent(curBid())); probs = S.scope === "all" ? d.top_problems : d.problems; } catch { return; }
   if (!probs.length) return;
-  const p = el("div", "vcard"); p.append(el("h3", null, "Needs your attention"), el("div", "small", "Ranked by urgency. Each one has a next step — BizFlow can do or plan it for you."));
+  const p = el("div", "vcard"); p.append(el("h3", null, "Needs your attention"), el("div", "small", "Ranked by urgency. Each one has a next step — Enterprise Buddy can do or plan it for you."));
   probs.slice(0, 4).forEach(x => p.append(problemCard(x, S.scope === "all")));
   if (probs.length > 4) { const more = el("details", "tview"); more.append(el("summary", null, "Show " + (probs.length - 4) + " more")); probs.slice(4).forEach(x => more.append(problemCard(x, S.scope === "all"))); p.append(more); }
   box.append(p);
 }
 async function renderDailyAll() {
   const list = $("#dylist"); list.replaceChildren(el("div", "empty", "Loading…"));
-  $("#dytitle").textContent = "Today — all businesses"; $("#dysub").textContent = "Each business's list for today, written by BizFlow from its routines, orders and plan.";
+  $("#dytitle").textContent = "Today — all businesses"; $("#dysub").textContent = "Each business's list for today, written by Enterprise Buddy from its routines, orders and plan.";
   const rows = await Promise.all(BUSINESSES.map(b => api("/api/daily?business_id=" + encodeURIComponent(b.id)).then(d => [b, d]).catch(() => [b, null])));
   list.replaceChildren(); let tot = 0, done = 0;
   rows.forEach(([b, d]) => {
@@ -1410,7 +1447,7 @@ async function pollAlerts() {
   const bid = curBid(); let got; try { got = (await api("/api/alerts?business_id=" + encodeURIComponent(bid))).alerts; } catch { return; }
   if (bid !== curBid()) return; ALERTS = got;
   const btn = $("#alertbtn"); btn.textContent = "Alerts" + (ALERTS.length ? " (" + ALERTS.length + ")" : ""); btn.classList.toggle("bad", ALERTS.some(a => a.level === "critical"));
-  const seen = store.get("alertsSeen", []), fresh = ALERTS.filter(a => !seen.includes(a.id) && a.level === "critical" || !seen.includes(a.id) && a.by.startsWith("BizFlow AI"));
+  const seen = store.get("alertsSeen", []), fresh = ALERTS.filter(a => !seen.includes(a.id) && a.level === "critical" || !seen.includes(a.id) && a.by.startsWith("Enterprise Buddy AI"));
   const shown = document.querySelectorAll(".toast").length;
   fresh.slice(0, Math.max(0, 2 - shown)).forEach(toast);
   store.set("alertsSeen", [...new Set([...seen, ...ALERTS.map(a => a.id)])].slice(-200));
@@ -1432,7 +1469,7 @@ function toast(a) {
 }
 function openAlerts(e) {
   e.stopPropagation(); const old = document.querySelector(".alertpop"); if (old) { old.remove(); return; }
-  const p = el("div", "alertpop"); p.append(el("b", null, "Alerts"), el("div", "small", "Urgent items BizFlow found in your numbers, orders, stock and today's AI list."));
+  const p = el("div", "alertpop"); p.append(el("b", null, "Alerts"), el("div", "small", "Urgent items Enterprise Buddy found in your numbers, orders, stock and today's AI list."));
   if (!ALERTS.length) p.append(el("div", "empty", "Nothing urgent right now."));
   ALERTS.forEach(a => { const c = el("div", "prob " + a.level), b = el("div"); b.style.flex = "1";
     b.append(el("div", "plv", (a.business ? a.business + " · " : "") + a.by), el("b", null, a.title)); if (a.detail) b.append(el("div", "small", a.detail.slice(0, 180)));
@@ -1451,7 +1488,7 @@ async function autopostCard() {
   if (S.scope === "all") return c;
   let a; try { a = await api("/api/autopost?business_id=" + encodeURIComponent(bid)); } catch (e) { c.append(el("div", "err", e.message)); return c; }
   const head = el("div", "row"); head.style.justifyContent = "space-between";
-  const t = el("div"); t.append(el("h3", null, "Auto-posting"), el("div", "small", "BizFlow's AI writes a post about one of your items and publishes it on a schedule (simulated). It uses your latest uploaded photo."));
+  const t = el("div"); t.append(el("h3", null, "Auto-posting"), el("div", "small", "Enterprise Buddy's AI writes a post about one of your items and publishes it on a schedule (simulated). It uses your latest uploaded photo."));
   const sw = switchEl(!!a.enabled, async on => { await api("/api/autopost", { business_id: bid, enabled: on }); renderSocialAuto(); }); head.append(t, sw); c.append(head);
   const g = el("div", "fgrid"); g.style.marginTop = "10px"; const fld = (lab, inp) => { const x = el("label", null, lab); x.append(inp); g.append(x); return inp; };
   const ev = fld("Every", el("select")); [[1, "day"], [2, "2 days"], [3, "3 days"], [7, "week"]].forEach(([v, tx]) => { const o = el("option", null, tx); o.value = v; ev.append(o); }); ev.value = a.every_days;
@@ -1495,7 +1532,7 @@ async function recordSaleDialog() {
       if (S.tab === "dashboard") renderDashboard(); if (S.tab === "money") renderMoney();
     } catch (e) { out.replaceChildren(el("div", "err", e.message)); }
   };
-  f.append(el("div", "small", "Log each sale (or the day's total per item). BizFlow turns these into profit, best products and busiest days on the Dashboard. Online-shop and chat orders are counted automatically once you tick them done."), g, el("div", "row"), go, out);
+  f.append(el("div", "small", "Log each sale (or the day's total per item). Enterprise Buddy turns these into profit, best products and busiest days on the Dashboard. Online-shop and chat orders are counted automatically once you tick them done."), g, el("div", "row"), go, out);
   dialog("Record a sale", f);
 }
 $("#settingsbtn").onclick = () => openSettings();
@@ -1508,7 +1545,7 @@ $("#modechip").onclick = e => {
     Object.entries(opts).forEach(([v, [t, d]]) => { const l = el("label", "opt"), i = el("input"); i.type = "radio"; i.name = "q" + name; i.value = v; i.checked = v === val;
       i.onchange = async () => { await saveAppSettings({ [key]: v }); pop.remove(); }; const tx = el("div"); tx.append(el("b", null, t), el("span", null, d)); l.append(i, tx); pop.append(l); });
   };
-  group("How BizFlow replies", "style", STYLE_TXT, APPSET.answer_style, "answer_style");
+  group("How Enterprise Buddy replies", "style", STYLE_TXT, APPSET.answer_style, "answer_style");
   group("Approval", "mode", MODE_TXT, APPSET.mode, "mode");
   const more = el("button", "more", "All settings"); more.onclick = () => { pop.remove(); openSettings("assistant"); }; pop.append(more);
   $("#modechip").parentNode.append(pop);
@@ -1516,7 +1553,7 @@ $("#modechip").onclick = e => {
 document.addEventListener("click", e => { const p = document.querySelector(".modepop"); if (p && !e.target.closest(".modepop")) p.remove(); });
 
 // ================================================================ app data in the chat: real charts/tables + actions with Undo
-function dataView(d) {   // d = a BizFlow dataset; numbers come from the server, never from the AI
+function dataView(d) {   // d = a Enterprise Buddy dataset; numbers come from the server, never from the AI
   const c = chartCard("" + d.title, d.note || "");
   const rows = d.rows || [], ycol = (d.columns || []).find(x => x[0] === d.y), isMoney = d.unit === "MYR";
   const moneyCol = k => { const c = (d.columns || []).find(x => x[0] === k); return !!c && /MYR|price|cost|total|spent|revenue|profit|amount|value/i.test(c[0] + " " + c[1]) && !/%|margin|share/i.test(c[1]); };
@@ -1531,7 +1568,7 @@ function dataView(d) {   // d = a BizFlow dataset; numbers come from the server,
     rows.forEach(r => { const tr = el("tr"); d.columns.forEach(x => tr.append(el("td", null, x[0] === "rating" ? "★".repeat(r[x[0]]) : fmt(r[x[0]], x[0])))); t.append(tr); });
     w.append(t); c.append(w);
   } else c.append(tableView(d.columns.map(x => [x[0], x[1], v => fmt(v, x[0])]), rows));
-  c.append(el("div", "asof", "From your BizFlow data · " + String(d.as_of || "").slice(0, 16).replace("T", " ")));
+  c.append(el("div", "asof", "From your Enterprise Buddy data · " + String(d.as_of || "").slice(0, 16).replace("T", " ")));
   return c;
 }
 function appResults(run) {
@@ -1549,15 +1586,218 @@ function appResults(run) {
 }
 async function renderCustomers() {
   const box = $("#custbox"), bid = curBid(); box.replaceChildren(el("h2", null, "Customers & reviews"));
-  box.append(el("div", "small", "Tip: just tell BizFlow in the chat — “save Aina 012-3456789, likes less sugar” or “connect Shopee and show my reviews”."));
+  box.append(el("div", "small", "Tip: just tell Enterprise Buddy in the chat — “save Aina 012-3456789, likes less sugar” or “connect Shopee and show my reviews”."));
   const form = el("div", "row"), n = el("input"), ph = el("input"), no = el("input"), add = el("button", "sm", "Save customer"); form.hidden = S.scope === "all";
   n.placeholder = "Name"; ph.placeholder = "Phone (optional)"; no.placeholder = "Notes, e.g. likes less sugar"; no.style.flex = "1";
   add.onclick = async () => { try { await api("/api/customers", { business_id: bid, name: n.value, phone: ph.value, notes: no.value }); renderCustomers(); } catch (e) { alert(e.message); } };
   form.append(n, ph, no, add); box.append(form);
-  for (const name of S.scope === "all" ? ["customers", "reviews"] : ["customers", "reviews", "review_ratings"]) {
-    try { const d = await api("/api/appdata?business_id=" + encodeURIComponent(bid) + "&name=" + name); if (name !== "review_ratings" || d.rows.length) box.append(dataView(d)); }
-    catch (e) { box.append(el("div", "err", e.message)); }
+  if (S.scope !== "all") {
+    const tools = el("div", "row"); tools.style.margin = "10px 0";
+    const fr = el("button", "sm soft", "⭐ Fetch customer reviews"), wb = el("button", "sm soft", "💌 Win back customers (no order in 7 days)");
+    const out = el("div", "cuout");
+    fr.onclick = async () => {
+      fr.disabled = true; out.replaceChildren(el("span", "spin"), " fetching reviews from your connected marketplaces…");
+      try {
+        const r = await api("/api/customers/fetch-reviews", { business_id: bid });
+        const parts = Object.entries(r.added).map(([k, v]) => k + " " + v);
+        out.replaceChildren(el("div", "cunote", r.note || ("Fetched " + r.new + " new review" + (r.new === 1 ? "" : "s") + (parts.length ? " (" + parts.join(", ") + ")" : "") + " · " + r.total + " reviews in total" + (r.average ? " · average " + r.average + " ★" : ""))));
+        await renderCustomerData(box);
+      } catch (e) { out.replaceChildren(el("div", "err", e.message)); }
+      fr.disabled = false;
+    };
+    wb.onclick = () => winbackPanel(out, bid);
+    tools.append(fr, wb); box.append(tools, out);
   }
+  await renderCustomerData(box);
+}
+async function renderCustomerData(box) {
+  const bid = curBid();
+  box.querySelectorAll(".dataview-wrap").forEach(x => x.remove());
+  for (const name of S.scope === "all" ? ["customers", "reviews"] : ["customers", "reviews", "review_ratings"]) {
+    const w = el("div", "dataview-wrap"); box.append(w);
+    try { const d = await api("/api/appdata?business_id=" + encodeURIComponent(bid) + "&name=" + name); if (name !== "review_ratings" || d.rows.length) w.append(dataView(d)); }
+    catch (e) { w.append(el("div", "err", e.message)); }
+  }
+}
+// customers who bought before but not in the last 7 days → "need a new order? see what's new" (Shopee chat or WhatsApp)
+async function winbackPanel(out, bid, sentMsg) {
+  out.replaceChildren(el("span", "spin"), " checking your customers…");
+  let r;
+  try { r = await api("/api/customers/winback", { business_id: bid }); } catch (e) { out.replaceChildren(el("div", "err", e.message)); return; }
+  const card = el("div", "wbcard");
+  const head = el("div", "row"); head.style.justifyContent = "space-between";
+  head.append(el("b", null, r.count ? "💌 " + r.count + " customer" + (r.count > 1 ? "s haven't" : " hasn't") + " ordered since " + r.cutoff : "💌 Everyone has ordered in the last 7 days (or was already asked this week)"));
+  const auto = el("label", "small"); const cb = el("input"); cb.type = "checkbox"; cb.checked = !!r.auto;
+  cb.onchange = async () => { await api("/api/customers/winback", { business_id: bid, auto: cb.checked }); };
+  auto.append(cb, " Ask them automatically every day"); head.append(auto); card.append(head);
+  if (sentMsg) card.append(el("div", "cunote", sentMsg));
+  if (r.new_products.length) card.append(el("div", "small", "New products we mention: " + r.new_products.map(n => (n.emoji ? n.emoji + " " : "") + n.name + " (RM" + (+n.price).toFixed(2) + ")").join(" · ")));
+  if (r.count) {
+    const list = el("div", "wblist"), picks = new Set(r.candidates.filter(c => c.channel).map(c => c.key));
+    r.candidates.slice(0, 60).forEach(c => {
+      const row = el("label", "wbrow"); const x = el("input"); x.type = "checkbox"; x.checked = picks.has(c.key); x.disabled = !c.channel;
+      x.onchange = () => { x.checked ? picks.add(c.key) : picks.delete(c.key); go.textContent = "Send to " + picks.size + " customer" + (picks.size === 1 ? "" : "s") + " ➤"; };
+      const tx = el("div"); tx.style.flex = "1";
+      tx.append(el("b", null, c.name), el("span", "small", " · last order " + c.last_order + " (" + c.days_idle + " days ago) · " + c.orders + " orders · MYR " + (+c.spent).toFixed(2) + " · " + (c.channel ? (c.channel === "shopee" ? "🧡 Shopee chat" : "💬 WhatsApp") : "no phone — can't message")));
+      tx.append(el("div", "tiny", c.text)); row.append(x, tx); list.append(row);
+    });
+    if (r.count > 60) list.append(el("div", "small", "…and " + (r.count - 60) + " more (all ticked ones are sent)."));
+    const go = el("button", null, "Send to " + picks.size + " customer" + (picks.size === 1 ? "" : "s") + " ➤");
+    go.onclick = async () => {
+      if (!picks.size) return;
+      go.disabled = true; go.textContent = "Sending…";
+      try {
+        const s = await api("/api/customers/winback", { business_id: bid, send: true, only: [...picks] });
+        winbackPanel(out, bid, "✅ Sent " + s.sent + " message" + (s.sent === 1 ? "" : "s") + ". Replies land in Messages" + (biz().shopee_shop ? " and the Shopee chat" : "") + ".");
+      } catch (e) { alert(e.message); go.disabled = false; }
+    };
+    card.append(list, go);
+  }
+  out.replaceChildren(card);
+}
+
+// ================================================================ 🧡 Shopee (the connected shop + its agent)
+let SP = { tab: "approvals", busy: false };
+const SP_TABS = [["approvals", "✋ Approvals"], ["orders", "📦 Orders"], ["products", "🧺 Products"], ["reviews", "⭐ Reviews"], ["service", "💬 Service"], ["sales", "📈 Sales"], ["settings", "⚙️ Settings"]];
+async function renderShopee(quiet) {
+  const box = $("#spbox"); if (!box) return;
+  if (quiet && (SP.busy || box.querySelector("textarea:focus, input:focus"))) return;
+  SP.busy = true;
+  try {
+    const ov = await api("/api/shopee-agent/overview");
+    box.replaceChildren();
+    const head = el("div", "sphead");
+    const t = el("div"); t.append(el("h2", null, "🧡 Shopee — " + (ov.shop.shop_name || "your shop")), el("div", "small", "@" + ov.shop.username + " · " + ov.shop.location + " · simulated time " + ov.sim.now_text + (ov.sim.paused ? " (paused)" : ov.sim.speed !== 1 ? " (×" + ov.sim.speed + " speed)" : "")));
+    const links = el("div", "row");
+    links.append(ext("🛍️ Open storefront ↗", "/shopee/#store"), ext("🏪 Open Seller Centre ↗", "/shopee/#seller"));
+    const rr = el("button", "sm soft", "↻ Re-check now"); rr.onclick = async () => { rr.disabled = true; await api("/api/shopee-agent/run", {}); renderShopee(); }; links.append(rr);
+    head.append(t, links); box.append(head);
+    const p = ov.performance, k = el("div", "spkpis");
+    const kp = (label, value, bad) => { const d = el("div", "spkpi" + (bad ? " bad" : "")); d.append(el("b", null, value), el("span", null, label)); k.append(d); };
+    kp("Shop rating", p.shop_rating + " ★", p.shop_rating < p.targets.shop_rating);
+    kp("Chat response", p.chat_response_rate + "%", p.chat_response_rate < p.targets.chat_response_rate);
+    kp("Late shipment", p.late_shipment_rate + "%", p.late_shipment_rate >= p.targets.late_shipment_rate);
+    kp("Preparation", p.preparation_time_days + " days", p.preparation_time_days > p.targets.preparation_time_days);
+    kp("Non-fulfilment", p.non_fulfilment_rate + "%", p.non_fulfilment_rate >= p.targets.non_fulfilment_rate);
+    kp("Waiting for your OK", String(ov.pending), ov.pending > 0);
+    box.append(k);
+    const tabs = el("div", "sptabs");
+    SP_TABS.forEach(([id, label]) => {
+      const m = ov.modules.find(x => x.id === id), n = id === "approvals" ? ov.pending : m ? m.pending : 0;
+      const b = el("button", SP.tab === id ? "on" : "", label); if (n) b.append(el("span", "badge2", String(n)));
+      b.onclick = () => { SP.tab = id; renderShopee(); }; tabs.append(b);
+    });
+    box.append(tabs);
+    const body = el("div"); box.append(body);
+    if (SP.tab === "approvals") await spApprovals(body, ov);
+    else if (SP.tab === "settings") await spSettings(body, ov);
+    else await spModule(body, SP.tab);
+  } catch (e) { box.replaceChildren(el("div", "err", "Shopee is not available: " + e.message)); }
+  SP.busy = false;
+}
+async function spApprovals(body, ov) {
+  const r = await api("/api/shopee-agent/proposals?status=pending");
+  body.append(el("p", "small", "Everything the Shopee agent wants to do. Nothing happens in your shop until you approve — each action is re-checked against live data, done, and read back to verify. Sensitive items (complaints, refunds, pausing a listing) always need you."));
+  if (!r.proposals.length) body.append(el("div", "empty", "🎉 Nothing waiting. The agent re-checks the shop every 90 seconds."));
+  ov.modules.forEach(m => {
+    const list = r.proposals.filter(x => x.module === m.id); if (!list.length) return;
+    const sec = el("details", "spsec"); sec.open = true;
+    sec.append(el("summary", null, m.title + " · " + list.length));
+    list.slice(0, 25).forEach(x => sec.append(spCard(x)));
+    if (list.length > 25) sec.append(el("div", "small", "…and " + (list.length - 25) + " more in the " + m.title + " tab."));
+    body.append(sec);
+  });
+  const log = el("details", "spsec"); log.append(el("summary", null, "🧾 Recent decisions and agent log"));
+  (ov.log || []).forEach(l => log.append(el("div", "splog " + l.kind, new Date(l.ts * 1000).toLocaleString().slice(0, 17) + " · " + l.text + (l.by ? " (" + l.by + ")" : ""))));
+  if (!(ov.log || []).length) log.append(el("div", "small", "No decisions yet."));
+  body.append(log);
+}
+const SP_EDIT = { send_chat_message: [["text", "Message to the buyer", "area"]], reply_comment: [["comment", "Public reply", "area"]],
+  update_item: [["item_name", "Title", "input"], ["description", "Description", "area"]], offer_partial_refund: [["amount", "Offer (RM)", "num"]],
+  update_price: [["price", "New price for all variations (RM)", "num"]], update_stock: [["add", "Units to add per variation", "num"]] };
+function spCard(x) {
+  const c = el("div", "spcard" + (x.sensitive ? " sens" : ""));
+  const top = el("div", "row nowrap"); top.style.justifyContent = "space-between";
+  const tt = el("div"); tt.append(el("b", null, x.title));
+  const tags = el("div", "sptags");
+  tags.append(el("span", "pill", x.action_type.replace(/_/g, " ")), el("span", "pill " + (x.risk === "high" ? "bad" : x.risk === "medium" ? "need" : "ok"), x.risk + " risk"));
+  if (x.sensitive) tags.append(el("span", "pill bad", "sensitive"));
+  if (x.drafted_by === "rules") tags.append(el("span", "pill", "draft"));
+  tt.append(tags); top.append(tt); c.append(top);
+  c.append(el("div", "spimpact", "📈 " + x.expected_impact), el("div", "small", "Why: " + x.rationale));
+  if ((x.evidence || []).length) { const ev = el("details", "spev"); ev.append(el("summary", null, "Evidence (" + x.evidence.length + ")")); x.evidence.forEach(e => ev.append(el("div", "tiny", e.label + ": " + e.value))); c.append(ev); }
+  const edits = {}, fields = SP_EDIT[x.action_type] || [];
+  fields.forEach(([f, label, kind]) => {
+    let v = x.params[f];
+    if (f === "price") v = (x.params.price_list || [])[0] && x.params.price_list[0].original_price;
+    if (f === "add") v = (x.params.stock_list || [])[0] && x.params.stock_list[0].add;
+    if (v == null) return;
+    const l = el("label", "spedit"); l.append(el("span", "small", label));
+    const inp = kind === "area" ? el("textarea") : el("input"); if (kind === "area") inp.rows = f === "description" ? 6 : 3; if (kind === "num") inp.type = "number";
+    inp.value = v; inp.oninput = () => edits[f] = inp.value; l.append(inp); c.append(l);
+  });
+  if (x.status === "pending") {
+    const row = el("div", "row");
+    const ok = el("button", "sm", "✓ Approve"), no = el("button", "sm ghost", "✗ Reject");
+    ok.onclick = async () => { ok.disabled = no.disabled = true; ok.textContent = "Working…"; try { const r = await api("/api/shopee-agent/proposals/" + x.id + "/approve", { edits }); spDone(c, r); } catch (e) { alert(e.message); ok.disabled = no.disabled = false; ok.textContent = "✓ Approve"; } };
+    no.onclick = async () => { ok.disabled = no.disabled = true; try { const r = await api("/api/shopee-agent/proposals/" + x.id + "/reject", {}); spDone(c, r); } catch (e) { alert(e.message); } };
+    row.append(ok, no); c.append(row);
+  } else c.append(el("div", "spres " + x.status, x.status + (x.result ? " — " + x.result : "")));
+  return c;
+}
+function spDone(card, r) {
+  card.querySelectorAll("button, textarea, input").forEach(b => b.disabled = true);
+  card.append(el("div", "spres " + r.status, ({ executed: "✅ Done", rejected: "✗ Rejected", expired: "⌛ No longer needed", failed: "⚠ Failed" }[r.status] || r.status) + (r.result ? " — " + r.result : "")));
+  pollPulse();
+}
+async function spModule(body, mod) {
+  body.append(el("div", "small", "Analysing…"));
+  const r = await api("/api/shopee-agent/report?module=" + mod);
+  body.replaceChildren();
+  const h = el("div", "spsum"); h.append(el("h3", null, r.title + " — " + r.headline), el("p", null, r.summary)); body.append(h);
+  const k = el("div", "spkpis"); (r.kpis || []).forEach(x => { const d = el("div", "spkpi " + (x.tone || "")); d.append(el("b", null, x.value), el("span", null, x.label + (x.hint ? " · " + x.hint : ""))); k.append(d); }); body.append(k);
+  if ((r.pending || []).length) { const sec = el("details", "spsec"); sec.open = true; sec.append(el("summary", null, "✋ Proposed actions · " + r.pending.length)); r.pending.slice(0, 30).forEach(x => sec.append(spCard(x))); body.append(sec); }
+  const fs = el("details", "spsec"); fs.open = true; fs.append(el("summary", null, "🔎 Findings · " + r.findings.length));
+  r.findings.forEach(f => {
+    const d = el("div", "spfind " + f.severity); d.append(el("b", null, f.title), el("div", "small", f.detail));
+    if (f.recommendation) d.append(el("div", "tiny", "👉 " + f.recommendation));
+    if ((f.evidence || []).length) { const ev = el("details", "spev"); ev.append(el("summary", null, "Evidence")); f.evidence.forEach(e => ev.append(el("div", "tiny", e.label + ": " + e.value))); d.append(ev); }
+    fs.append(d);
+  });
+  body.append(fs);
+  Object.entries(r.tables || {}).forEach(([name, rows]) => { if (rows && rows.length) body.append(spTable(name, rows)); });
+}
+function spTable(name, rows) {
+  const sec = el("details", "spsec"); sec.append(el("summary", null, "📋 " + name.replace(/_/g, " ") + " · " + rows.length));
+  const cols = Object.keys(rows[0]).filter(c => !["item_id", "comment_id", "conversation_id"].includes(c)).slice(0, 11);
+  const wrap = el("div", "sptablewrap"), t = el("table", "tbl"), hr = el("tr"); cols.forEach(c => hr.append(el("th", null, c.replace(/_/g, " ")))); t.append(hr);
+  rows.slice(0, 60).forEach(r => { const tr = el("tr"); cols.forEach(c => { let v = r[c]; if (typeof v === "number" && !Number.isInteger(v)) v = v.toFixed(2); if (typeof v === "boolean") v = v ? "yes" : ""; tr.append(el("td", null, v == null ? "–" : String(v).slice(0, 120))); }); t.append(tr); });
+  wrap.append(t); sec.append(wrap); return sec;
+}
+async function spSettings(body, ov) {
+  const s = await api("/api/shopee-agent/settings");
+  body.append(el("p", "small", "Choose what the agent may do. Approval = waits for you · Auto = does it right away (never for sensitive items) · Off = never proposes it."));
+  const t = el("table", "tbl"), hr = el("tr"); ["Action", "Policy"].forEach(x => hr.append(el("th", null, x))); t.append(hr);
+  Object.entries(s.policy).forEach(([a, v]) => {
+    const tr = el("tr"), sel = el("select"); [["approval", "Ask me"], ["auto", "Auto"], ["disabled", "Off"]].forEach(([k, l]) => { const o = el("option", null, l); o.value = k; sel.append(o); }); sel.value = v;
+    sel.onchange = () => api("/api/shopee-agent/settings", { policy: { [a]: sel.value } });
+    tr.append(el("td", null, a.replace(/_/g, " ")), (() => { const td = el("td"); td.append(sel); return td; })()); t.append(tr);
+  });
+  body.append(t);
+  const lt = el("label", "spedit"); lt.append(el("span", "small", "Supplier lead time (days) — used for restock maths")); const inp = el("input"); inp.type = "number"; inp.value = s.lead_time_days;
+  inp.onchange = () => api("/api/shopee-agent/settings", { lead_time_days: +inp.value }); lt.append(inp); body.append(lt);
+  const simbox = el("details", "spsec"); simbox.open = true; simbox.append(el("summary", null, "🎬 Simulator — the demo shop world"));
+  const st = ov.sim, row = el("div", "row");
+  const spd = el("select"); [[1, "Real time"], [10, "×10"], [60, "×60 (1 min = 1 hour)"], [0, "Paused"]].forEach(([v, l]) => { const o = el("option", null, l); o.value = v; spd.append(o); }); spd.value = st.paused ? 0 : st.speed;
+  spd.onchange = async () => { await api("/api/shopee/sim", +spd.value === 0 ? { paused: true } : { paused: false, speed: +spd.value }); renderShopee(); };
+  const ff = (h, label) => { const b = el("button", "sm soft", label); b.onclick = async () => { b.disabled = true; await api("/api/shopee/sim", { advance_hours: h }); await api("/api/shopee-agent/run", {}); renderShopee(); }; return b; };
+  row.append(el("span", "small", "Speed"), spd, ff(1, "⏩ +1 hour"), ff(24, "⏩ +1 day"));
+  const sc = el("select"); st.scenarios.forEach(x => { const o = el("option", null, x.title); o.value = x.id; o.title = x.description; sc.append(o); });
+  const go = el("button", "sm soft", "▶ Run scenario"); go.onclick = async () => { const r = await api("/api/shopee/sim", { scenario: sc.value }); alert("Scenario started."); renderShopee(); };
+  const rs = el("button", "sm ghost bad", "♻ Reset shop world"); rs.onclick = async () => { if (!confirm("Reset the Shopee shop to its 60-day demo history? Orders, chats and reviews made since are lost.")) return; await api("/api/shopee/sim", { reset: true }); await api("/api/shopee-agent/run", {}); renderShopee(); };
+  const row2 = el("div", "row"); row2.append(sc, go, rs);
+  simbox.append(row, row2, el("div", "small", "Planted problems for the agent to find: " + st.planted.map(x => x.problem).join(" · ")));
+  body.append(simbox);
 }
 
 // ================================================================ chat
@@ -1634,7 +1874,7 @@ function fillTurn(run, body) {
   }
   const st = el("div", "steps"); planEvents.forEach(e => addStep(st, e)); th.append(st); body.append(th);
   if (run.answer) { const ans = el("div", "answer"); ans.append(pinBtn(run, "reply", run.request, run.answer), md(run.answer));
-    if (run.plan && run.plan.number_check && !run.plan.number_check.ok) ans.append(el("div", "actchip bad", "BizFlow couldn't match " + run.plan.number_check.unmatched.join(", ") + " to your data — trust the charts and tables below, not this figure."));
+    if (run.plan && run.plan.number_check && !run.plan.number_check.ok) ans.append(el("div", "actchip bad", "Enterprise Buddy couldn't match " + run.plan.number_check.unmatched.join(", ") + " to your data — trust the charts and tables below, not this figure."));
     if (run.plan && (run.plan.app_results || []).length) ans.append(appResults(run));
     if (run.plan && (run.plan.app_links || []).length) { const al = el("div", "applinks");
       run.plan.app_links.forEach((a, i) => { const b = el("button", "sm" + (i ? " soft" : ""), a.label || a.target); b.onclick = () => openTarget(a.target); al.append(b); }); ans.append(al); }
@@ -1668,7 +1908,7 @@ function askAbout(run, label, context) {
   $("#replytxt").textContent = "↪ Asking about " + label;
   $("#replychip").hidden = false; $("#q").placeholder = "What do you want to know about this? e.g. How exactly do I do it? Where? How much?"; $("#q").focus();
 }
-$("#replyx").onclick = () => { S.replyTo = null; $("#replychip").hidden = true; $("#q").placeholder = "Ask BizFlow anything about your business…"; };
+$("#replyx").onclick = () => { S.replyTo = null; $("#replychip").hidden = true; $("#q").placeholder = "Ask Enterprise Buddy anything about your business…"; };
 async function retryRun(run) {
   S.cid = run.conversation_id || S.cid; $("#q").value = run.request; await send();
 }
@@ -1727,7 +1967,7 @@ function renderPlan(run) {
   const extras = [...(plan.general_advice || []).map(a => ({ type: "advice", a })), ...(plan.open_questions || []).map(q => ({ type: "q", q }))];
   if (extras.length) {
     wrap.append(el("div", "grp", "Good to know"));
-    (plan.general_advice || []).forEach(a => { const d = el("div", "advice"); d.append(el("div", "lbl", "general advice — not verified by BizFlow tools"), md(a.text));
+    (plan.general_advice || []).forEach(a => { const d = el("div", "advice"); d.append(el("div", "lbl", "general advice — not verified by Enterprise Buddy tools"), md(a.text));
       (a.sources || []).forEach((s, k) => d.append(ext("[source " + (k + 1) + "] ", s))); wrap.append(d); });
     if ((plan.open_questions || []).length) { const d = el("div", "advice"); d.append(el("div", "lbl", "questions for you")); plan.open_questions.forEach(q => d.append(el("div", null, "" + q))); wrap.append(d); }
   }
@@ -1858,7 +2098,7 @@ function drawSupplierRow(box, mats, L) {
 function askOwnerType() {
   return new Promise(resolve => {
     const b = biz(); const w = el("div");
-    w.append(el("p", null, "So BizFlow can size the plan for you — are you running " + b.name + " as…"));
+    w.append(el("p", null, "So Enterprise Buddy can size the plan for you — are you running " + b.name + " as…"));
     const g = el("div", "otype");
     const opt = (t, icon, title, sub) => { const x = el("button", "otbtn"); x.append(el("span", "oti", icon), el("b", null, title), el("span", "small", sub));
       x.onclick = async () => { await api("/api/businesses/" + b.id + "/profile", { owner_type: t }); await loadBusinesses(); $("#dlg").close(); renderSide(); resolve(t); }; return x; };
@@ -1874,7 +2114,7 @@ async function send() {
   if (S.bypass) { S.bypass = false; }
   else {
   if (S.replyTo) {
-    const r = S.replyTo; S.replyTo = null; $("#replychip").hidden = true; $("#q").placeholder = "Ask BizFlow anything about your business…";
+    const r = S.replyTo; S.replyTo = null; $("#replychip").hidden = true; $("#q").placeholder = "Ask Enterprise Buddy anything about your business…";
     text = text + "\n\n(About " + r.label + ' from my earlier request "' + r.request.slice(0, 160) + '": ' + r.context.slice(0, 600) + ")";
   }
   }
@@ -2118,7 +2358,7 @@ function onlineFlow(l, area) {
   area.replaceChildren();
   if (!l.online_order) area.append(el("div", "chg", "No online ordering found on this page — check it, or choose Offline."));
   if (/klang valley only/i.test(l.item_name || "")) area.append(el("div", "chg", "This listing delivers in the KLANG VALLEY ONLY."));
-  area.append(el("p", null, "Where should it be delivered? (Only used to check the area on the map — BizFlow does not send it anywhere.)"));
+  area.append(el("p", null, "Where should it be delivered? (Only used to check the area on the map — Enterprise Buddy does not send it anywhere.)"));
   const inp = el("input"); inp.style.width = "100%"; inp.value = (biz() || {}).area || ""; const go = el("button", "sm", "Find on map"); const res = el("div");
   const r1 = el("div", "row"); r1.style.marginTop = "8px"; r1.append(go); area.append(inp, r1, res);
   go.onclick = async () => {
@@ -2130,7 +2370,7 @@ function onlineFlow(l, area) {
       mini(res, [{ lat: g.lat, lon: g.lon, label: "Deliver here" }]);
       const ok = el("button", null, "Confirm: order online, deliver here");
       ok.onclick = async () => { await saveChoice({ mode: "online", material: l.material, supplier: l.supplier, source_url: l.source_url, delivery: { query: inp.value, name: g.name, lat: g.lat, lon: g.lon } });
-        res.replaceChildren(el("p", null, "✔ Saved. Next: order on the supplier's page and enter this address there. BizFlow never pays or orders for you."), ext("Go to supplier page →", l.source_url)); };
+        res.replaceChildren(el("p", null, "✔ Saved. Next: order on the supplier's page and enter this address there. Enterprise Buddy never pays or orders for you."), ext("Go to supplier page →", l.source_url)); };
       const r2 = el("div", "row"); r2.style.marginTop = "8px"; r2.append(ok); res.append(r2);
     } catch { res.replaceChildren(el("span", "err", "Couldn't find that place — add the city, e.g. 'Kolej Kediaman 12, Universiti Malaya'.")); }
   };
@@ -2155,7 +2395,7 @@ async function offlineFlow(l, area) {
     mini(area, list.map(p => ({ lat: p.lat, lon: p.lon, label: p.name + " (" + p.distance_m + " m)" })));
     list.forEach(p => { const row = el("div", "place"); row.append(el("b", null, p.name), " · " + p.category + " · " + p.distance_m + " m  ", ext("Directions", p.directions_url));
       const pick = el("button", "sm", "Buy here"); pick.style.marginLeft = "8px"; pick.onclick = () => record({ name: p.name, lat: p.lat, lon: p.lon, directions_url: p.directions_url }); row.append(pick); area.append(row); });
-    area.append(el("div", "small", "These shops are real, but BizFlow hasn't confirmed they stock this item — call or check first."));
+    area.append(el("div", "small", "These shops are real, but Enterprise Buddy hasn't confirmed they stock this item — call or check first."));
   } catch (e) { area.append(el("span", "err", e.message)); }
 }
 
@@ -2188,7 +2428,7 @@ function todoRow(t) {
   const c = el("div", "todo" + (t.done ? " done" : ""));
   const cb = el("input"); cb.type = "checkbox"; cb.checked = t.done;
   cb.onchange = async () => { await api("/api/todos/" + t.id + "/toggle", { done: cb.checked }); c.classList.toggle("done", cb.checked); t.done = cb.checked;
-    if (cb.checked) { const n = el("div", "cpnote"); n.append(el("span", "spin"), " BizFlow is checking if this is a milestone…"); $("#rmsecs").prepend(n); setTimeout(() => { n.remove(); if (S.tab === "roadmap") renderRoadmap(); }, 15000); } };
+    if (cb.checked) { const n = el("div", "cpnote"); n.append(el("span", "spin"), " Enterprise Buddy is checking if this is a milestone…"); $("#rmsecs").prepend(n); setTimeout(() => { n.remove(); if (S.tab === "roadmap") renderRoadmap(); }, 15000); } };
   const tx = el("div"); tx.style.flex = "1"; tx.append(el("b", null, t.title)); if (t.details) tx.append(el("div", "tiny", t.details.slice(0, 200)));
   const go = el("button", "sm ghost", "↗"); go.title = "Go to the chat"; go.onclick = () => jumpTo({ conversation_id: t.conversation_id, run_id: t.run_id, item_id: t.item_id, kind: "item" });
   const del = el("button", "sm ghost", "Remove"); del.title = "Remove"; del.onclick = async () => { await api("/api/todos/" + t.id + "/delete", {}); renderRoadmap(); };
@@ -2209,7 +2449,7 @@ async function renderRoadmap() {
   const secs = $("#rmsecs"); secs.replaceChildren();
   // 0. checkpoints the AI chose to keep when jobs were finished
   const cpsec = rmSection("checkpoints", "Checkpoints", 0, 0, cps.length ? cps.length + " saved" : "none yet"); secs.append(cpsec);
-  if (!cps.length) cpsec.append(el("div", "empty", "When you finish a job — tick a step, complete an order, finish a milestone — BizFlow's AI decides whether it is a real milestone and saves it here as a checkpoint."));
+  if (!cps.length) cpsec.append(el("div", "empty", "When you finish a job — tick a step, complete an order, finish a milestone — Enterprise Buddy's AI decides whether it is a real milestone and saves it here as a checkpoint."));
   const tl = el("div", "timeline"); cps.forEach(c => {
     const r = el("div", "cp"); r.append(el("div", "cpdot", c.icon || ""));
     const b = el("div", "cpbody"); b.append(el("b", null, c.title));
@@ -2230,11 +2470,11 @@ async function renderRoadmap() {
     b.append(el("h4", null, (i + 1) + ". " + s.title));
     if (s.detail) b.append(el("div", "small", s.detail));
     const meta = el("div", "meta");
-    meta.append(el("span", "pill " + (s.status === "done" ? "ok" : s.status === "doing" ? "need" : ""), s.status === "done" ? (s.auto ? "done — BizFlow saw it" : "done") : s.status === "doing" ? "in progress" : "to do"));
+    meta.append(el("span", "pill " + (s.status === "done" ? "ok" : s.status === "doing" ? "need" : ""), s.status === "done" ? (s.auto ? "done — Enterprise Buddy saw it" : "done") : s.status === "doing" ? "in progress" : "to do"));
     if (s.from_chat) meta.append(el("span", "pill todo", "from a chat"));
     b.append(meta);
     const acts = el("div", "acts");
-    if (s.ask) { const a = el("button", "sm", "Ask BizFlow"); a.onclick = () => { S.cid = null; showTab("chat"); renderThread(null); $("#q").value = s.ask; send(); }; acts.append(a); }
+    if (s.ask) { const a = el("button", "sm", "Ask Enterprise Buddy"); a.onclick = () => { S.cid = null; showTab("chat"); renderThread(null); $("#q").value = s.ask; send(); }; acts.append(a); }
     const tabFor = { map: "automations", suppliers: "automations", automations: "automations" }[s.tab];
     if (tabFor && s.tab !== "map") { const t = el("button", "sm soft", "Open " + (s.tab === "suppliers" ? "ingredients" : "automations")); t.onclick = () => showTab(tabFor); acts.append(t); }
     const set = st => async () => { await api("/api/roadmap/status", { business_id: curBid(), step_id: s.id, status: st }); renderRoadmap(); };
@@ -2353,7 +2593,7 @@ function renderReorder() {
   }
   const foot = el("div", "row"); foot.style.marginTop = "14px";
   const chk = el("button", "sm ghost", "Check now"); chk.onclick = async () => { chk.disabled = true; const r = await api("/api/automations/check", {}); await renderAutomations(); if (!r.created.length) alert("Nothing new is due."); };
-  foot.append(el("span", "small", "BizFlow checks your stock and schedules every 30 s. Payment always waits for you · Telegram: " + (AUTO.telegram_configured ? "connected" : "not set")), chk);
+  foot.append(el("span", "small", "Enterprise Buddy checks your stock and schedules every 30 s. Payment always waits for you · Telegram: " + (AUTO.telegram_configured ? "connected" : "not set")), chk);
   box.append(foot);
 }
 
@@ -2392,7 +2632,7 @@ function ingredientRow(ing) {
   const r = el("div", "ing2" + (ing.low ? " low" : ""));
   if (chosen && chosen.image_local) { const im = el("img", "ingimg"); im.src = "/files/" + chosen.image_local; r.append(im); } else r.append(el("div", "ingimg", ""));
   const a = el("div", "ingname"); if (ing.business) a.append(el("div", "bizlbl", ing.business)); a.append(el("b", null, ing.material), el("div", "small", ing.products.length ? "for " + ing.products.map(p => PRODUCT_NAMES[p] || p).join(", ") : (st.supplier ? "from " + st.supplier : "added " + String(st.added_at || "").slice(0, 10))));
-  if (st.planned_by === "agent") a.append(el("span", "tag2 blue", "planned by BizFlow"));
+  if (st.planned_by === "agent") a.append(el("span", "tag2 blue", "planned by Enterprise Buddy"));
   if (ing.low) a.append(el("span", "pill bad", "low"));
   // stock + low level
   const sc = el("div", "ingstock");
@@ -2423,7 +2663,7 @@ function ingredientRow(ing) {
     const bd = el("div", "meta"); if (chosen && chosen.online_order) bd.append(el("span", "pill todo", "online")); if (chosen && chosen.offline_purchase) bd.append(el("span", "pill need", "shop"));
     if (chosen) bd.append(ext("page ↗", chosen.source_url));
     sp.append(p1, sel, p2, bd);
-  } else sp.append(el("div", "small", st.supplier ? "Supplier: " + st.supplier : "No supplier saved yet — ask BizFlow to find one."));
+  } else sp.append(el("div", "small", st.supplier ? "Supplier: " + st.supplier : "No supplier saved yet — ask Enterprise Buddy to find one."));
   // actions
   const c = el("div", "ingact2");
   if (chosen) { const buy = el("button", "sm soft", "Buy…"); buy.onclick = () => openOrder(chosen); c.append(buy); }
@@ -2489,7 +2729,7 @@ function renderSocial() {
   s1.append(th, el("div", "small", selMedia.size ? selMedia.size + " selected for the post" : "Tap a photo to use it in the post"));
   left.append(s1);
   // step 2: write + when
-  const s2 = el("div", "scard2"); s2.append(el("h3", null, "2 · BizFlow writes the post"));
+  const s2 = el("div", "scard2"); s2.append(el("h3", null, "2 · Enterprise Buddy writes the post"));
   const plats = el("div", "row"); const pchk = {};
   ["Instagram", "Facebook", "TikTok"].forEach(p => { const l = el("label", "toggle"); const c = el("input"); c.type = "checkbox"; c.checked = draft ? (draft.platforms || []).includes(p) : p !== "TikTok"; pchk[p] = c; l.append(c, p); plats.append(l); });
   const text = el("textarea", "posttext"); text.rows = 6;
@@ -2518,7 +2758,7 @@ function renderSocial() {
     const body = { media_ids: [...selMedia], caption: text.value, hashtags: tags.value.split(/\s+/).filter(Boolean), seo_keywords: draft ? draft.seo_keywords : [], alt_text: draft ? draft.alt_text : "",
       platforms, scheduled_for: rl.checked ? dt.value : null, business_id: curBid() };
     const p = await api("/api/posts", body); draft = null; selMedia.clear(); await renderAutomations();
-    if (p.status === "posted_simulated" && platforms.includes("Instagram")) window.open(igLink(p.id), "bizflow-instagram");
+    if (p.status === "posted_simulated" && platforms.includes("Instagram")) window.open(igLink(p.id), "enterprise-buddy-instagram");
   };
   const gr = el("div", "row"); gr.style.marginTop = "10px"; gr.append(go); s2.append(gr);
   text.oninput = () => { s2._notes = text.value; if (draft) draft.caption = text.value; };
@@ -2532,10 +2772,10 @@ function renderSocial() {
   [...sched, ...posted].forEach(p => s3.append(postRow(p)));
   if (sched.length) {
     const all = el("button", "soft", "Post all scheduled now (" + sched.length + ")");
-    all.onclick = async () => { for (const p of sched) await api("/api/posts/" + p.id + "/publish-now", {}); await renderAutomations(); window.open(igLink(sched[0].id), "bizflow-instagram"); };
+    all.onclick = async () => { for (const p of sched) await api("/api/posts/" + p.id + "/publish-now", {}); await renderAutomations(); window.open(igLink(sched[0].id), "enterprise-buddy-instagram"); };
     const r = el("div", "row"); r.style.marginTop = "10px"; r.append(all); s3.append(r);
   }
-  s3.append(el("div", "small", "Instagram here is BizFlow's mock Instagram (prototype). Real posting needs a Meta Business account + API token."));
+  s3.append(el("div", "small", "Instagram here is Enterprise Buddy's mock Instagram (prototype). Real posting needs a Meta Business account + API token."));
   right.append(s3);
 }
 function postRow(p) {
@@ -2548,7 +2788,7 @@ function postRow(p) {
   (p.platforms || []).forEach(x => meta.append(el("span", "pill", x)));
   mid.append(meta, el("div", "pcap", p.caption));
   const acts = el("div", "row");
-  if (p.status === "scheduled") { const b = el("button", "sm", "Post now"); b.onclick = async () => { await api("/api/posts/" + p.id + "/publish-now", {}); await renderAutomations(); if ((p.platforms || []).includes("Instagram")) window.open(igLink(p.id), "bizflow-instagram"); }; acts.append(b); }
+  if (p.status === "scheduled") { const b = el("button", "sm", "Post now"); b.onclick = async () => { await api("/api/posts/" + p.id + "/publish-now", {}); await renderAutomations(); if ((p.platforms || []).includes("Instagram")) window.open(igLink(p.id), "enterprise-buddy-instagram"); }; acts.append(b); }
   else if ((p.platforms || []).includes("Instagram")) acts.append(ext("View on Instagram ↗", igLink(p.id)));
   mid.append(acts); r.append(mid); return r;
 }
@@ -2603,8 +2843,8 @@ async function drawThread(quiet) {
   pane.append(h);
   const msgs = el("div", "rqmsgs");
   th.messages.forEach(m => { const b = el("div", "bub " + (m.from === "me" ? "me" : "them")); b.append(el("div", null, m.text), el("div", "small", (m.at || "").slice(11, 16))); msgs.append(b); });
-  if (th.auto_reply && th.auto_state) msgs.append(el("div", "small autost", th.auto_state.state === "replying" ? "BizFlow is writing a reply…" : "Auto-reply could not answer: " + th.auto_state.detail));
-  else if (th.auto_reply && th.messages.length && th.messages[th.messages.length - 1].from === "them") msgs.append(el("div", "small autost", "Your turn — BizFlow will reply in a few seconds…"));
+  if (th.auto_reply && th.auto_state) msgs.append(el("div", "small autost", th.auto_state.state === "replying" ? "Enterprise Buddy is writing a reply…" : "Auto-reply could not answer: " + th.auto_state.detail));
+  else if (th.auto_reply && th.messages.length && th.messages[th.messages.length - 1].from === "them") msgs.append(el("div", "small autost", "Your turn — Enterprise Buddy will reply in a few seconds…"));
   pane.append(msgs);
   if (th.order_draft && (th.order_draft.items || []).length) {
     const od = th.order_draft, r = od.raw || {}, box = el("div", "odraft");
@@ -2675,11 +2915,11 @@ async function renderRecruit() {
   save.onclick = async () => { save.disabled = true; await api("/api/recruiting/job", { id: job && job.id, business_id: curBid(), title: title.value, skills: skills.value.split(","), area: area.value, pay_min: +lo.value, pay_max: +hi.value, days: DAYS7.filter(d => dchk[d].checked), active: true }); renderRecruit(); };
   const r = el("div", "row"); r.style.marginTop = "10px"; r.append(save);
   r.append(ext("Open LinkedIn (job post + talent) ↗", "/linkedin/?business_id=" + encodeURIComponent(curBid())));
-  if (job) r.append(el("span", "small", "BizFlow re-checks LinkedIn every minute · last check " + (job.last_scan || "").slice(11, 19) + " · " + R.candidates_seen + " profiles seen (" + R.sources.join(", ") + ")"));
+  if (job) r.append(el("span", "small", "Enterprise Buddy re-checks LinkedIn every minute · last check " + (job.last_scan || "").slice(11, 19) + " · " + R.candidates_seen + " profiles seen (" + R.sources.join(", ") + ")"));
   f.append(r); box.append(f);
   if (!job) return;
   box.append(el("h3", "sech", "Suitable candidates (" + R.matches.length + ")"));
-  if (!R.matches.length) box.append(el("div", "empty", "No one matches yet — BizFlow keeps looking."));
+  if (!R.matches.length) box.append(el("div", "empty", "No one matches yet — Enterprise Buddy keeps looking."));
   R.matches.forEach(m => {
     const c = m.candidate, d = el("div", "cand");
     const top = el("div", "orow");
@@ -2698,7 +2938,7 @@ async function renderRecruit() {
         const ta = el("textarea"); ta.rows = 6; ta.style.width = "100%"; ta.value = dft.text;
         const go = el("button", null, "Send on LinkedIn ");
         go.onclick = async () => { const th = await api("/api/recruiting/contact", { job_id: job.id, handle: m.handle, text: ta.value, business_id: curBid() }); $("#dlg").close(); REQ.tid = th.id; REQ.filter = "linkedin"; showTab("requests"); };
-        const w = el("div"); w.append(el("div", "small", "Edit before sending — BizFlow never sends without you."), ta, go); dialog("Message " + c.name, w);
+        const w = el("div"); w.append(el("div", "small", "Edit before sending — Enterprise Buddy never sends without you."), ta, go); dialog("Message " + c.name, w);
         msg.disabled = false; msg.textContent = "Message on LinkedIn";
       };
       acts.append(msg);
@@ -2750,7 +2990,7 @@ async function jumpTo(p) {
 function askGoal() {
   return new Promise(resolve => {
     const b = biz(); const w = el("div", "form");
-    w.append(el("p", null, "Do you have a specific goal for " + b.name + "? BizFlow will aim every plan at it and track progress against it."));
+    w.append(el("p", null, "Do you have a specific goal for " + b.name + "? Enterprise Buddy will aim every plan at it and track progress against it."));
     const ex = el("div", "chips"); ex.style.justifyContent = "flex-start";
     const ta = el("textarea"); ta.rows = 3; ta.placeholder = "e.g. Earn RM 1,500 a month by December while keeping my grades"; ta.value = b.goal || "";
     (b.owner_type === "student" ? ["Earn RM 800/month alongside my studies", "Get 30 regular customers on campus this semester", "Cover my semester fees by the end of the year"]
@@ -2798,7 +3038,7 @@ function drawAsk() {
   box.hidden = false; $("#cbox").hidden = true; box.replaceChildren();
   const done = qs.filter(q => ansText(q, ASK.ans[q.id])).length;
   const head = el("div", "rvhead");
-  head.append(el("b", null, "BizFlow needs a few details"), el("span", "small", " · " + done + " of " + qs.length + " answered"));
+  head.append(el("b", null, "Enterprise Buddy needs a few details"), el("span", "small", " · " + done + " of " + qs.length + " answered"));
   const later = el("button", "sm ghost", "Answer later ↓"); later.onclick = () => { ASK.hidden[run.run_id] = true; maybeReview(); }; head.append(later);
   box.append(head);
   const chips = el("div", "rvsteps");
@@ -2837,7 +3077,7 @@ function drawAsk() {
     const f = el("div", "rvfinal");
     const list = el("div", "small");
     qs.forEach(q => list.append(el("div", null, "• " + q.question + " → " + (ansText(q, ASK.ans[q.id]) || "(no answer — use your judgement)"))));
-    const ta = el("textarea"); ta.rows = 2; ta.placeholder = "Anything else BizFlow should know? (optional)"; ta.value = ASK.extra; ta.oninput = () => ASK.extra = ta.value;
+    const ta = el("textarea"); ta.rows = 2; ta.placeholder = "Anything else Enterprise Buddy should know? (optional)"; ta.value = ASK.extra; ta.oninput = () => ASK.extra = ta.value;
     const go = el("button", null, "Send answers — make my plan "); go.onclick = () => sendAnswers(run);
     f.append(list, ta, go); box.append(f);
   }
@@ -3000,7 +3240,7 @@ async function finishReview(run) {
 async function celebrate(n) {
   const box = el("div", "growcard"); box.id = "grow-" + Date.now();
   box.append(el("h3", null, "Plan approved" + (n ? " — " + n + " step" + (n > 1 ? "s" : "") + " added to your to-do list" : "")),
-    el("div", "small", "Tick them off in Roadmap. When you finish a job, BizFlow saves the important ones as checkpoints."));
+    el("div", "small", "Tick them off in Roadmap. When you finish a job, Enterprise Buddy saves the important ones as checkpoints."));
   const list = el("div"); box.append(list);
   $("#threadInner").append(decidedCard(S.cid), box); scrollDown();
   growInto(list);
@@ -3031,7 +3271,7 @@ async function growInto(list) {
   try {
     const r = await api("/api/grow", { business_id: curBid() }); list.replaceChildren(suggestionsHead());
     r.ideas.forEach(i => {
-      const c = el("button", "idea"); c.type = "button"; c.title = "Plan this with BizFlow";
+      const c = el("button", "idea"); c.type = "button"; c.title = "Plan this with Enterprise Buddy";
       const top = el("div", "ideatop"); top.append(el("b", null, "" + i.title));
       if (i.feature) top.append(el("span", "pill todo", i.feature));
       c.append(top, el("div", "small", i.why || ""), el("span", "ideago", "Plan this "));
@@ -3130,13 +3370,13 @@ async function renderDashboard() {
   if (S.scope === "all") return renderAllDashboard(box, d);
   const k = d.kpis;
   const head = el("div", "dhead"); head.append(el("h2", null, "" + d.name + " dashboard"),
-    el("div", "small", (d.period ? "Period " + d.period.start + " → " + d.period.end + " · " : "") + (k && k.check_vs_snapshot ? "matches the verified brief · " : "") + "from " + d.sources.length + " BizFlow files"));
+    el("div", "small", (d.period ? "Period " + d.period.start + " → " + d.period.end + " · " : "") + (k && k.check_vs_snapshot ? "matches the verified brief · " : "") + "from " + d.sources.length + " Enterprise Buddy files"));
   if (d.goal) head.append(el("div", "dgoal", "Goal: " + d.goal));
   const ha = el("div", "dheadacts"), rs = el("button", "sm", "Record a sale"), so = el("button", "sm soft", "Open my online shop ↗");
   rs.onclick = () => recordSaleDialog(); so.onclick = () => openTarget("shop"); ha.append(rs, so); head.append(ha);
   box.append(head);
   // problems first: what to fix and the one-click fix
-  const pr = el("div", "vcard"); pr.append(el("h3", null, "What needs your attention"), el("div", "small", "Ranked by urgency. Each one comes with an action — BizFlow plans it for you."));
+  const pr = el("div", "vcard"); pr.append(el("h3", null, "What needs your attention"), el("div", "small", "Ranked by urgency. Each one comes with an action — Enterprise Buddy plans it for you."));
   d.problems.slice(0, 5).forEach(p => pr.append(problemCard(p)));
   if (d.problems.length > 5) { const more = el("details", "tview"); more.append(el("summary", null, "Show " + (d.problems.length - 5) + " more")); d.problems.slice(5).forEach(p => more.append(problemCard(p))); pr.append(more); }
   // KPI tiles (shown above the problems)
@@ -3155,7 +3395,7 @@ async function renderDashboard() {
       kpi2("Posts published", String(d.progress.posts_published), d.progress.posts_scheduled + " scheduled"));
   }
   box.append(g, pr);
-  if (!k) { box.append(el("div", "vcard empty", "Sales, product, weekday and stock charts appear here once this business has sales records. Ask BizFlow how to start recording them (top problem above).")); return; }
+  if (!k) { box.append(el("div", "vcard empty", "Sales, product, weekday and stock charts appear here once this business has sales records. Ask Enterprise Buddy how to start recording them (top problem above).")); return; }
   const grid = el("div", "vgrid");
   // 1. daily revenue
   const c1 = chartCard("Daily revenue", d.recorded ? "Sales you recorded plus completed customer orders" : "Every day of the period, after cancellations, refunds and duplicates are removed");
@@ -3277,13 +3517,13 @@ function drawDaily() {
   $("#dytitle").textContent = "Today — " + when;
   $("#dybar").style.width = (items.length ? done / items.length * 100 : 0) + "%";
   const running = d.status === "running";
-  $("#dysub").textContent = running ? "BizFlow is writing today's list from your routines, messages, orders and plan…"
+  $("#dysub").textContent = running ? "Enterprise Buddy is writing today's list from your routines, messages, orders and plan…"
     : fresh ? done + " of " + items.length + " done · written " + (d.generated_at || "").slice(11, 16) + " from your routines and today's state · a new list comes every day"
     : "A new list is written every day from your routines and what is happening in the business.";
   $("#dyregen").disabled = running || !d.cli;
   if (running) list.append(el("div", "empty", "Writing today's list… (usually under a minute)"), el("span", "spin"));
   else if (d.status === "error") list.append(el("div", "interrupted", "" + (d.error || "Could not write today's list.") + " Press ↻ Regenerate to try again."));
-  if (!running && !d.cli) list.append(el("div", "empty", "The WorkBuddy CLI is not connected, so BizFlow cannot write the daily list."));
+  if (!running && !d.cli) list.append(el("div", "empty", "The WorkBuddy CLI is not connected, so Enterprise Buddy cannot write the daily list."));
   if (!running && !fresh && d.items && d.items.length) list.append(el("div", "small", "Showing the last list (" + d.date + ") until today's is ready:"));
   const show = fresh ? items : (running ? [] : d.items || []);
   [...show.filter(t => !t.done), ...show.filter(t => t.done)].forEach(t => {
@@ -3294,7 +3534,7 @@ function drawDaily() {
     const meta = el("div", "meta");
     if (t.priority === "high") meta.append(el("span", "pill need", "do first"));
     if (t.routine) meta.append(el("span", "pill", "" + t.routine));
-    if (t.ask) { const a = el("button", "sm soft", "Ask BizFlow"); a.onclick = () => { S.cid = null; showTab("chat"); renderThread(null); $("#q").value = t.ask; send(); }; meta.append(a); }
+    if (t.ask) { const a = el("button", "sm soft", "Ask Enterprise Buddy"); a.onclick = () => { S.cid = null; showTab("chat"); renderThread(null); $("#q").value = t.ask; send(); }; meta.append(a); }
     tx.append(meta); c.append(cb, tx); list.append(c);
   });
   clearTimeout(dailyTimer);
@@ -3343,7 +3583,7 @@ async function runTasks(ids) {
   await loadTasks(); drawTasks();
 }
 $("#runall").onclick = () => runTasks(null);
-$("#taskadd").onclick = () => saveTask({ title: "New routine", prompt: "Describe what BizFlow should check or include every day…", mode: "ai" });
+$("#taskadd").onclick = () => saveTask({ title: "New routine", prompt: "Describe what Enterprise Buddy should check or include every day…", mode: "ai" });
 
 // ================================================================ activity
 async function renderActivity() {
@@ -3371,6 +3611,13 @@ $("#acfilter").onchange = renderActivity; $("#accmd").onchange = renderActivity;
 // ================================================================ boot
 $("#reset").onclick = async () => { if (!confirm("Reset demo data? Purchase orders, orders and buying choices go back to the start. Your chats are kept.")) return;
   try { const r = await api("/api/reset", {}); alert("Restored " + r.restored.length + " file(s)."); } catch (e) { alert(e.message); } };
+// signed-in name (or Guest) in the sidebar, and sign out back to the login page
+(() => {
+  const ses = store.get("session", null) || { name: "Guest", guest: true };
+  $("#username").textContent = ses.guest ? "Guest" : ses.name; $("#username").title = ses.guest ? "Browsing as a guest" : (ses.email || ses.name);
+  $("#userav").textContent = (ses.guest ? "G" : (ses.name || "?").trim().charAt(0)).toUpperCase();
+  $("#signout").onclick = () => { try { localStorage.removeItem("enterprise_buddy.session"); } catch {} location.replace("/login"); };
+})();
 (async () => {
   try { const s = await api("/api/status"); $("#cli").classList.toggle("on", s.cli); $("#cli").title = s.cli ? "WorkBuddy CLI connected" : "WorkBuddy CLI not found"; } catch {}
   await loadBusinesses();

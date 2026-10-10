@@ -1,4 +1,4 @@
-# REQUIREMENTS — BizFlow (DRAFT, Sprint 1)
+# REQUIREMENTS — Enterprise Buddy (DRAFT, Sprint 1)
 
 Every committed requirement has an ID and an acceptance test. IDs are stable and are referenced by
 `docs/CAPABILITIES.md` and `docs/TEST_PLAN.md` (Sprint 4).

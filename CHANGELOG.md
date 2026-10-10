@@ -1,4 +1,4 @@
-# CHANGELOG — BizFlow
+# CHANGELOG — Enterprise Buddy
 
 Entries record meaningful changes to the product, architecture, calculations, interface and
 deliverables. Updated at the end of every sprint.
@@ -40,16 +40,16 @@ deliverables. Updated at the end of every sprint.
 ## 2026-10-10 — Sprint 2 (Tasks 3–4): agent, departments and tools
 
 **Added**
-- `app/bizflow_core.py` — Config, `validate()`, `calculate()` (decimal money), snapshot + action queue.
-- `app/bizflow_supplier.py` — G.11 scoring (`score_material`), full/light tiers, parses `price_unit`,
+- `app/enterprise_buddy_core.py` — Config, `validate()`, `calculate()` (decimal money), snapshot + action queue.
+- `app/enterprise_buddy_supplier.py` — G.11 scoring (`score_material`), full/light tiers, parses `price_unit`,
   **never recommends an unpriced row**.
-- `app/bizflow_outputs.py` — reports (snapshot, action queue, data-quality, daily brief), market brief,
+- `app/enterprise_buddy_outputs.py` — reports (snapshot, action queue, data-quality, daily brief), market brief,
   promo draft builders.
-- `app/bizflow_profile.py` — business profile load + `sanitise_profile` (rejects FORBIDDEN_FIELDS).
-- `app/bizflow_purchase.py` — draft PO builder: cumulative remaining-budget check, pack-round-up,
+- `app/enterprise_buddy_profile.py` — business profile load + `sanitise_profile` (rejects FORBIDDEN_FIELDS).
+- `app/enterprise_buddy_purchase.py` — draft PO builder: cumulative remaining-budget check, pack-round-up,
   review-flag keywords, never auto-approves an over-budget or no-price line.
-- `app/bizflow_tech.py` — Technology hourly/on-demand health check (read-only, page-relative links).
-- `app/run_bizflow.py` — orchestrator wiring all six departments + CLI (`--profile`, `--market-check`,
+- `app/enterprise_buddy_tech.py` — Technology hourly/on-demand health check (read-only, page-relative links).
+- `app/run_enterprise_buddy.py` — orchestrator wiring all six departments + CLI (`--profile`, `--market-check`,
   `--po`, `--tech`, `--tech-trigger`).
 - `scripts/build_supplier_research.py` — builds `supplier_research_input.csv` from raw research; prices
   normalised **by code**, gaps left blank (never estimated).
@@ -94,13 +94,13 @@ deliverables. Updated at the end of every sprint.
 - Reworded Strategy output as a testable hypothesis, not a demand or causal conclusion.
 - Downgraded unsupported capability claims: interaction modes are planned, supplier inquiry drafts are
   planned, and hourly Technology firing is built but not tested (U1).
-- Fixed workflow documentation to use actual function names (`bizflow_core.validate`,
-  `bizflow_core.calculate`, `bizflow_supplier.score_material`, `bizflow_tech.run_check`).
+- Fixed workflow documentation to use actual function names (`enterprise_buddy_core.validate`,
+  `enterprise_buddy_core.calculate`, `enterprise_buddy_supplier.score_material`, `enterprise_buddy_tech.run_check`).
 
 **Added**
 - 4 new regression tests (24 total): unavailable supplier, substitute material, unapproved-PO budget
   carry-forward, and G.9 zero-sales marketing branch.
-- `skills/bizflow-pipeline/SKILL.md` and validated package `data/output/bizflow-pipeline.zip`.
+- `skills/enterprise-buddy-pipeline/SKILL.md` and validated package `data/output/enterprise-buddy-pipeline.zip`.
 - Skill proof in `data/output/skill_proof/`: one owner prompt completed the full pipeline with exit 0,
   verification passed, 4 draft POs and Technology health pass.
 - `docs/FEATURE_UPDATE_01.md` (saved addendum) and FR-01..FR-06 entries/options in
@@ -118,7 +118,7 @@ deliverables. Updated at the end of every sprint.
 ## 2026-10-10 — Sprint 3A: Demo Mode and Customer Operations
 
 **Added**
-- `app/bizflow_customer.py` — FR-01 Tier B synthetic customer operations: menu lookup, one configured
+- `app/enterprise_buddy_customer.py` — FR-01 Tier B synthetic customer operations: menu lookup, one configured
   add-on, confirmation, order board, policies FAQ, special-request reconfirmation, cancellation,
   allergy escalation, simulated refund limit, stock ledger, audit log and transcripts.
 - `demo/scenario/scenario.json` and rebuilt `demo/index.html` — FR-02 full ten-step Demo Mode with
@@ -148,16 +148,16 @@ deliverables. Updated at the end of every sprint.
 ## 2026-10-10 — Sprint 3B: seller side, campaign, People and social preview
 
 **Added**
-- `app/bizflow_marketplace.py` — full synthetic seller-side processor: recomputed totals, invalid/out-of-stock
+- `app/enterprise_buddy_marketplace.py` — full synthetic seller-side processor: recomputed totals, invalid/out-of-stock
   rejection, internal marketplace orders, stock ledger/current stock, status history, pick/pack list,
   simulated shipping label, buyer events, review summary and audit trail.
-- `app/bizflow_campaign_people.py` — FR-03 five-day campaign planner and FR-04 synthetic job ad/hiring kit.
+- `app/enterprise_buddy_campaign_people.py` — FR-03 five-day campaign planner and FR-04 synthetic job ad/hiring kit.
 - `demo/social_feed.html` + `data/output/social_feed_preview.json` — FR-05 generic simulated social preview;
   no second store and no real platform branding.
 - `tests/test_sprint3b.py` — 3B contract tests.
 
 **Changed**
-- `bizflow_tech.py` now checks the social-feed preview in addition to Live/Demo and shop pages.
+- `enterprise_buddy_tech.py` now checks the social-feed preview in addition to Live/Demo and shop pages.
 - `docs/CAPABILITIES.md` and `docs/AGENT_WORKFLOW.md` promoted FR-03/04/05/06 with evidence and kept
   the external-store connection explicitly pending.
 - Campaign/job outputs use the owner-set synthetic pay range **MYR 12.00–15.00/hour** and require the
@@ -179,16 +179,16 @@ deliverables. Updated at the end of every sprint.
 ## 2026-10-10 — Sprint 3C: interactive WorkBuddy toolkit and live demo upgrade
 
 **Added**
-- `app/bizflow_cli.py` — deterministic subcommands: `brief`, `stock`, `suppliers`, `po`, `order`, `faq`,
+- `app/enterprise_buddy_cli.py` — deterministic subcommands: `brief`, `stock`, `suppliers`, `po`, `order`, `faq`,
   `refund`, `marketplace`, `reviews`, `campaign`, `jobad`, `market`, `techcheck`, `verify`, `full`.
-- `app/bizflow_po_actions.py` — owner-controlled simulated paid/received PO state; received materials append
+- `app/enterprise_buddy_po_actions.py` — owner-controlled simulated paid/received PO state; received materials append
   `purchase_stock_ledger.csv` and update derived `current_stock.csv` without editing `inventory.csv`.
 - `tests/test_po_actions.py` — received-stock loop regression test.
 - `docs/INTERACTIVE_DEMO_TESTS.md` — 12 free-form prompt routes with plans/departments/commands/evidence.
 - `docs/DEMO_SCRIPT.md` — projector demo flow and interactive WorkBuddy moment.
 
 **Changed**
-- `skills/bizflow-pipeline/SKILL.md` now mandates understanding/plan narration, before/after department
+- `skills/enterprise-buddy-pipeline/SKILL.md` now mandates understanding/plan narration, before/after department
   narration, adaptation, verification of new numbers, permission boundaries and evidence-link closeout.
 - `demo/index.html` now renders real Live Mode sections: attention/daily brief, supplier scoring/source links,
   POs, customer board/chat, campaign, job ad, marketplace label/review summary, and auto-refresh activity.
@@ -202,7 +202,7 @@ deliverables. Updated at the end of every sprint.
 - `tests/test_sprint3b.py`: 3/3 pass.
 - `tests/test_po_actions.py`: 1/1 pass.
 - Toolkit help exposes all requested subcommands; 12 interactive routes are recorded and pass.
-- Skill package validates and is refreshed at `data/output/bizflow-pipeline.zip`.
+- Skill package validates and is refreshed at `data/output/enterprise-buddy-pipeline.zip`.
 
 **Checkpoint**
 - Sprint 3C is complete. External marketplace connection remains pending because no store path was supplied.

@@ -1,18 +1,18 @@
-# PROJECT CHARTER — BizFlow (DRAFT, Sprint 1)
+# PROJECT CHARTER — Enterprise Buddy (DRAFT, Sprint 1)
 
 Status: **draft**. Pending the Sprint 1 checkpoint and, where the master instructions require it,
 explicit user approval. It will be refreshed at the end of each sprint.
 
 ## 1. Product
 
-**BizFlow — The AI Operations Agent for Microbusinesses.**
+**Enterprise Buddy — The AI Operations Agent for Microbusinesses.**
 Core promise: *from business data to verified business actions.*
 
 ## 2. Problem
 
 A student entrepreneur or microbusiness owner keeps sales, product costs, stock and expenses in
 separate, hand-maintained records. Reconciling them by hand costs time, and low stock, thin margins,
-incomplete records and urgent tasks are easy to miss. BizFlow validates the records, computes
+incomplete records and urgent tasks are easy to miss. Enterprise Buddy validates the records, computes
 explainable metrics, identifies supported risks and prepares a prioritised, evidence-backed action
 queue for the owner to review.
 

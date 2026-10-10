@@ -3,10 +3,10 @@
 Money in  — online banking (DuitNow / FPX) and Touch 'n Go eWallet transfers from the payment feeds (SIMULATED,
             seeded when the owner connects them in Settings), cash/QR sales the owner recorded, completed customer
             orders, and manual entries.
-Money out — ingredient purchases typed in by the owner, supplier purchase orders paid through BizFlow's
+Money out — ingredient purchases typed in by the owner, supplier purchase orders paid through Enterprise Buddy's
             automations (SIMULATED payments), and recorded expenses.
 
-data/workspace/money.json holds manual entries and the payment-feed transactions. BizFlow never asks for or
+data/workspace/money.json holds manual entries and the payment-feed transactions. Enterprise Buddy never asks for or
 stores bank logins, card numbers or e-wallet PINs; a "connection" is only a nickname.
 """
 from __future__ import annotations

@@ -1,4 +1,4 @@
-# DEPENDENCIES — BizFlow (Section D)
+# DEPENDENCIES — Enterprise Buddy (Section D)
 
 Rule: record every outside library, MCP server and web source with its purpose, licence and **what
 data it receives**. Secrets live only in WorkBuddy/MCP configuration or environment variables — never
@@ -33,7 +33,7 @@ inspecting its source, permissions, data access, license, external side effects�
 
 **None configured.** `~/.workbuddy-ai/mcp.json` does not exist and `settings.json` contains no
 `mcpServers` key (F10). Whether a **local (stdio)** server is accepted is **not yet verified** (F11).
-A team BizFlow MCP server will only be added if a needed capability is genuinely missing, and only
+A team Enterprise Buddy MCP server will only be added if a needed capability is genuinely missing, and only
 after a feasibility probe and user approval (Section D).
 
 ## 5. Web sources used so far

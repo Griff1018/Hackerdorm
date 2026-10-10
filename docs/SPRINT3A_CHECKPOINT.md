@@ -1,4 +1,4 @@
-# Sprint 3A Checkpoint — Campus Crumb / BizFlow
+# Sprint 3A Checkpoint — Campus Crumb / Enterprise Buddy
 
 **Build-time gate:** Sprint 3A is complete. Per the approved split, stop here before promoting Sprint 3B
 (FR-06, FR-03, FR-04, FR-05) into the product. The Sprint 3B code/output rehearsal artifacts are not

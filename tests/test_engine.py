@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""BizFlow automated tests (Python stdlib unittest - the runner available in this environment).
+"""Enterprise Buddy automated tests (Python stdlib unittest - the runner available in this environment).
 
 Golden values come from tests/fixtures/expected_*.json, produced BEFORE the engine existed by
 tests/compute_expected_standalone.py and hand-checked in tests/EXPECTED_RESULTS.md.
@@ -17,11 +17,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "app"))
 
-from bizflow_core import Config, calculate, validate  # noqa: E402
-from bizflow_supplier import delivery_score, moq_score, reliability_score, score_material  # noqa: E402
-from bizflow_outputs import build_actions, build_po  # noqa: E402
-from bizflow_profile import FORBIDDEN_FIELDS, sanitise_profile  # noqa: E402
-from bizflow_purchase import build_purchase_plan  # noqa: E402
+from enterprise_buddy_core import Config, calculate, validate  # noqa: E402
+from enterprise_buddy_supplier import delivery_score, moq_score, reliability_score, score_material  # noqa: E402
+from enterprise_buddy_outputs import build_actions, build_po  # noqa: E402
+from enterprise_buddy_profile import FORBIDDEN_FIELDS, sanitise_profile  # noqa: E402
+from enterprise_buddy_purchase import build_purchase_plan  # noqa: E402
 
 FIX = ROOT / "tests" / "fixtures"
 

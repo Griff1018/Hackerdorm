@@ -313,7 +313,7 @@
       ],
       "steps": [
         "Register for an income tax number on MyTax (e-Daftar) if you do not have one.",
-        "Keep simple records of sales and expenses (BizFlow's sales.csv and expenses.csv are a start).",
+        "Keep simple records of sales and expenses (Enterprise Buddy's sales.csv and expenses.csv are a start).",
         "File Form B each year by the LHDN deadline.",
         "Check whether e-invoicing applies to your turnover on the LHDN site."
       ],
@@ -331,7 +331,7 @@
     {
       "id": "pay-supplier-po",
       "title": "Pay a supplier for a purchase order (owner does it)",
-      "category": "BizFlow actions",
+      "category": "Enterprise Buddy actions",
       "keywords": [
         "mark-paid",
         "pay",
@@ -341,7 +341,7 @@
         "reorder",
         "order from"
       ],
-      "who_needs_it": "When you approve a PO in BizFlow. BizFlow never pays — you pay the supplier yourself, then record it.",
+      "who_needs_it": "When you approve a PO in Enterprise Buddy. Enterprise Buddy never pays — you pay the supplier yourself, then record it.",
       "where": [
         {
           "name": "The supplier's own product page (link on the PO)",
@@ -357,8 +357,8 @@
       "steps": [
         "Open the PO and check the supplier link: price, pack size, 'Klang Valley only' or other limits.",
         "Choose how to buy: Online (order on their page, give your delivery address there) or Offline (visit or self-collect).",
-        "Pay the supplier directly through their own checkout or at their counter — never share bank details with BizFlow.",
-        "Record 'paid' in BizFlow (approve the PO item), then 'received' when the goods arrive.",
+        "Pay the supplier directly through their own checkout or at their counter — never share bank details with Enterprise Buddy.",
+        "Record 'paid' in Enterprise Buddy (approve the PO item), then 'received' when the goods arrive.",
         "Keep the receipt for your expenses record."
       ],
       "prepare": [
@@ -366,21 +366,21 @@
         "Your delivery address (online) or travel plan (offline)",
         "Payment method of your choice"
       ],
-      "cost": "The PO total shown in BizFlow (listed price at retrieval — recheck on the page).",
+      "cost": "The PO total shown in Enterprise Buddy (listed price at retrieval — recheck on the page).",
       "time": "Depends on the supplier's delivery time.",
       "sources": []
     },
     {
       "id": "recount-stock",
       "title": "Recount stock",
-      "category": "BizFlow actions",
+      "category": "Enterprise Buddy actions",
       "keywords": [
         "recount",
         "stock count",
         "stale",
         "inventory"
       ],
-      "who_needs_it": "When a stock count is older than 7 days — BizFlow will not compute a reorder from a stale count.",
+      "who_needs_it": "When a stock count is older than 7 days — Enterprise Buddy will not compute a reorder from a stale count.",
       "where": [
         {
           "name": "Your storage / stall",
@@ -391,7 +391,7 @@
       "steps": [
         "Count the units on hand for the product.",
         "Update stock_on_hand and last_count_date in data/sample/inventory.csv.",
-        "Re-run the BizFlow brief so the reorder quantity is recomputed."
+        "Re-run the Enterprise Buddy brief so the reorder quantity is recomputed."
       ],
       "prepare": [
         "10 minutes",
@@ -404,7 +404,7 @@
     {
       "id": "post-campaign",
       "title": "Post a social media campaign (owner posts)",
-      "category": "BizFlow actions",
+      "category": "Enterprise Buddy actions",
       "keywords": [
         "campaign",
         "tiktok",
@@ -413,7 +413,7 @@
         "promo",
         "marketing"
       ],
-      "who_needs_it": "When you approve a BizFlow campaign draft. BizFlow never posts for you.",
+      "who_needs_it": "When you approve a Enterprise Buddy campaign draft. Enterprise Buddy never posts for you.",
       "where": [
         {
           "name": "TikTok",
@@ -443,7 +443,7 @@
     {
       "id": "hire-helper",
       "title": "Hire a part-time helper",
-      "category": "BizFlow actions",
+      "category": "Enterprise Buddy actions",
       "keywords": [
         "jobad",
         "helper",
@@ -452,7 +452,7 @@
         "staff",
         "recruit"
       ],
-      "who_needs_it": "When you approve the BizFlow job ad.",
+      "who_needs_it": "When you approve the Enterprise Buddy job ad.",
       "where": [
         {
           "name": "Campus job board / student groups",
@@ -466,7 +466,7 @@
         }
       ],
       "steps": [
-        "Post the approved job ad yourself (BizFlow never posts).",
+        "Post the approved job ad yourself (Enterprise Buddy never posts).",
         "Interview with the hiring kit questions.",
         "Make sure the helper gets the food handler course and typhoid vaccination before handling food.",
         "Agree pay and hours in writing (owner-set MYR 12–15/hour)."

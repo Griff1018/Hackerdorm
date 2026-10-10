@@ -1,1 +1,1 @@
-{"schema":"bizflow.marketplace_event.v1","external_order_id":"MP-20261010-0003","event":"delivered","synthetic":true}
+{"schema":"enterprise_buddy.marketplace_event.v1","external_order_id":"MP-20261010-0003","event":"delivered","synthetic":true}

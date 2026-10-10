@@ -12,8 +12,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "app"))
 
-from bizflow_campaign_people import build_campaign, build_job_ad  # noqa: E402
-from bizflow_marketplace import process_inbox  # noqa: E402
+from enterprise_buddy_campaign_people import build_campaign, build_job_ad  # noqa: E402
+from enterprise_buddy_marketplace import process_inbox  # noqa: E402
 
 
 class Sprint3B(unittest.TestCase):
@@ -32,7 +32,7 @@ class Sprint3B(unittest.TestCase):
             order_dir.mkdir(parents=True)
             reviews.mkdir(parents=True)
             valid = {
-                "schema": "bizflow.marketplace_order.v1", "external_order_id": "MP-TEST-0001",
+                "schema": "enterprise_buddy.marketplace_order.v1", "external_order_id": "MP-TEST-0001",
                 "channel": "simulated_marketplace", "created_at": "2026-10-10T15:00:00+08:00",
                 "buyer": {"buyer_id": "B-1", "display_name": "Synthetic Buyer", "delivery_area": "Campus"},
                 "items": [{"product_id": "P001", "product_name": "Cookies", "quantity": 1, "unit_price": "6.00"}],
@@ -47,17 +47,17 @@ class Sprint3B(unittest.TestCase):
             for order in (valid, tampered, out_stock):
                 (order_dir / f"{order['external_order_id']}.json").write_text(json.dumps(order), encoding="utf-8")
             (order_dir / "EV-MP-TEST-0001-delivered.json").write_text(json.dumps({
-                "schema": "bizflow.marketplace_event.v1", "external_order_id": "MP-TEST-0001",
+                "schema": "enterprise_buddy.marketplace_event.v1", "external_order_id": "MP-TEST-0001",
                 "event": "delivered", "synthetic": True}), encoding="utf-8")
             (order_dir / "EV-MP-TEST-0001-receipt.json").write_text(json.dumps({
-                "schema": "bizflow.marketplace_event.v1", "external_order_id": "MP-TEST-0001",
+                "schema": "enterprise_buddy.marketplace_event.v1", "external_order_id": "MP-TEST-0001",
                 "event": "buyer_confirmed_receipt", "synthetic": True}), encoding="utf-8")
             (reviews / "RV-TEST-0001.json").write_text(json.dumps({
-                "schema": "bizflow.marketplace_review.v1", "review_id": "RV-TEST-0001",
+                "schema": "enterprise_buddy.marketplace_review.v1", "review_id": "RV-TEST-0001",
                 "external_order_id": "MP-TEST-0001", "product_id": "P001", "rating": 4,
                 "text": "Packaging was neat.", "synthetic": True}), encoding="utf-8")
             (reviews / "RV-TEST-0002.json").write_text(json.dumps({
-                "schema": "bizflow.marketplace_review.v1", "review_id": "RV-TEST-0002",
+                "schema": "enterprise_buddy.marketplace_review.v1", "review_id": "RV-TEST-0002",
                 "external_order_id": "MP-TEST-0001", "product_id": "P001", "rating": 2,
                 "text": "I have a peanut allergy; please escalate.", "synthetic": True}), encoding="utf-8")
             result = process_inbox(root)

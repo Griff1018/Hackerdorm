@@ -1,4 +1,4 @@
-# Sprint 2 Checkpoint Report — BizFlow
+# Sprint 2 Checkpoint Report — Enterprise Buddy
 
 **Mandatory build-time checkpoint (Section A).** Per the master instructions, WorkBuddy stops after
 every sprint, reports, and waits for approval. **Sprint 3 must not start until this checkpoint is
@@ -7,7 +7,7 @@ approved.** This report is separate from the Section G.7 runtime autonomy rule.
 - Sprint: 2 (Tasks 3–4: agent, departments, tools)
 - Window: 13:30–20:00 nominal · **completed/ready for review ~14:30**
 - Status: **DONE — awaiting your approval to proceed to Sprint 3**
-- Engine run verified: `python app/run_bizflow.py --data data/sample --output data/output --po --tech`
+- Engine run verified: `python app/run_enterprise_buddy.py --data data/sample --output data/output --po --tech`
   → net revenue 2451.25 · 6 actions · verify PASSED (7 checks) · tech PASSED (13/0/0)
 
 ---
@@ -15,14 +15,14 @@ approved.** This report is separate from the Section G.7 runtime autonomy rule.
 ## 1. Files created / modified in Sprint 2
 
 **Application code (`app/`)**
-- `bizflow_core.py` — Config, `validate()`, `calculate()` (exact decimal money), snapshot + action queue.
-- `bizflow_supplier.py` — G.11 scoring (`score_material`), full/light tiers, price-unit parsing.
+- `enterprise_buddy_core.py` — Config, `validate()`, `calculate()` (exact decimal money), snapshot + action queue.
+- `enterprise_buddy_supplier.py` — G.11 scoring (`score_material`), full/light tiers, price-unit parsing.
   **Unpriced rows are ranked last and forced `recommended=no`.**
-- `bizflow_outputs.py` — reports, market-brief and promo-draft builders.
-- `bizflow_profile.py` — profile load + `sanitise_profile` (rejects FORBIDDEN_FIELDS).
-- `bizflow_purchase.py` — draft PO builder (cumulative budget, pack round-up, review flags).
-- `bizflow_tech.py` — Technology health check (read-only; page-relative link resolution).
-- `run_bizflow.py` — orchestrator wiring all six departments + CLI flags.
+- `enterprise_buddy_outputs.py` — reports, market-brief and promo-draft builders.
+- `enterprise_buddy_profile.py` — profile load + `sanitise_profile` (rejects FORBIDDEN_FIELDS).
+- `enterprise_buddy_purchase.py` — draft PO builder (cumulative budget, pack round-up, review flags).
+- `enterprise_buddy_tech.py` — Technology health check (read-only; page-relative link resolution).
+- `run_enterprise_buddy.py` — orchestrator wiring all six departments + CLI flags.
 
 **Research / build scripts**
 - `scripts/build_supplier_research.py` — builds the scored input CSV; prices **normalised by code**,

@@ -1,4 +1,4 @@
 [department: Strategy] Record the focused market question and require source-backed research before stating a conclusion.
-This request is broader than BizFlow's built one-question market check. I can record it and prepare a source-backed feasibility plan, but I will not invent market size, rent, legal requirements, demand, or startup costs.
+This request is broader than Enterprise Buddy's built one-question market check. I can record it and prepare a source-backed feasibility plan, but I will not invent market size, rent, legal requirements, demand, or startup costs.
 [result] market question recorded; no unsupported conclusion invented
 [evidence] data/output/market_question_latest.json

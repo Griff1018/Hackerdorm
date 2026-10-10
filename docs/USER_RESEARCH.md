@@ -1,4 +1,4 @@
-# USER RESEARCH — BizFlow: hypothesis log (no interviews conducted)
+# USER RESEARCH — Enterprise Buddy: hypothesis log (no interviews conducted)
 
 **No interview has been conducted and no user has tested anything.** Section 1.4 and Task 1 require
 either verified interview notes or an explicit, labelled hypothesis log; this is the latter.

@@ -1,4 +1,4 @@
-# DECISIONS LOG — BizFlow
+# DECISIONS LOG — Enterprise Buddy
 
 Format: date · decision · options considered · who approved · impact.
 Section C of the master instructions: user decisions outrank this document; this document outranks
@@ -57,8 +57,8 @@ The previous Sprint 2 implementation selected only the overstock branch and ther
 |---|---|---|---|---|
 | D-17 | Apply Feature Update 01 in full but split implementation into Sprint 3A and Sprint 3B with a checkpoint between | one large sprint; small options only; two gated sprints | **approved; Sprint 3A completed** | protects the 00:00 testing and 03:00 slides gates |
 | D-18 | Sprint 3A scope = FR-02 full Demo Mode + FR-01 Tier B + live-output demo basics | FR-01 Tier A/D; Lite Demo Mode; full Tier B | **implemented + tested** | gives the strongest honest customer-to-order-to-stock demo without cutting verification |
-| D-19 | Business profile is Campus Crumb, a student-run campus snack and drink seller | BizFlow Demo Bakery / generic microbusiness | **implemented** | aligns profile, demo labels and dataset notes with the synthetic dataset |
-| D-20 | FR-06 starts with BizFlow-owned sample inbox files; no second store is built | connect immediately; build a second store; own sample contract first | **approved; Sprint 3B** | validates seller-side logic without depending on the separate marketplace store being ready |
+| D-19 | Business profile is Campus Crumb, a student-run campus snack and drink seller | Enterprise Buddy Demo Bakery / generic microbusiness | **implemented** | aligns profile, demo labels and dataset notes with the synthetic dataset |
+| D-20 | FR-06 starts with Enterprise Buddy-owned sample inbox files; no second store is built | connect immediately; build a second store; own sample contract first | **approved; Sprint 3B** | validates seller-side logic without depending on the separate marketplace store being ready |
 | D-21 | If Sprint 3B is still running at 23:00, downgrade FR-04 then FR-03 to CONCEPT screens | cut testing/rehearsals; cut marketplace; downgrade lower-priority features | **approved safeguard** | protects Sprint 4 at 00:00 and Sprint 5 at 03:00 |
 
 ## Sprint 3A deviation / open proof
@@ -71,7 +71,7 @@ remains built but not tested rather than being overstated.
 
 | # | decision | options considered | status | impact / why |
 |---|---|---|---|---|
-| D-22 | FR-06 is implemented/tested first against BizFlow-owned synthetic inbox files; no second marketplace store is built | wait for store; build a second store; own contract first | **implemented + tested** | valid order completed, tampered total rejected, out-of-stock rejected, events/reviews processed |
+| D-22 | FR-06 is implemented/tested first against Enterprise Buddy-owned synthetic inbox files; no second marketplace store is built | wait for store; build a second store; own contract first | **implemented + tested** | valid order completed, tampered total rejected, out-of-stock rejected, events/reviews processed |
 | D-23 | FR-03 is a one-week campaign planner with unsent platform drafts | single promo; concept only; campaign planner | **implemented + tested** | five day/platform drafts produced; no automatic posting |
 | D-24 | FR-04 uses owner-set synthetic pay range MYR 12.00–15.00/hour | omit pay; invent legal minimum; owner-set range | **implemented + tested** | job ad clearly says owner confirms Malaysia minimum-wage compliance before posting |
 | D-25 | FR-05 is a generic social-feed preview only | build a second store; use real platform branding; generic preview | **implemented + tested** | `demo/social_feed.html` loads draft preview data; no second store, logos or fake engagement |

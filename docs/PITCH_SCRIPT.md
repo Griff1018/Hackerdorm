@@ -1,4 +1,4 @@
-# BizFlow — 3-minute pitch (no live demo)
+# Enterprise Buddy — 3-minute pitch (no live demo)
 
 About 440 spoken words, roughly 145 words per minute. **[Slide N]** marks the slide change; **[brackets]** are not spoken.
 It follows the Section 11 slide plan in the master instructions and maps to the five Track 2 judging criteria (G.3).
@@ -17,8 +17,8 @@ Nothing here claims real-user results.
 ## [Slide 2] 0:25 – 0:50 · The core question  *(criterion 3: meaningful use of WorkBuddy)*
 
 > So, can our AI agent use WorkBuddy to solve a real problem and actually get things done? **Yes.**
-> BizFlow is an AI operations agent, and **WorkBuddy is its brain at runtime**, not just the tool we used to write code.
-> Every request goes to WorkBuddy, which understands the goal, plans, calls tools, searches the web, and returns actions BizFlow can run.
+> Enterprise Buddy is an AI operations agent, and **WorkBuddy is its brain at runtime**, not just the tool we used to write code.
+> Every request goes to WorkBuddy, which understands the goal, plans, calls tools, searches the web, and returns actions Enterprise Buddy can run.
 
 ## [Slide 3] 0:50 – 1:30 · What one prompt does  *(criteria 2 and 4: agentic workflow, end to end)*
 
@@ -31,7 +31,7 @@ Nothing here claims real-user results.
 
 ## [Slide 4] 1:30 – 2:05 · What the system does every day  *(criterion 5: usable results)*
 
-> Behind that chat, BizFlow runs the business:
+> Behind that chat, Enterprise Buddy runs the business:
 > **Orders** from WhatsApp, Instagram and its own online shop. The AI replies to customers and prices from the real menu.
 > **Money Flow**: every ringgit in and out.
 > **Inventory** with auto-reorder. Supplier orders are sent on WhatsApp after you approve.
@@ -52,7 +52,7 @@ Nothing here claims real-user results.
 
 ## [Slide 7] 2:50 – 3:00 · Close
 
-> BizFlow turns a messy side hustle into a business that runs itself, all from one chat.
+> Enterprise Buddy turns a messy side hustle into a business that runs itself, all from one chat.
 > **Our AI agent uses WorkBuddy to solve a real problem, and it actually gets things done.** Thank you.
 
 ---
@@ -62,7 +62,7 @@ Nothing here claims real-user results.
 | Slide | Title | What to show |
 |---|---|---|
 | 1 | The problem | Student seller: scattered chats, money and stock |
-| 2 | Uses WorkBuddy, gets things done | One prompt → WorkBuddy (brain) → actions done in BizFlow |
+| 2 | Uses WorkBuddy, gets things done | One prompt → WorkBuddy (brain) → actions done in Enterprise Buddy |
 | 3 | How it works | Prompt → plan → departments (Operations, Strategy, Marketing, Reporting) → Verifier → owner approval |
 | 4 | What it runs | Orders · Money Flow · Inventory · auto-reorder · auto-posting · customers & reviews · alerts |
 | 5 | Easy and safe | One chat, plain words, asks when unsure, Undo, number check, simulated payments |
@@ -72,5 +72,5 @@ Nothing here claims real-user results.
 ## Wording rules for Q&A (from the master instructions)
 
 - Say **"synthetic demo data"** whenever numbers come up. Don't claim revenue gains, time saved or user validation; we haven't measured them.
-- WorkBuddy runs through the CodeBuddy command line as the agent's reasoning engine. If asked, BizFlow's server and screens are the viewing and action layer around it.
-- Facebook, TikTok, Shopee, GrabFood, foodpanda, online banking and Touch 'n Go connections are **simulated**. WhatsApp, Instagram and LinkedIn are demo apps that really exchange data with BizFlow.
+- WorkBuddy runs through the CodeBuddy command line as the agent's reasoning engine. If asked, Enterprise Buddy's server and screens are the viewing and action layer around it.
+- Facebook, TikTok, Shopee, GrabFood, foodpanda, online banking and Touch 'n Go connections are **simulated**. WhatsApp, Instagram and LinkedIn are demo apps that really exchange data with Enterprise Buddy.

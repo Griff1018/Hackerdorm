@@ -1,4 +1,4 @@
-# SYSTEM ARCHITECTURE — BizFlow (DRAFT, Sprint 1)
+# SYSTEM ARCHITECTURE — Enterprise Buddy (DRAFT, Sprint 1)
 
 Describes the **intended** architecture. It will be rewritten from the actual implementation in
 Sprint 5 (Task 9). Nothing here is presented as built yet.

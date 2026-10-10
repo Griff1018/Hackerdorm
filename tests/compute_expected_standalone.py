@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-BizFlow - INDEPENDENT expected-results calculator (golden reference).
+Enterprise Buddy - INDEPENDENT expected-results calculator (golden reference).
 
 Purpose: produce the pre-recorded expected values for data/sample WITHOUT using the
-BizFlow analysis engine (which does not exist yet at the time this is written).
+Enterprise Buddy analysis engine (which does not exist yet at the time this is written).
 This is a deliberately plain, self-contained, single-file implementation so that the
 engine built in Sprint 2 can be compared against something that was not derived from it.
 

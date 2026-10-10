@@ -1,4 +1,4 @@
-# DATA DICTIONARY — BizFlow
+# DATA DICTIONARY — Enterprise Buddy
 
 Version: Sprint 1 (2026-10-10). Currency **MYR** for the sample dataset. All sample data is synthetic.
 Formulas follow Section 5 of the master instructions; where a choice had to be made, the choice is
@@ -92,7 +92,7 @@ staleness threshold (**warning**) · insufficient sales history for a demand est
 date/period mismatch between files (**warning**).
 
 **Duplicate policy (documented default):** rows sharing a duplicated identifier are **all excluded**
-and reported. BizFlow never silently picks one copy. The owner may approve a different rule.
+and reported. Enterprise Buddy never silently picks one copy. The owner may approve a different rule.
 
 ## 3. Calculation specification
 

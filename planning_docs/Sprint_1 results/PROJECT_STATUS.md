@@ -1,4 +1,4 @@
-# PROJECT STATUS — BizFlow
+# PROJECT STATUS — Enterprise Buddy
 
 Last update: **2026-10-10 13:35, end of Sprint 1** (checkpoint pending user approval).
 

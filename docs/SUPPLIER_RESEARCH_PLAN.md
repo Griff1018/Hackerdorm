@@ -1,4 +1,4 @@
-# SUPPLIER RESEARCH PLAN — BizFlow (written BEFORE research, per Sprint 1 revision 3)
+# SUPPLIER RESEARCH PLAN — Enterprise Buddy (written BEFORE research, per Sprint 1 revision 3)
 
 Section G.11 tiering rule: **full tier** = expensive, large share of cost, specialised, or hard to
 find → price, delivery, minimum order and source reliability all researched (score out of 100).
@@ -53,4 +53,4 @@ linked to every product that uses them.
 `products.unit_cost` is the owner's own estimate and has not been reconciled against researched
 material prices; until that reconciliation is done, the ingredient cost implied by materials.csv
 may differ from `unit_cost`. Tracked as risk R-11 in `ASSUMPTIONS_AND_RISKS.md`. It does not affect
-any metric BizFlow reports, because every metric uses `unit_cost` only.
+any metric Enterprise Buddy reports, because every metric uses `unit_cost` only.

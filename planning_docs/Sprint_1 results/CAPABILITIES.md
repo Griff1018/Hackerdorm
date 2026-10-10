@@ -1,4 +1,4 @@
-# CAPABILITIES — what BizFlow can do (Section G.13 — living document)
+# CAPABILITIES — what Enterprise Buddy can do (Section G.13 — living document)
 
 Updated: end of **Sprint 1** (2026-10-10). Updated again at the end of every sprint.
 Rule: a capability is marked **built and tested** only with evidence from an actual check.

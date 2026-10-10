@@ -1,4 +1,4 @@
-# WORKBUDDY FEASIBILITY CHECKLIST — BizFlow
+# WORKBUDDY FEASIBILITY CHECKLIST — Enterprise Buddy
 
 Rule (Section D, paragraph 1): *"For any platform feature not confirmed in the user's installed
 version, say 'not yet verified' and run a small feasibility check before relying on it."*
@@ -26,11 +26,11 @@ is still unverified. Nothing here is inferred from documentation alone unless th
 | # | capability | why it matters | planned probe |
 |---|---|---|---|
 | U1 | Hourly Automation actually firing | G.12: the Technology department must run every hour and leave a real log before the demo | create it at the end of Sprint 3 and check `tech_health_log.csv` gains rows |
-| U2 | Local MCP server accepted | D only permits a team MCP server if the platform supports it; the BizFlow tool server is the backup path if built-ins are not enough | Sprint 2: add a minimal stdio server to `~/.workbuddy-ai/mcp.json`, see whether WorkBuddy lists/trusts it, then remove it if unnecessary |
+| U2 | Local MCP server accepted | D only permits a team MCP server if the platform supports it; the Enterprise Buddy tool server is the backup path if built-ins are not enough | Sprint 2: add a minimal stdio server to `~/.workbuddy-ai/mcp.json`, see whether WorkBuddy lists/trusts it, then remove it if unnecessary |
 | U3 | Parallel sub-agent execution in one message | G.4 parallel validation is "should-have"; we must not claim it if it does not run | Sprint 2: launch two analysis sub-agents in a single message and time them |
 | U4 | HTML preview of a local page | the demo site is the headline deliverable (Sprint 3) | Sprint 3: build the page and open it via the host preview |
 | U5 | Slide generation through WorkBuddy | Sprint 5 deck must be produced inside WorkBuddy | Sprint 5, before the deck is needed |
-| U6 | A BizFlow Skill being invoked in a real run | the runnable "one prompt" workflow depends on it (or on an equivalent) | Sprint 2 |
+| U6 | A Enterprise Buddy Skill being invoked in a real run | the runnable "one prompt" workflow depends on it (or on an equivalent) | Sprint 2 |
 
 ## 3. Consequences for the technical path
 

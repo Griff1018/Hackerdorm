@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shopee (demo) · UrbanNest Lifestyle</title>
+<style>
+:root{--or:#ee4d2d;--or2:#ff7337;--orbg:#fff1ec;--ink:#222;--muted:#757575;--line:#ececec;--bg:#f5f5f5;--ok:#26aa99;--bad:#d0011b}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "Helvetica Neue",Helvetica,Arial,"Segoe UI",sans-serif}
+button{font:inherit;border:0;border-radius:2px;padding:8px 14px;background:var(--or);color:#fff;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}button.ghost{background:#fff;color:var(--ink);border:1px solid #ddd}button.soft{background:var(--orbg);color:var(--or);border:1px solid var(--or)}
+button.sm{padding:5px 10px;font-size:13px}button.link{background:none;color:var(--or);padding:0}
+input,select,textarea{font:inherit;border:1px solid #ddd;border-radius:2px;padding:7px 9px;background:#fff}
+.demo{background:#222;color:#ffd7cc;text-align:center;font-size:12px;padding:3px}
+.top{background:linear-gradient(-180deg,#f53d2d,#f63);color:#fff}
+.topin{max-width:1200px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:18px}
+.logo{font-size:26px;font-weight:700;letter-spacing:-.5px;display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
+.logo small{font-size:13px;font-weight:400;border-left:1px solid #fff9;padding-left:8px}
+.search{flex:1;display:flex;background:#fff;border-radius:2px;padding:3px}.search input{flex:1;border:0;outline:0}.search button{padding:6px 18px}
+.toplinks{display:flex;gap:14px;align-items:center;white-space:nowrap}.toplinks a{color:#fff;text-decoration:none;cursor:pointer;font-size:14px}
+.badge{background:#fff;color:var(--or);border-radius:10px;font-size:11px;font-weight:700;padding:0 6px;margin-left:3px}
+.wrap{max-width:1200px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:3px;box-shadow:0 1px 1px rgba(0,0,0,.05);padding:16px;margin-bottom:12px}
+.shopban{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.shopav{width:76px;height:76px;border-radius:50%;background:var(--or);color:#fff;font-size:34px;display:flex;align-items:center;justify-content:center}
+.shopstats{display:flex;gap:4px 26px;flex-wrap:wrap;color:var(--muted);margin-top:6px}.shopstats b{color:var(--or)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(188px,1fr));gap:10px}
+.pc{background:#fff;border:1px solid transparent;cursor:pointer;display:flex;flex-direction:column;transition:transform .1s}
+.pc:hover{border-color:var(--or);transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.pimg{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:70px;position:relative}
+.pimg .tag{position:absolute;top:6px;left:0;background:var(--or);color:#fff;font-size:11px;padding:1px 6px}
+.pimg .tag.boost{background:#ffb800;color:#222}
+.pb{padding:8px}.pn{height:40px;overflow:hidden;font-size:13px;line-height:20px}
+.pp{color:var(--or);font-size:16px;margin-top:6px;display:flex;justify-content:space-between;align-items:baseline}.pp small{color:var(--muted);font-size:12px}
+.stars{color:#ffce3d;letter-spacing:1px}
+.detail{display:grid;grid-template-columns:420px 1fr;gap:26px}.bigimg{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:170px;border-radius:2px}
+.dprice{background:#fafafa;padding:14px 18px;font-size:28px;color:var(--or);margin:12px 0}.dprice s{color:#999;font-size:15px;margin-right:10px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}.opt{background:#fff;color:var(--ink);border:1px solid #ddd;padding:6px 12px}.opt.on{border-color:var(--or);color:var(--or)}.opt:disabled{color:#bbb}
+.rowk{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center;margin:12px 0;color:var(--muted)}
+.desc{white-space:pre-wrap;line-height:1.7}
+.rev{border-bottom:1px solid var(--line);padding:12px 0}.rev .who{font-size:12.5px;color:var(--muted)}.rev .rp{background:#fafafa;padding:8px;margin-top:6px;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid var(--line);overflow:auto}.tabs button{background:none;color:var(--ink);border-bottom:2px solid transparent;border-radius:0;padding:14px 18px;white-space:nowrap}
+.tabs button.on{color:var(--or);border-bottom-color:var(--or)}
+.order{background:#fff;margin-bottom:10px}.ohead{display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);font-size:13px}
+.ostat{color:var(--or);text-transform:uppercase;font-size:13px}.oline{display:flex;gap:12px;padding:10px 16px;align-items:center}.oimg{width:56px;height:56px;font-size:30px;display:flex;align-items:center;justify-content:center;background:#fafafa}
+.ofoot{padding:12px 16px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.track{padding:6px 16px 12px;font-size:12.5px;color:var(--muted)}.track div{padding:2px 0 2px 14px;border-left:2px solid #ddd}.track div:first-child{color:var(--ok);border-left-color:var(--ok)}
+.modal{position:fixed;inset:0;background:#0006;display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}.modal .card{width:min(560px,100%);max-height:90vh;overflow:auto}
+.chatwin{position:fixed;right:20px;bottom:0;width:360px;height:470px;background:#fff;box-shadow:0 0 14px #0003;display:flex;flex-direction:column;z-index:40;border-radius:4px 4px 0 0}
+.chathd{background:var(--or);color:#fff;padding:10px 12px;display:flex;justify-content:space-between}
+.msgs{flex:1;overflow:auto;padding:10px;background:#f7f7f7;display:flex;flex-direction:column;gap:6px}
+.bub{max-width:80%;padding:7px 10px;border-radius:8px;font-size:13px;background:#fff;align-self:flex-start;white-space:pre-wrap}.bub.me{background:#ffe6dd;align-self:flex-end}
+.bub small{display:block;color:#999;font-size:10.5px;margin-top:2px}.bub.card2{background:#fff7e6;border:1px dashed #f5a623}
+.chatin{display:flex;gap:6px;padding:8px;border-top:1px solid var(--line)}.chatin input{flex:1}
+/* Seller Centre */
+.sc{display:grid;grid-template-columns:210px 1fr;min-height:calc(100vh - 80px)}
+.scnav{background:#fff;border-right:1px solid var(--line);padding:12px 0}.scnav button{display:flex;justify-content:space-between;width:100%;background:none;color:var(--ink);text-align:left;padding:10px 18px;border-radius:0}
+.scnav button.on{color:var(--or);background:var(--orbg);border-right:3px solid var(--or)}.scnav .n{background:var(--or);color:#fff;border-radius:9px;font-size:11px;padding:0 6px}
+.scmain{padding:16px 20px;overflow:auto}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}.kpi{background:#fff;padding:12px 14px;border-radius:3px}.kpi b{font-size:22px;display:block}.kpi span{color:var(--muted);font-size:12.5px}
+.kpi.bad b{color:var(--bad)}.kpi.ok b{color:var(--ok)}
+table{width:100%;border-collapse:collapse;background:#fff}th{background:#fafafa;text-align:left;font-weight:600;color:var(--muted);font-size:12.5px}th,td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;font-size:13px}
+.pill{display:inline-block;font-size:11.5px;padding:1px 7px;border-radius:9px;background:#f0f0f0}.pill.red{background:#fde8e8;color:var(--bad)}.pill.or{background:var(--orbg);color:var(--or)}.pill.ok{background:#e6f7f4;color:var(--ok)}
+.bars{display:flex;gap:4px;align-items:flex-end;height:120px;padding-top:6px}.bars div{flex:1;background:var(--or2);border-radius:2px 2px 0 0;position:relative;min-height:2px}
+.bars div span{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:10px;color:#999}
+.feed{max-height:330px;overflow:auto;font-size:12.5px}.feed div{padding:5px 0;border-bottom:1px solid #f3f3f3}
+.chatgrid{display:grid;grid-template-columns:300px 1fr;height:calc(100vh - 140px);background:#fff}.clist{border-right:1px solid var(--line);overflow:auto}
+.ci{padding:10px 12px;border-bottom:1px solid #f3f3f3;cursor:pointer}.ci.on{background:var(--orbg)}.ci .l{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cthread{display:flex;flex-direction:column}.small{color:var(--muted);font-size:12.5px}.err{color:var(--bad)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#000c;color:#fff;padding:10px 18px;border-radius:4px;z-index:60}
+.search{min-width:0}
+@media(max-width:820px){.detail,.sc,.chatgrid{grid-template-columns:1fr}.scnav{display:flex;overflow:auto;padding:0}.scnav button{width:auto;white-space:nowrap}
+  .topin{flex-wrap:wrap;gap:10px}.search{order:3;flex-basis:100%}.toplinks{flex-wrap:wrap;gap:10px;font-size:13px}.chatwin{width:100%;right:0}
+  .logo{font-size:22px}.grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}.bigimg{font-size:110px}.chatgrid{height:auto}.clist{max-height:240px}}
+</style>
+</head>
+<body>
+<div class="demo">DEMO Shopee — a simulated marketplace connected to Enterprise Buddy. Synthetic shop, buyers and orders; no real money moves.</div>
+<div class="top"><div class="topin">
+  <div class="logo" id="logo">🛍️ Shopee <small id="modelabel">Storefront</small></div>
+  <div class="search" id="searchbox"><input id="q" placeholder="Search in UrbanNest Lifestyle"><button id="qgo">🔍</button></div>
+  <div class="toplinks">
+    <a id="lnkorders">My Orders</a><a id="lnkcart">🛒 Cart<span class="badge" id="cartn">0</span></a><a id="lnkchat">💬 Chat</a>
+    <a id="lnkmode">🏪 Seller Centre</a>
+  </div>
+</div></div>
+<div id="app"></div>
+<div id="chatwin" class="chatwin" hidden></div>
+<div id="modal" class="modal" hidden></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const rm = v => "RM" + (+v).toFixed(2);
+const stars = r => "★".repeat(Math.round(r)) + "☆".repeat(5 - Math.round(r));
+const when = ts => new Date(ts * 1000).toLocaleString("en-MY", { timeZone: "Asia/Kuala_Lumpur", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+async function api(path, body) {
+  const r = await fetch("/api/shopee" + path, body !== undefined ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : {});
+  const d = await r.json(); if (!r.ok || d.error) throw new Error(d.error || r.statusText); return d;
+}
+function toast(t) { const d = el("div", "toast", t); document.body.append(d); setTimeout(() => d.remove(), 2600); }
+function modal(title, body) { const m = $("#modal"), c = el("div", "card"); const h = el("div"); h.style.cssText = "display:flex;justify-content:space-between;margin-bottom:10px";
+  const x = el("button", "ghost sm", "✕"); x.onclick = () => m.hidden = true; h.append(el("b", null, title), x); c.append(h, body); m.replaceChildren(c); m.hidden = false; }
+$("#modal").onclick = e => { if (e.target.id === "modal") $("#modal").hidden = true; };
+const CART = JSON.parse(localStorage.getItem("shopee.cart") || "[]"); const saveCart = () => { localStorage.setItem("shopee.cart", JSON.stringify(CART)); $("#cartn").textContent = CART.reduce((a, c) => a + c.qty, 0); };
+const STATUS_TXT = { UNPAID: "To pay", READY_TO_SHIP: "To ship", IN_CANCEL: "Cancellation requested", PROCESSED: "To receive — packed", SHIPPED: "To receive — in transit", TO_CONFIRM_RECEIVE: "Delivered — confirm receipt", COMPLETED: "Completed", CANCELLED: "Cancelled", TO_RETURN: "Return / refund" };
+
+// ------------------------------------------------------------------ router
+function route() {
+  const h = location.hash || "#store";
+  const seller = h.startsWith("#seller");
+  $("#modelabel").textContent = seller ? "Seller Centre" : "Storefront"; $("#lnkmode").textContent = seller ? "🛍️ Storefront" : "🏪 Seller Centre";
+  $("#searchbox").hidden = seller;
+  ["#lnkorders", "#lnkcart", "#lnkchat"].forEach(x => $(x).hidden = seller);
+  if (seller) return seller_(h.split("/")[1] || "dashboard");
+  const [, page, arg] = h.split("/");
+  if (h.startsWith("#item")) return itemPage(page);
+  if (h === "#orders") return ordersPage();
+  if (h === "#cart") return cartPage();
+  return home();
+}
+window.onhashchange = route;
+$("#logo").onclick = () => location.hash = location.hash.startsWith("#seller") ? "#seller" : "#store";
+$("#lnkmode").onclick = () => location.hash = location.hash.startsWith("#seller") ? "#store" : "#seller";
+$("#lnkorders").onclick = () => location.hash = "#orders"; $("#lnkcart").onclick = () => location.hash = "#cart"; $("#lnkchat").onclick = () => openChat();
+$("#qgo").onclick = () => { location.hash = "#store"; home($("#q").value); }; $("#q").onkeydown = e => { if (e.key === "Enter") $("#qgo").click(); };
+
+// ------------------------------------------------------------------ storefront
+async function home(q) {
+  const app = $("#app"), w = el("div", "wrap"); app.replaceChildren(w);
+  const d = await api("/store/home" + (q ? "?q=" + encodeURIComponent(q) : ""));
+  const ban = el("div", "card shopban");
+  const av = el("div", "shopav", "🏠"), info = el("div"); info.style.flex = "1";
+  info.append(el("h2", null, d.shop.shop_name), el("div", "small", d.shop.description));
+  const st = el("div", "shopstats"); [["Rating", d.rating.rating_star + " (" + (d.rating.rating_count / 1000).toFixed(1) + "k)"], ["Followers", (d.shop.follower_count / 1000).toFixed(1) + "k"], ["Products", d.items.length], ["Ships from", d.shop.location]]
+    .forEach(([k, v]) => { const s = el("div"); s.append(k + ": ", el("b", null, v)); st.append(s); });
+  info.append(st);
+  const chat = el("button", "soft", "💬 Chat now"); chat.onclick = () => openChat();
+  ban.append(av, info, chat); w.append(ban);
+  w.append(el("h3", null, q ? "Results for “" + q + "”" : "ALL PRODUCTS"));
+  const g = el("div", "grid");
+  d.items.forEach(it => g.append(productCard(it)));
+  if (!d.items.length) w.append(el("div", "card", "No products found."));
+  w.append(g);
+}
+function productCard(it) {
+  const c = el("div", "pc"); c.onclick = () => location.hash = "#item/" + it.item_id;
+  const img = el("div", "pimg", it.emoji); img.style.background = it.color + "33";
+  if (it.boosted) img.append(el("span", "tag boost", "BOOSTED"));
+  else if (it.original_max > it.price_min) img.append(el("span", "tag", "-" + Math.round((1 - it.price_min / it.original_max) * 100) + "%"));
+  const b = el("div", "pb"); b.append(el("div", "pn", it.name));
+  const p = el("div", "pp"); p.append(el("span", null, rm(it.price_min)), el("small", null, (it.sold >= 1000 ? (it.sold / 1000).toFixed(1) + "k" : it.sold) + " sold"));
+  b.append(p, el("div", "small", stars(it.rating) + " " + it.rating)); if (!it.stock) b.append(el("div", "pill red", "Sold out"));
+  c.append(img, b); return c;
+}
+async function itemPage(id) {
+  const app = $("#app"), w = el("div", "wrap"); app.replaceChildren(w);
+  const it = await api("/store/item/" + id);
+  const c = el("div", "card detail");
+  const img = el("div", "bigimg", it.emoji); img.style.background = it.color + "33";
+  const r = el("div"); r.append(el("h2", null, it.name));
+  r.append(el("div", "small", stars(it.rating) + " " + it.rating + " · " + it.rating_count.toLocaleString() + " ratings · " + it.sold.toLocaleString() + " sold"));
+  let model = it.models.find(m => m.stock > 0) || it.models[0], qty = 1;
+  const price = el("div", "dprice");
+  const showPrice = () => { price.replaceChildren(); if (model.original_price > model.price) price.append(el("s", null, rm(model.original_price))); price.append(rm(model.price)); stockLbl.textContent = model.stock + " pieces available"; };
+  const stockLbl = el("span", "small");
+  const opts = el("div", "opts");
+  it.models.forEach(m => { const b = el("button", "opt" + (m === model ? " on" : ""), m.model_name); b.disabled = !m.stock; b.onclick = () => { model = m; opts.querySelectorAll(".opt").forEach(x => x.classList.remove("on")); b.classList.add("on"); showPrice(); }; opts.append(b); });
+  const q = el("input"); q.type = "number"; q.min = 1; q.value = 1; q.style.width = "80px"; q.oninput = () => qty = Math.max(1, +q.value || 1);
+  const rk = (k, v) => { const d = el("div", "rowk"); d.append(el("span", null, k), v); return d; };
+  const qrow = el("div"); qrow.append(q, " ", stockLbl);
+  const btns = el("div"); btns.style.cssText = "display:flex;gap:10px;margin-top:14px";
+  const add = el("button", "soft", "🛒 Add to cart"), buy = el("button", null, "Buy now");
+  const addToCart = () => { const ex = CART.find(c => c.model_id === model.model_id); if (ex) ex.qty += qty; else CART.push({ model_id: model.model_id, item_id: it.item_id, name: it.name, model: model.model_name, price: model.price, emoji: it.emoji, qty }); saveCart(); };
+  add.onclick = () => { addToCart(); toast("Added to cart"); }; buy.onclick = () => { addToCart(); location.hash = "#cart"; };
+  if (!it.stock) { add.disabled = buy.disabled = true; }
+  btns.append(add, buy);
+  r.append(price, rk("Shipping", el("span", null, "Free shipping above RM30 · ships from " + "Shah Alam")), rk(it.tiers.map(t => t.name).join(" / ") || "Variation", opts), rk("Quantity", qrow), btns);
+  showPrice(); c.append(img, r); w.append(c);
+  const d = el("div", "card"); d.append(el("h3", null, "PRODUCT SPECIFICATIONS"));
+  Object.entries(it.attributes).forEach(([k, v]) => d.append((() => { const x = el("div", "rowk"); x.append(el("span", null, k), el("span", null, v)); return x; })()));
+  d.append(el("h3", null, "PRODUCT DESCRIPTION"), el("div", "desc", it.description || "—")); w.append(d);
+  const rv = el("div", "card"); rv.append(el("h3", null, "PRODUCT RATINGS"));
+  const hd = el("div", "small"); hd.append(it.rating + " out of 5 · " + it.rating_by_star.map((n, i) => (i + 1) + "★ " + n).reverse().join(" · ")); rv.append(hd);
+  it.reviews.forEach(x => { const e = el("div", "rev"); e.append(el("div", "who", x.buyer_username + " · " + when(x.create_time)), el("div", "stars", stars(x.rating_star)), el("div", null, x.comment || "(no text)"));
+    if (x.reply) e.append(el("div", "rp", "Seller's response: " + x.reply)); rv.append(e); });
+  if (!it.reviews.length) rv.append(el("div", "small", "No reviews yet."));
+  w.append(rv);
+}
+function cartPage() {
+  const app = $("#app"), w = el("div", "wrap"); app.replaceChildren(w);
+  const c = el("div", "card"); c.append(el("h2", null, "Shopping Cart")); w.append(c);
+  if (!CART.length) { c.append(el("div", "small", "Your cart is empty.")); return; }
+  const t = el("table"), hr = el("tr"); ["Product", "Unit price", "Qty", "Total", ""].forEach(x => hr.append(el("th", null, x))); t.append(hr);
+  CART.forEach((x, i) => { const tr = el("tr"); const q = el("input"); q.type = "number"; q.min = 1; q.value = x.qty; q.style.width = "64px"; q.onchange = () => { x.qty = Math.max(1, +q.value || 1); saveCart(); cartPage(); };
+    const del = el("button", "ghost sm", "Delete"); del.onclick = () => { CART.splice(i, 1); saveCart(); cartPage(); };
+    [x.emoji + " " + x.name.slice(0, 60) + " — " + x.model, rm(x.price)].forEach(v => tr.append(el("td", null, v))); const tq = el("td"); tq.append(q); tr.append(tq, el("td", null, rm(x.price * x.qty)));
+    const td = el("td"); td.append(del); tr.append(td); t.append(tr); });
+  c.append(t);
+  const sub = CART.reduce((a, x) => a + x.price * x.qty, 0), ship = sub >= 30 ? 0 : 4.9;
+  const pay = el("select"); ["ShopeePay", "Online Banking", "Credit/Debit Card", "Cash on Delivery", "SPayLater"].forEach(p => pay.append(el("option", null, p)));
+  const msg = el("input"); msg.placeholder = "Message to seller (optional)"; msg.style.flex = "1";
+  const f = el("div", "ofoot"); const s = el("div"); s.append(el("div", null, "Merchandise subtotal: " + rm(sub)), el("div", "small", "Shipping: " + (ship ? rm(ship) : "FREE (above RM30)")), el("b", null, "Total: " + rm(sub + ship)));
+  const place = el("button", null, "Place Order");
+  place.onclick = async () => { place.disabled = true; try { const o = await api("/store/checkout", { lines: CART.map(x => ({ model_id: x.model_id, quantity: x.qty })), payment_method: pay.value, message: msg.value }); CART.length = 0; saveCart(); toast("Order " + o.order_sn + " placed!"); location.hash = "#orders"; } catch (e) { alert(e.message); place.disabled = false; } };
+  const opts = el("div"); opts.style.cssText = "display:flex;gap:8px;flex:1;flex-wrap:wrap"; opts.append(pay, msg);
+  f.append(opts, s, place); c.append(f);
+}
+async function ordersPage() {
+  const app = $("#app"), w = el("div", "wrap"); app.replaceChildren(w);
+  w.append(el("h2", null, "My Purchases (demo_buyer)"));
+  const d = await api("/store/orders");
+  if (!d.orders.length) w.append(el("div", "card", "No orders yet — buy something from the shop!"));
+  d.orders.forEach(o => {
+    const c = el("div", "order");
+    const h = el("div", "ohead"); h.append(el("span", null, "UrbanNest Lifestyle · " + o.order_sn + " · " + when(o.create_time)), el("span", "ostat", STATUS_TXT[o.order_status] || o.order_status)); c.append(h);
+    o.items.forEach(x => { const l = el("div", "oline"); l.append(el("div", "oimg", x.emoji)); const t = el("div"); t.style.flex = "1"; t.append(el("div", null, x.name), el("div", "small", "Variation: " + x.model + " · x" + x.qty)); l.append(t, el("div", null, rm(x.price))); c.append(l); });
+    if (o.tracking && o.tracking.length) { const tr = el("div", "track"); o.tracking.slice(0, 4).forEach(t => tr.append(el("div", null, when(t.ts) + " · " + t.description))); c.append(tr); }
+    if (o.return) c.append(el("div", "track", "Return " + o.return.return_sn + ": " + o.return.status + (o.return.offered_amount ? " · seller offers " + rm(o.return.offered_amount) : "")));
+    const f = el("div", "ofoot"), tot = el("span", null, "Order total: "); tot.append(el("b", null, rm(o.total_amount))); f.append(tot);
+    const acts = el("div"); acts.style.cssText = "display:flex;gap:8px";
+    const act = (label, fn, cls) => { const b = el("button", (cls || "") + " sm", label); b.onclick = async () => { b.disabled = true; try { await fn(); ordersPage(); } catch (e) { alert(e.message); b.disabled = false; } }; acts.append(b); };
+    if (o.order_status === "TO_CONFIRM_RECEIVE") act("Order Received", () => api("/store/order/" + o.order_sn + "/confirm", {}));
+    if (["COMPLETED", "TO_CONFIRM_RECEIVE"].includes(o.order_status) && !o.reviewed) act("Rate", () => rateDialog(o), "soft");
+    if (["COMPLETED", "TO_CONFIRM_RECEIVE"].includes(o.order_status) && !o.return) act("Return/Refund", () => returnDialog(o), "ghost");
+    if (["UNPAID", "READY_TO_SHIP"].includes(o.order_status)) act("Cancel order", () => api("/store/order/" + o.order_sn + "/cancel", { reason: "Change of mind" }), "ghost");
+    act("Chat with seller", async () => openChat(o.order_sn), "ghost");
+    f.append(acts); c.append(f); w.append(c);
+  });
+}
+function rateDialog(o) {
+  return new Promise(res => {
+    const b = el("div"); let r = 5; const s = el("div", "stars"); s.style.fontSize = "28px"; s.style.cursor = "pointer";
+    const draw = () => { s.replaceChildren(); for (let i = 1; i <= 5; i++) { const x = el("span", null, i <= r ? "★" : "☆"); x.onclick = () => { r = i; draw(); }; s.append(x); } }; draw();
+    const t = el("textarea"); t.rows = 3; t.style.width = "100%"; t.placeholder = "Share your thoughts on the product";
+    const go = el("button", null, "Submit"); go.onclick = async () => { try { await api("/store/order/" + o.order_sn + "/review", { rating: r, comment: t.value }); $("#modal").hidden = true; toast("Thanks for your review!"); res(); } catch (e) { alert(e.message); } };
+    b.append(s, t, go); modal("Rate product", b);
+  });
+}
+function returnDialog(o) {
+  return new Promise(res => {
+    const b = el("div"), sel = el("select"); [["packaging", "Item arrived damaged / broken"], ["quality", "Item is defective / not working"], ["sizing", "Size does not match description"], ["accuracy", "Received wrong item / variation"]].forEach(([v, l]) => { const x = el("option", null, l); x.value = v; sel.append(x); });
+    const t = el("textarea"); t.rows = 3; t.style.width = "100%"; t.placeholder = "Describe the problem";
+    const go = el("button", null, "Submit request"); go.onclick = async () => { try { await api("/store/order/" + o.order_sn + "/return", { tag: sel.value, text: t.value }); $("#modal").hidden = true; toast("Return request submitted"); res(); } catch (e) { alert(e.message); } };
+    b.append(sel, t, go); modal("Return / Refund", b);
+  });
+}
+async function openChat(orderSn) {
+  const w = $("#chatwin"); w.hidden = false;
+  const draw = async (post) => {
+    const c = post ? await api("/store/chat", post) : await api("/store/chat");
+    w.replaceChildren();
+    const h = el("div", "chathd"); const x = el("button", "sm", "✕"); x.style.background = "transparent"; x.onclick = () => w.hidden = true; h.append(el("b", null, "UrbanNest Lifestyle"), x);
+    const m = el("div", "msgs");
+    c.messages.forEach(mm => { if (mm.message_type !== "text") { m.append(el("div", "bub card2", mm.content.order_sn ? "📦 Order " + mm.content.order_sn : "🛍️ Product " + (mm.content.item_id || ""))); return; }
+      const b = el("div", "bub" + (mm.sender === "buyer" ? " me" : ""), mm.content.text); b.append(el("small", null, when(mm.created_timestamp))); m.append(b); });
+    const inp = el("div", "chatin"), t = el("input"); t.placeholder = orderSn ? "Ask about order " + orderSn : "Type a message"; const s = el("button", "sm", "Send");
+    s.onclick = () => { if (t.value.trim()) draw({ text: t.value, order_sn: orderSn || null }); }; t.onkeydown = e => { if (e.key === "Enter") s.click(); };
+    inp.append(t, s); w.append(h, m, inp); m.scrollTop = m.scrollHeight; t.focus();
+  };
+  draw();
+  clearInterval(window._chatT); window._chatT = setInterval(() => { if (!$("#chatwin").hidden && document.activeElement.tagName !== "INPUT") draw(); }, 5000);
+}
+
+// ------------------------------------------------------------------ Seller Centre
+const SC_NAV = [["dashboard", "📊 Dashboard"], ["orders", "📦 My Orders"], ["products", "🧺 My Products"], ["reviews", "⭐ Reviews"], ["chats", "💬 Chat"], ["returns", "↩️ Return/Refund"], ["sim", "🎬 Simulator"]];
+let SC = { counts: {} };
+async function seller_(page) {
+  const app = $("#app"); const sc = el("div", "sc"), nav = el("div", "scnav"), main = el("div", "scmain"); sc.append(nav, main); app.replaceChildren(sc);
+  let dash = null; try { dash = await api("/seller/dashboard"); } catch {}
+  const n = dash ? { orders: dash.counts.to_ship, chats: dash.unread_chats, returns: dash.open_returns, reviews: dash.unreplied_reviews } : {};
+  SC_NAV.forEach(([id, label]) => { const b = el("button", page === id ? "on" : ""); b.append(el("span", null, label)); if (n[id]) b.append(el("span", "n", String(n[id]))); b.onclick = () => location.hash = "#seller/" + id; nav.append(b); });
+  try { await ({ dashboard: scDash, orders: scOrders, products: scProducts, reviews: scReviews, chats: scChats, returns: scReturns, sim: scSim }[page] || scDash)(main, dash); }
+  catch (e) { main.append(el("div", "err", e.message)); }
+}
+async function scDash(main, d) {
+  d = d || await api("/seller/dashboard");
+  main.append(el("h2", null, "Seller Centre — " + d.shop.shop_name));
+  const todo = el("div", "card"); todo.append(el("b", null, "To Do List"));
+  const k = el("div", "kpis"); k.style.marginTop = "10px";
+  const kp = (v, l, bad, go) => { const x = el("div", "kpi" + (bad ? " bad" : "")); x.style.cursor = go ? "pointer" : ""; x.onclick = go ? () => location.hash = go : null; x.append(el("b", null, String(v)), el("span", null, l)); k.append(x); };
+  kp(d.counts.unpaid, "Unpaid", 0, "#seller/orders"); kp(d.counts.to_ship, "To ship", d.overdue, "#seller/orders"); kp(d.overdue, "Overdue shipments", d.overdue, "#seller/orders");
+  kp(d.unread_chats, "Chats awaiting reply", d.unread_chats > 10, "#seller/chats"); kp(d.open_returns, "Return requests", d.open_returns, "#seller/returns"); kp(d.unreplied_reviews, "Unhappy reviews to reply", 0, "#seller/reviews");
+  todo.append(k); main.append(todo);
+  const biz = el("div", "card"); biz.append(el("b", null, "Business Insights · today"));
+  const k2 = el("div", "kpis"); k2.style.marginTop = "10px";
+  [[rm(d.today.sales), "Sales today"], [d.today.orders, "Orders today"], [d.today.views, "Product views today"], [d.today.views ? (d.today.orders / d.today.views * 100).toFixed(2) + "%" : "–", "Conversion today"]].forEach(([v, l]) => { const x = el("div", "kpi"); x.append(el("b", null, String(v)), el("span", null, l)); k2.append(x); });
+  biz.append(k2);
+  const bars = el("div", "bars"), max = Math.max(...d.series.map(s => s.sales), 1);
+  d.series.forEach(s => { const b = el("div"); b.style.height = (s.sales / max * 100) + "%"; b.title = s.date + " · " + rm(s.sales) + " · " + s.orders + " orders"; b.append(el("span", null, s.date.slice(8))); bars.append(b); });
+  biz.append(el("div", "small", "Sales, last 14 days"), bars, el("div", null, " ")); main.append(biz);
+  const p = d.performance, perf = el("div", "card"); perf.append(el("b", null, "My Performance (last 30 days)"));
+  const t = el("table"), hr = el("tr"); ["Metric", "My shop", "Target"].forEach(x => hr.append(el("th", null, x))); t.append(hr);
+  [["Shop rating", p.shop_rating + " ★", "≥ " + p.targets.shop_rating, p.shop_rating < p.targets.shop_rating], ["Chat response rate", p.chat_response_rate + "%", "≥ " + p.targets.chat_response_rate + "%", p.chat_response_rate < p.targets.chat_response_rate],
+   ["Late shipment rate", p.late_shipment_rate + "%", "< " + p.targets.late_shipment_rate + "%", p.late_shipment_rate >= p.targets.late_shipment_rate], ["Non-fulfilment rate", p.non_fulfilment_rate + "%", "< " + p.targets.non_fulfilment_rate + "%", p.non_fulfilment_rate >= p.targets.non_fulfilment_rate],
+   ["Preparation time", p.preparation_time_days + " days", "< " + p.targets.preparation_time_days + " days", p.preparation_time_days > p.targets.preparation_time_days], ["Return/refund rate", p.return_refund_rate + "%", "—", false], ["Penalty points (90d)", p.penalty_points, "—", false]]
+    .forEach(([a, b, c, bad]) => { const tr = el("tr"); tr.append(el("td", null, a)); const td = el("td"); td.append(el("span", "pill " + (bad ? "red" : "ok"), String(b))); tr.append(td, el("td", null, c)); t.append(tr); });
+  perf.append(t); main.append(perf);
+  const f = el("div", "card"); f.append(el("b", null, "Live activity"), el("div", "small", "Everything happening in the shop — including actions approved in Enterprise Buddy."));
+  const feed = el("div", "feed"); d.events.forEach(e => feed.append(el("div", null, when(e.ts) + " · " + e.summary))); f.append(feed); main.append(f);
+}
+const OTABS = [["to_ship", "To Ship"], ["unpaid", "Unpaid"], ["shipping", "Shipping"], ["completed", "Completed"], ["return", "Return/Refund"], ["cancelled", "Cancelled"]];
+async function scOrders(main) {
+  const st = SC.ostatus || "to_ship";
+  main.append(el("h2", null, "My Orders"));
+  const tabs = el("div", "tabs"); OTABS.forEach(([id, l]) => { const b = el("button", st === id ? "on" : "", l); b.onclick = () => { SC.ostatus = id; route(); }; tabs.append(b); }); main.append(tabs);
+  const d = await api("/seller/orders?status=" + st);
+  if (st === "to_ship" && d.orders.some(o => o.order_status === "READY_TO_SHIP")) {
+    const all = el("button", null, "🚚 Arrange shipment for all (" + d.orders.filter(o => o.order_status === "READY_TO_SHIP").length + ")");
+    all.style.margin = "10px 0"; all.onclick = async () => { all.disabled = true; const r = await api("/seller/ship-all", { limit: 200 }); toast(r.shipped + " orders arranged"); route(); }; main.append(all);
+  }
+  const t = el("table"), hr = el("tr"); ["Order", "Buyer", "Products", "Total", st === "to_ship" ? "Ship by" : "Status", "Courier", "Action"].forEach(x => hr.append(el("th", null, x))); t.append(hr);
+  d.orders.forEach(o => {
+    const tr = el("tr");
+    tr.append(el("td", null, o.order_sn), el("td", null, o.buyer_username), el("td", null, o.items.map(x => x.emoji + " " + x.name.slice(0, 32) + " (" + x.model + ") ×" + x.qty).join("\n")), el("td", null, rm(o.total_amount)));
+    const s = el("td"); if (st === "to_ship" && o.hours_to_ship != null) s.append(el("span", "pill " + (o.hours_to_ship < 0 ? "red" : o.hours_to_ship < 24 ? "or" : ""), o.hours_to_ship < 0 ? Math.abs(o.hours_to_ship).toFixed(0) + "h overdue" : o.hours_to_ship.toFixed(0) + "h left"));
+    else s.append(el("span", "pill", STATUS_TXT[o.order_status] || o.order_status)); if (o.order_status === "IN_CANCEL") s.append(el("div", "small", "Buyer: " + (o.buyer_cancel_reason || "")));
+    tr.append(s, el("td", null, o.shipping_carrier + (o.tracking_number ? "\n" + o.tracking_number : "")));
+    const a = el("td"); const btn = (l, fn, cls) => { const b = el("button", (cls || "") + " sm", l); b.onclick = async () => { b.disabled = true; try { await fn(); route(); } catch (e) { alert(e.message); b.disabled = false; } }; a.append(b, " "); };
+    if (o.order_status === "READY_TO_SHIP") { btn("Arrange shipment", () => api("/seller/order/" + o.order_sn + "/ship", {})); btn("Cancel", () => confirm("Cancel order (out of stock)? This adds a penalty point.") && api("/seller/order/" + o.order_sn + "/cancel", { reason: "OUT_OF_STOCK" }), "ghost"); }
+    if (o.order_status === "IN_CANCEL") { btn("Accept cancel", () => api("/seller/order/" + o.order_sn + "/cancellation", { operation: "ACCEPT" })); btn("Reject", () => api("/seller/order/" + o.order_sn + "/cancellation", { operation: "REJECT" }), "ghost"); }
+    tr.append(a); t.append(tr);
+  });
+  main.append(t); if (!d.orders.length) main.append(el("div", "card small", "No orders here."));
+}
+async function scProducts(main) {
+  main.append(el("h2", null, "My Products"));
+  const d = await api("/seller/products");
+  const t = el("table"), hr = el("tr"); ["Product", "Variations · price · stock", "Sales (7d)", "Rating", "Action"].forEach(x => hr.append(el("th", null, x))); t.append(hr);
+  d.products.forEach(p => {
+    const tr = el("tr"); const n = el("td"); n.append(el("div", null, p.emoji + " " + p.name)); n.append(el("span", "pill " + (p.status === "NORMAL" ? "ok" : "red"), p.status === "NORMAL" ? "Live" : "Unlisted")); if (p.boosted) n.append(" ", el("span", "pill or", "Boosted"));
+    const v = el("td"); const prices = {}, stock = {};
+    p.models.forEach(m => { const row = el("div"); row.style.cssText = "display:flex;gap:6px;align-items:center;margin:2px 0";
+      const pi = el("input"); pi.type = "number"; pi.step = "0.1"; pi.value = m.price; pi.style.width = "78px"; pi.onchange = () => prices[m.model_id] = pi.value;
+      const si = el("input"); si.type = "number"; si.value = m.stock; si.style.width = "64px"; si.onchange = () => stock[m.model_id] = si.value; if (m.stock < 20) si.style.borderColor = "#d0011b";
+      row.append(el("span", "small", m.model_name.slice(0, 16)), "RM", pi, "stock", si); v.append(row); });
+    const save = el("button", "sm", "Save"); save.onclick = async () => { try { await api("/seller/product/" + p.item_id, { prices, stock }); toast("Saved"); route(); } catch (e) { alert(e.message); } }; v.append(save);
+    tr.append(n, v, el("td", null, p.units7 + " units\n" + rm(p.sales7) + "\n" + p.views7 + " views"), el("td", null, p.rating + " ★"));
+    const a = el("td"); const btn = (l, body, cls) => { const b = el("button", (cls || "ghost") + " sm", l); b.onclick = async () => { try { await api("/seller/product/" + p.item_id, body); toast("Done"); route(); } catch (e) { alert(e.message); } }; a.append(b, " "); };
+    const ed = el("button", "ghost sm", "Edit listing"); ed.onclick = () => editListing(p); a.append(ed, " ");
+    btn(p.status === "NORMAL" ? "Unlist" : "List again", { item_status: p.status === "NORMAL" ? "UNLIST" : "NORMAL" });
+    if (p.status === "NORMAL" && !p.boosted) btn("Boost 4h", { boost: true }, "soft");
+    tr.append(a); t.append(tr);
+  });
+  main.append(t);
+}
+function editListing(p) {
+  const b = el("div"), n = el("input"), dsc = el("textarea"); n.value = p.name; n.style.width = "100%"; dsc.value = p.description || ""; dsc.rows = 12; dsc.style.width = "100%";
+  const go = el("button", null, "Save listing"); go.onclick = async () => { try { await api("/seller/product/" + p.item_id, { item_name: n.value, description: dsc.value }); $("#modal").hidden = true; toast("Listing updated"); route(); } catch (e) { alert(e.message); } };
+  b.append(el("div", "small", "Title (10–120 characters)"), n, el("div", "small", "Description"), dsc, go); modal("Edit listing", b);
+}
+async function scReviews(main) {
+  const f = SC.rfilter || "unreplied";
+  main.append(el("h2", null, "Shop Ratings"));
+  const tabs = el("div", "tabs"); [["unreplied", "To reply (≤3★)"], ["negative", "1–2★"], ["positive", "4–5★"], ["all", "All"]].forEach(([id, l]) => { const b = el("button", f === id ? "on" : "", l); b.onclick = () => { SC.rfilter = id; route(); }; tabs.append(b); }); main.append(tabs);
+  const d = await api("/seller/reviews?filter=" + f);
+  main.append(el("div", "small", "Shop rating " + d.rating.rating_star + " ★ from " + d.rating.rating_count.toLocaleString() + " ratings"));
+  d.reviews.forEach(r => {
+    const c = el("div", "card"); c.append(el("div", "small", r.emoji + " " + r.item_name.slice(0, 60) + " · " + r.buyer_username + " · " + when(r.create_time)), el("div", "stars", stars(r.rating_star)), el("div", null, r.comment || "(no text)"));
+    if (r.reply) c.append(el("div", "rev", "↩ " + r.reply + (r.reply_source ? " (via " + r.reply_source + ")" : "")));
+    else { const row = el("div"); row.style.cssText = "display:flex;gap:6px;margin-top:8px"; const t = el("input"); t.style.flex = "1"; t.placeholder = "Reply publicly…"; const s = el("button", "sm", "Reply");
+      s.onclick = async () => { try { await api("/seller/review/" + r.comment_id + "/reply", { text: t.value }); route(); } catch (e) { alert(e.message); } }; row.append(t, s); c.append(row); }
+    main.append(c);
+  });
+}
+async function scChats(main) {
+  main.append(el("h2", null, "Chat"));
+  const g = el("div", "chatgrid"), list = el("div", "clist"), th = el("div", "cthread"); g.append(list, th); main.append(g);
+  const d = await api("/seller/chats");
+  const open = async (cid, post) => {
+    SC.chat = cid; list.querySelectorAll(".ci").forEach(x => x.classList.toggle("on", +x.dataset.id === cid));
+    const c = post ? await api("/seller/chat/" + cid, post) : await api("/seller/chat/" + cid);
+    th.replaceChildren(); const h = el("div", "chathd"); h.append(el("b", null, c.buyer), el("span", null, c.orders.length ? "Last order " + c.orders[0].order_sn + " · " + (STATUS_TXT[c.orders[0].order_status] || "") : "")); th.append(h);
+    const m = el("div", "msgs"); c.messages.forEach(mm => { if (mm.message_type !== "text") { m.append(el("div", "bub card2", mm.content.order_sn ? "📦 Order " + mm.content.order_sn : "🛍️ Product " + (mm.content.item_id || ""))); return; }
+      const b = el("div", "bub" + (mm.sender === "seller" ? " me" : ""), mm.content.text); b.append(el("small", null, when(mm.created_timestamp) + (mm.sender === "seller" && mm.source ? " · " + mm.source : ""))); m.append(b); });
+    const inp = el("div", "chatin"), t = el("input"); t.placeholder = "Type a reply"; const s = el("button", "sm", "Send"); s.onclick = () => { if (t.value.trim()) open(cid, { text: t.value }); }; t.onkeydown = e => { if (e.key === "Enter") s.click(); };
+    inp.append(t, s); th.append(m, inp); m.scrollTop = m.scrollHeight;
+  };
+  d.chats.forEach(c => { const x = el("div", "ci"); x.dataset.id = c.conversation_id; const n = el("div"); n.append(el("b", null, c.buyer)); if (c.awaiting_reply) n.append(" ", el("span", "pill red", "awaiting reply")); x.append(n, el("div", "l", (c.last_from === "seller" ? "You: " : "") + c.last)); x.onclick = () => open(c.conversation_id); list.append(x); });
+  if (d.chats.length) open(SC.chat && d.chats.some(c => c.conversation_id === SC.chat) ? SC.chat : d.chats[0].conversation_id);
+}
+async function scReturns(main) {
+  main.append(el("h2", null, "Return / Refund"));
+  const d = await api("/seller/returns");
+  const t = el("table"), hr = el("tr"); ["Return", "Buyer", "Product", "Reason", "Amount", "Status", "Action"].forEach(x => hr.append(el("th", null, x))); t.append(hr);
+  d.returns.forEach(r => {
+    const tr = el("tr"); tr.append(el("td", null, r.return_sn + "\n" + r.order_sn), el("td", null, r.buyer_username), el("td", null, r.emoji + " " + r.item_name.slice(0, 40)), el("td", null, r.text_reason), el("td", null, rm(r.refund_amount)));
+    const s = el("td"); s.append(el("span", "pill " + (r.status === "REQUESTED" ? "red" : r.status === "REFUND_PAID" ? "" : "or"), r.status)); if (r.status === "REQUESTED") s.append(el("div", "small", "respond by " + when(r.due_date))); tr.append(s);
+    const a = el("td");
+    if (r.status === "REQUESTED") {
+      const btn = (l, fn, cls) => { const b = el("button", (cls || "") + " sm", l); b.onclick = async () => { try { await fn(); route(); } catch (e) { alert(e.message); } }; a.append(b, " "); };
+      btn("Accept refund", () => api("/seller/return/" + r.return_sn + "/accept", {}));
+      btn("Offer partial", () => { const v = prompt("Partial refund amount (RM)", (r.refund_amount * 0.4).toFixed(2)); return v && api("/seller/return/" + r.return_sn + "/offer", { amount: +v }); }, "soft");
+      btn("Dispute", () => api("/seller/return/" + r.return_sn + "/dispute", {}), "ghost");
+    }
+    tr.append(a); t.append(tr);
+  });
+  main.append(t);
+}
+async function scSim(main) {
+  const d = await api("/state"), s = d.sim;
+  main.append(el("h2", null, "Simulator"), el("div", "small", "Controls the simulated world behind this demo shop. Enterprise Buddy's Shopee agent watches it like a real shop."));
+  const c = el("div", "card"); c.append(el("div", null, "Simulated time: ", el("b", null, s.now_text), s.paused ? " (paused)" : " · speed ×" + s.speed));
+  const row = el("div"); row.style.cssText = "display:flex;gap:8px;flex-wrap:wrap;margin-top:10px";
+  const post = async (body, msg) => { await api("/sim", body); toast(msg); route(); };
+  [[1, "Real time"], [10, "×10"], [60, "×60"]].forEach(([v, l]) => { const b = el("button", (s.speed === v && !s.paused ? "" : "ghost") + " sm", l); b.onclick = () => post({ speed: v, paused: false }, "Speed " + l); row.append(b); });
+  const pz = el("button", "ghost sm", s.paused ? "▶ Resume" : "⏸ Pause"); pz.onclick = () => post({ paused: !s.paused }, s.paused ? "Resumed" : "Paused"); row.append(pz);
+  [[1, "+1 hour"], [6, "+6 hours"], [24, "+1 day"]].forEach(([h, l]) => { const b = el("button", "soft sm", "⏩ " + l); b.onclick = async () => { b.disabled = true; await post({ advance_hours: h }, "Fast-forwarded " + l); }; row.append(b); });
+  c.append(row); main.append(c);
+  const sc = el("div", "card"); sc.append(el("b", null, "Live scenarios"));
+  s.scenarios.forEach(x => { const r = el("div"); r.style.cssText = "display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f3f3f3";
+    const tx = el("div"); tx.append(el("b", null, x.title), el("div", "small", x.description)); const b = el("button", "sm", "Run"); b.onclick = () => post({ scenario: x.id }, x.title + " started"); r.append(tx, b); sc.append(r); });
+  if (s.modifiers.length) sc.append(el("div", "small", "Active: " + s.modifiers.map(m => m.label).join(" · ")));
+  main.append(sc);
+  const pl = el("div", "card"); pl.append(el("b", null, "Planted problems (answer key)"), el("div", "small", "The agent has to discover these from data alone."));
+  const ul = el("ul"); s.planted.forEach(p => ul.append(el("li", null, p.problem))); pl.append(ul); main.append(pl);
+  const rs = el("button", "ghost", "♻ Reset shop world to the 60-day demo history"); rs.onclick = () => confirm("Reset the whole shop world?") && post({ reset: true }, "Shop reset");
+  main.append(rs);
+}
+// keep Seller Centre fresh while it is open (skip when typing)
+setInterval(() => { const h = location.hash; if ((h === "#seller" || h.startsWith("#seller/dashboard")) && !document.querySelector("input:focus, textarea:focus") && $("#modal").hidden) route(); }, 15000);
+saveCart(); route();
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# ASSUMPTIONS AND RISKS — BizFlow
+# ASSUMPTIONS AND RISKS — Enterprise Buddy
 
 Updated: end of Sprint 1 (2026-10-10). "Approval required = yes" means we must not proceed on that
 assumption without an explicit owner decision.
@@ -46,4 +46,4 @@ show the agent using WorkBuddy to get things done.
 ## 4. Unknowns about the platform (see WORKBUDDY_FEASIBILITY_CHECKLIST.md)
 
 U1 hourly Automation firing · U2 local MCP · U3 parallel sub-agents · U4 HTML preview ·
-U5 slide generation path · U6 BizFlow Skill invoked in a real run.
+U5 slide generation path · U6 Enterprise Buddy Skill invoked in a real run.
