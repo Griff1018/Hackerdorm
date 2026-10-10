@@ -106,6 +106,29 @@ def add_todos(bid: str, cid: str, items: list[dict]) -> list[dict]:
     return todos(bid)
 
 
+# ---------------------------------------------------------------- checkpoints (milestones the AI chose to record when a job was done)
+
+CHECKPOINTS = WS / "checkpoints.json"
+
+
+def checkpoints(bid: str) -> list[dict]:
+    rows = [c for c in _read(CHECKPOINTS, []) if bid == ALL or c.get("business_id") == bid]
+    return sorted(rows, key=lambda c: c.get("at", ""), reverse=True)
+
+
+def add_checkpoint(bid: str, cp: dict) -> dict:
+    rows = _read(CHECKPOINTS, [])
+    c = {"id": "C" + uuid.uuid4().hex[:6], "business_id": bid, "at": now(),
+         **{k: str(cp.get(k) or "")[:500] for k in ("title", "summary", "stage", "source", "ref", "icon", "by")}}
+    rows.append(c)
+    _write(CHECKPOINTS, rows)
+    return c
+
+
+def delete_checkpoint(cid: str):
+    _write(CHECKPOINTS, [c for c in _read(CHECKPOINTS, []) if c["id"] != cid])
+
+
 def toggle_todo(tid: str, done: bool | None = None, delete: bool = False):
     rows = _read(TODOS, [])
     if delete:

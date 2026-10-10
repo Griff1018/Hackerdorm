@@ -5,73 +5,198 @@
       "id": "ssm-registration",
       "title": "Register your business with SSM (sole proprietorship)",
       "category": "Permits & registration",
-      "keywords": ["ssm", "register business", "business registration", "sole proprietor", "ezbiz", "company", "start a business", "start selling", "how do i start"],
+      "keywords": [
+        "ssm",
+        "register business",
+        "business registration",
+        "sole proprietor",
+        "ezbiz",
+        "company",
+        "start a business",
+        "start selling",
+        "how do i start"
+      ],
       "who_needs_it": "Anyone selling regularly for profit in Malaysia. Most other licences (council, halal, MeSTI) ask for your SSM registration first.",
-      "where": [{"name": "SSM ezBiz online portal", "url": "https://ezbiz.ssm.com.my", "mode": "online"},
-                {"name": "SSM guideline: registration of new business (PDF)", "url": "https://www.ssm.com.my/Documents/Ezbiz%20Online%20User%20Guideline/GUIDELINE-FOR-REGISTRATION-OF-NEW-BUSINESS.pdf", "mode": "online"}],
-      "steps": ["Create an ezBiz account and verify your identity (MyKad).",
-                "Choose: register under your own name, or apply first for a trade name (needs the Registrar's approval).",
-                "Fill in the business address, activity (e.g. food and beverage retail) and start date.",
-                "Choose the registration period (1 to 5 years) and pay online (card or online banking).",
-                "Download the business registration certificate (e-info) once approved."],
-      "prepare": ["MyKad", "Proposed business name (if not your own name)", "Business address", "Description of the business activity", "Online banking or card for the fee"],
+      "where": [
+        {
+          "name": "SSM ezBiz online portal",
+          "url": "https://ezbiz.ssm.com.my",
+          "mode": "online"
+        },
+        {
+          "name": "SSM guideline: registration of new business (PDF)",
+          "url": "https://www.ssm.com.my/Documents/Ezbiz%20Online%20User%20Guideline/GUIDELINE-FOR-REGISTRATION-OF-NEW-BUSINESS.pdf",
+          "mode": "online"
+        }
+      ],
+      "steps": [
+        "Create an ezBiz account and verify your identity (MyKad).",
+        "Choose: register under your own name, or apply first for a trade name (needs the Registrar's approval).",
+        "Fill in the business address, activity (e.g. food and beverage retail) and start date.",
+        "Choose the registration period (1 to 5 years) and pay online (card or online banking).",
+        "Download the business registration certificate (e-info) once approved."
+      ],
+      "prepare": [
+        "MyKad",
+        "Proposed business name (if not your own name)",
+        "Business address",
+        "Description of the business activity",
+        "Online banking or card for the fee"
+      ],
       "cost": "Own name: RM30; trade name: RM60 (per year per the SSM guideline); branch RM5. Students at public universities (IPT) and B40 may qualify for free registration. Confirm on ezBiz.",
       "time": "Usually same day to a few working days.",
-      "sources": ["https://www.ssm.com.my/Documents/guidelines_for_registration_of_new_business_05062018_0.pdf",
-                  "https://www.ajobthing.com/resources/blog/free-business-registration-for-b40-entrepreneurs-and-ipt-students"]
+      "sources": [
+        "https://www.ssm.com.my/Documents/guidelines_for_registration_of_new_business_05062018_0.pdf",
+        "https://www.ajobthing.com/resources/blog/free-business-registration-for-b40-entrepreneurs-and-ipt-students"
+      ]
     },
     {
       "id": "food-handler",
       "title": "Food handler training certificate + typhoid vaccination",
       "category": "Food safety",
-      "keywords": ["food handler", "typhoid", "food safety", "hygiene", "kursus pengendali", "permit", "sell food", "helper", "hire", "part-time", "campus"],
+      "keywords": [
+        "food handler",
+        "typhoid",
+        "food safety",
+        "hygiene",
+        "kursus pengendali",
+        "permit",
+        "sell food",
+        "helper",
+        "hire",
+        "part-time",
+        "campus"
+      ],
       "who_needs_it": "Everyone who prepares, handles or serves food — the owner and every helper (Food Hygiene Regulations 2009).",
-      "where": [{"name": "MOH Food Safety & Quality Division (lists recognised training schools, SLPM)", "url": "https://fsq.moh.gov.my", "mode": "online"},
-                {"name": "Any MOH-recognised Food Handler Training School (SLPM), e.g. IMU", "url": "https://www.imu.edu.my/media/2019/06/FINAL-IMU-Brochure-Food-Handlers-Training-Programme_ver2019.pdf", "mode": "offline"},
-                {"name": "Typhoid (TY2) vaccine: government health clinic (Klinik Kesihatan) or private clinic", "url": "https://www.doctoroncall.com.my/health-centre/vaccination/typhoid-vaccine/typhoid-injections", "mode": "offline"}],
-      "steps": ["Book a Food Handler Training course (Kursus Latihan Pengendali Makanan) at an MOH-recognised school (SLPM).",
-                "Attend the course (a short one-day or few-hour session) and keep the certificate.",
-                "Get the typhoid injection at a clinic and keep the vaccination card/record.",
-                "Repeat for every helper before they start handling food.",
-                "Keep the certificates and vaccination records at your stall for inspections."],
-      "prepare": ["MyKad", "Course fee", "Vaccination fee (clinic)", "A folder for certificates and vaccination cards"],
+      "where": [
+        {
+          "name": "MOH Food Safety & Quality Division (lists recognised training schools, SLPM)",
+          "url": "https://fsq.moh.gov.my",
+          "mode": "online"
+        },
+        {
+          "name": "Any MOH-recognised Food Handler Training School (SLPM), e.g. IMU",
+          "url": "https://www.imu.edu.my/media/2019/06/FINAL-IMU-Brochure-Food-Handlers-Training-Programme_ver2019.pdf",
+          "mode": "offline"
+        },
+        {
+          "name": "Typhoid (TY2) vaccine: government health clinic (Klinik Kesihatan) or private clinic",
+          "url": "https://www.doctoroncall.com.my/health-centre/vaccination/typhoid-vaccine/typhoid-injections",
+          "mode": "offline"
+        }
+      ],
+      "steps": [
+        "Book a Food Handler Training course (Kursus Latihan Pengendali Makanan) at an MOH-recognised school (SLPM).",
+        "Attend the course (a short one-day or few-hour session) and keep the certificate.",
+        "Get the typhoid injection at a clinic and keep the vaccination card/record.",
+        "Repeat for every helper before they start handling food.",
+        "Keep the certificates and vaccination records at your stall for inspections."
+      ],
+      "prepare": [
+        "MyKad",
+        "Course fee",
+        "Vaccination fee (clinic)",
+        "A folder for certificates and vaccination cards"
+      ],
       "cost": "Course example: RM50 (IMU, 2019 brochure); vaccine price depends on the clinic. Confirm with the school/clinic.",
       "time": "Course: 1 day. Vaccine: same day at a walk-in clinic.",
-      "sources": ["https://www.malaymail.com/news/malaysia/2025/02/07/health-ministry-mandates-typhoid-vaccination-for-food-handlers-at-fairs-and-expos-strict-hygiene-standards-enforced/165905",
-                  "https://www.thesundaily.my/local/health-ministry-gets-tough-on-errant-food-handlers-unhygienic-eateries-KB10447739"]
+      "sources": [
+        "https://www.malaymail.com/news/malaysia/2025/02/07/health-ministry-mandates-typhoid-vaccination-for-food-handlers-at-fairs-and-expos-strict-hygiene-standards-enforced/165905",
+        "https://www.thesundaily.my/local/health-ministry-gets-tough-on-errant-food-handlers-unhygienic-eateries-KB10447739"
+      ]
     },
     {
       "id": "council-licence",
       "title": "Local council trading / hawker licence (e.g. DBKL in Kuala Lumpur)",
       "category": "Permits & registration",
-      "keywords": ["licence", "license", "permit", "hawker", "stall", "council", "dbkl", "pbt", "bazaar", "night market", "food truck", "sell food on"],
+      "keywords": [
+        "licence",
+        "license",
+        "permit",
+        "hawker",
+        "stall",
+        "council",
+        "dbkl",
+        "pbt",
+        "bazaar",
+        "night market",
+        "food truck",
+        "sell food on"
+      ],
       "who_needs_it": "Selling from a stall, bazaar, food truck or premises in a council area. Each council (PBT) has its own portal — DBKL shown as the example.",
-      "where": [{"name": "DBKL eLesen portal (Kuala Lumpur)", "url": "https://elesen.dbkl.gov.my", "mode": "online"},
-                {"name": "DBKL hawker FAQ (PDF)", "url": "https://elesen.dbkl.gov.my/Borang/FAQ_JPPP_PENJAJA_EN.pdf", "mode": "online"},
-                {"name": "Licensing counter, 5th floor, Menara DBKL 2, Jalan Raja Laut", "url": "https://www.google.com/maps/search/?api=1&query=Menara+DBKL+2+Jalan+Raja+Laut", "mode": "offline"}],
-      "steps": ["Find your council (DBKL, MBPJ, MBSA, MPSJ …) from the address where you will sell.",
-                "Check which licence type fits: fixed stall, bazaar/night market, hawker centre, food truck, or temporary/seasonal.",
-                "Get the food handler certificate and typhoid vaccination first (see that guide).",
-                "Apply on the council's portal (DBKL: eLesen) or at the licensing counter; apply directly — DBKL warns against agents.",
-                "Pay the licence fee when approved and display the licence at your stall."],
-      "prepare": ["MyKad (Malaysian citizen, 18+)", "SSM registration", "Food handler certificate + typhoid record (owner and helper)", "Passport photo", "Location / site details", "Biodegradable packaging plan (DBKL requirement)"],
+      "where": [
+        {
+          "name": "DBKL eLesen portal (Kuala Lumpur)",
+          "url": "https://elesen.dbkl.gov.my",
+          "mode": "online"
+        },
+        {
+          "name": "DBKL hawker FAQ (PDF)",
+          "url": "https://elesen.dbkl.gov.my/Borang/FAQ_JPPP_PENJAJA_EN.pdf",
+          "mode": "online"
+        },
+        {
+          "name": "Licensing counter, 5th floor, Menara DBKL 2, Jalan Raja Laut",
+          "url": "https://www.google.com/maps/search/?api=1&query=Menara+DBKL+2+Jalan+Raja+Laut",
+          "mode": "offline"
+        }
+      ],
+      "steps": [
+        "Find your council (DBKL, MBPJ, MBSA, MPSJ …) from the address where you will sell.",
+        "Check which licence type fits: fixed stall, bazaar/night market, hawker centre, food truck, or temporary/seasonal.",
+        "Get the food handler certificate and typhoid vaccination first (see that guide).",
+        "Apply on the council's portal (DBKL: eLesen) or at the licensing counter; apply directly — DBKL warns against agents.",
+        "Pay the licence fee when approved and display the licence at your stall."
+      ],
+      "prepare": [
+        "MyKad (Malaysian citizen, 18+)",
+        "SSM registration",
+        "Food handler certificate + typhoid record (owner and helper)",
+        "Passport photo",
+        "Location / site details",
+        "Biodegradable packaging plan (DBKL requirement)"
+      ],
       "cost": "Depends on council and licence type — check the portal (older DBKL temporary permits were about RM20/month).",
       "time": "Varies; some stall types open only during advertised application windows.",
-      "sources": ["https://malaymail.com/news/malaysia/2026/02/26/thinking-of-opening-a-stall-in-kl-here-are-dbkls-dos-and-donts-for-new-hawkers/210272",
-                  "https://www.nst.com.my/amp/news/nation/2025/05/1219531/dbkl-rolls-out-legalisation-plan-hawkers"]
+      "sources": [
+        "https://malaymail.com/news/malaysia/2026/02/26/thinking-of-opening-a-stall-in-kl-here-are-dbkls-dos-and-donts-for-new-hawkers/210272",
+        "https://www.nst.com.my/amp/news/nation/2025/05/1219531/dbkl-rolls-out-legalisation-plan-hawkers"
+      ]
     },
     {
       "id": "campus-permission",
       "title": "Permission to sell on campus",
       "category": "Permits & registration",
-      "keywords": ["campus", "university", "college", "student", "sell food on campus", "kolej", "hep"],
+      "keywords": [
+        "campus",
+        "university",
+        "college",
+        "student",
+        "sell food on campus",
+        "kolej",
+        "hep"
+      ],
       "who_needs_it": "Selling inside a university or college. Campus land is managed by the university, so the council licence may not apply — the university's own rules do.",
-      "where": [{"name": "Your university's Student Affairs office (HEP) / campus business or estate management unit", "url": "", "mode": "offline"}],
-      "steps": ["Ask Student Affairs (HEP) or the campus business unit which office approves student sellers.",
-                "Ask what they require: SSM registration, food handler certificate, typhoid vaccination, approved location and hours.",
-                "Submit their application form with your menu and the selling location.",
-                "Keep the approval letter with you while selling."],
-      "prepare": ["Student ID", "Menu and prices", "Proposed location and hours", "Food handler certificate + typhoid record", "SSM registration if asked"],
+      "where": [
+        {
+          "name": "Your university's Student Affairs office (HEP) / campus business or estate management unit",
+          "url": "",
+          "mode": "offline"
+        }
+      ],
+      "steps": [
+        "Ask Student Affairs (HEP) or the campus business unit which office approves student sellers.",
+        "Ask what they require: SSM registration, food handler certificate, typhoid vaccination, approved location and hours.",
+        "Submit their application form with your menu and the selling location.",
+        "Keep the approval letter with you while selling."
+      ],
+      "prepare": [
+        "Student ID",
+        "Menu and prices",
+        "Proposed location and hours",
+        "Food handler certificate + typhoid record",
+        "SSM registration if asked"
+      ],
       "cost": "Set by the university.",
       "time": "Set by the university.",
       "sources": []
@@ -80,71 +205,167 @@
       "id": "halal",
       "title": "Halal certification (JAKIM, MYeHALAL)",
       "category": "Certification",
-      "keywords": ["halal", "jakim", "myehalal", "certif", "cert"],
+      "keywords": [
+        "halal",
+        "jakim",
+        "myehalal",
+        "certif",
+        "cert"
+      ],
       "who_needs_it": "Optional, but many campus customers look for it. You may only claim 'halal' with a JAKIM/state certificate.",
-      "where": [{"name": "MYeHALAL online application portal", "url": "https://myehalal.halal.gov.my", "mode": "online"},
-                {"name": "Halal certification fees guide", "url": "https://mishu.my/blog/business-licenses/halal-certification-fees/", "mode": "online"}],
-      "steps": ["Register a company account on MYeHALAL (verified in about 24 working hours).",
-                "Set up a simple Internal Halal Control System (IHCS): approved suppliers with halal certificates for every ingredient, cleaning records.",
-                "Submit the online application and upload supporting documents within 5 working days.",
-                "Pay the charge letter within 14 working days.",
-                "Prepare for the on-site audit; JAKIM sets the date, so the premises must be ready.",
-                "Receive the certificate and display it."],
-      "prepare": ["SSM registration", "Premises licence", "Halal certificates for all ingredients (ask each supplier)", "Recipe and process flow", "Food handler certificates + typhoid records", "At least one full-time Malaysian Muslim worker (micro-business rule)"],
+      "where": [
+        {
+          "name": "MYeHALAL online application portal",
+          "url": "https://myehalal.halal.gov.my",
+          "mode": "online"
+        },
+        {
+          "name": "Halal certification fees guide",
+          "url": "https://mishu.my/blog/business-licenses/halal-certification-fees/",
+          "mode": "online"
+        }
+      ],
+      "steps": [
+        "Register a company account on MYeHALAL (verified in about 24 working hours).",
+        "Set up a simple Internal Halal Control System (IHCS): approved suppliers with halal certificates for every ingredient, cleaning records.",
+        "Submit the online application and upload supporting documents within 5 working days.",
+        "Pay the charge letter within 14 working days.",
+        "Prepare for the on-site audit; JAKIM sets the date, so the premises must be ready.",
+        "Receive the certificate and display it."
+      ],
+      "prepare": [
+        "SSM registration",
+        "Premises licence",
+        "Halal certificates for all ingredients (ask each supplier)",
+        "Recipe and process flow",
+        "Food handler certificates + typhoid records",
+        "At least one full-time Malaysian Muslim worker (micro-business rule)"
+      ],
       "cost": "Micro business (turnover under RM300,000): RM20 processing + RM100 per year. Confirm on MYeHALAL.",
       "time": "Several weeks including the audit.",
-      "sources": ["https://www.freemalaysiatoday.com/category/nation/2024/09/26/halal-certification-what-does-it-entail",
-                  "https://www.malaymail.com/news/malaysia/2024/09/20/want-to-get-a-halal-certificate-in-malaysia-heres-how-much-it-costs-and-how-long-it-takes/151066"]
+      "sources": [
+        "https://www.freemalaysiatoday.com/category/nation/2024/09/26/halal-certification-what-does-it-entail",
+        "https://www.malaymail.com/news/malaysia/2024/09/20/want-to-get-a-halal-certificate-in-malaysia-heres-how-much-it-costs-and-how-long-it-takes/151066"
+      ]
     },
     {
       "id": "mesti",
       "title": "MeSTI food safety certification (MOH)",
       "category": "Certification",
-      "keywords": ["mesti", "food safety cert", "packaged", "manufactur", "wholesale", "retail shelf", "certif"],
+      "keywords": [
+        "mesti",
+        "food safety cert",
+        "manufactur",
+        "certif",
+        "mesti certif"
+      ],
       "who_needs_it": "Small food manufacturers who want to supply packaged food to shops/retailers. Not needed for a simple stall, but often asked by retailers.",
-      "where": [{"name": "MOH Food Safety & Quality Division", "url": "https://fsq.moh.gov.my", "mode": "online"},
-                {"name": "Your state/district health office (Pejabat Kesihatan Daerah) for guidance", "url": "", "mode": "offline"}],
-      "steps": ["Make sure you have SSM registration and a valid food premises.",
-                "Put basic hygiene controls in place: operation control, cleaning and maintenance, traceability, record keeping.",
-                "Prepare the supporting documents (about 11) listed by MOH.",
-                "Apply through the MOH Food Safety & Quality Division and arrange the premises audit.",
-                "Receive the certificate (valid 3 years)."],
-      "prepare": ["SSM registration", "Premises licence", "Process flow and records (cleaning, temperature, traceability)", "Supporting documents per the MOH checklist"],
+      "where": [
+        {
+          "name": "MOH Food Safety & Quality Division",
+          "url": "https://fsq.moh.gov.my",
+          "mode": "online"
+        },
+        {
+          "name": "Your state/district health office (Pejabat Kesihatan Daerah) for guidance",
+          "url": "",
+          "mode": "offline"
+        }
+      ],
+      "steps": [
+        "Make sure you have SSM registration and a valid food premises.",
+        "Put basic hygiene controls in place: operation control, cleaning and maintenance, traceability, record keeping.",
+        "Prepare the supporting documents (about 11) listed by MOH.",
+        "Apply through the MOH Food Safety & Quality Division and arrange the premises audit.",
+        "Receive the certificate (valid 3 years)."
+      ],
+      "prepare": [
+        "SSM registration",
+        "Premises licence",
+        "Process flow and records (cleaning, temperature, traceability)",
+        "Supporting documents per the MOH checklist"
+      ],
       "cost": "Free of charge per MOH; you pay only your own compliance costs.",
       "time": "Weeks, depending on audit scheduling.",
-      "sources": ["https://jknkelantan.moh.gov.my/hta/v1/images/pencapaian-dan-perkhidmatan/sijil-mesti-unit-sajian-hta.pdf",
-                  "https://dewannegeri.johor.gov.my/wp-content/uploads/2019/11/20191125-SDJL.pdf"]
+      "sources": [
+        "https://jknkelantan.moh.gov.my/hta/v1/images/pencapaian-dan-perkhidmatan/sijil-mesti-unit-sajian-hta.pdf",
+        "https://dewannegeri.johor.gov.my/wp-content/uploads/2019/11/20191125-SDJL.pdf"
+      ]
     },
     {
       "id": "tax",
       "title": "Income tax registration for business income (LHDN)",
       "category": "Permits & registration",
-      "keywords": ["tax", "lhdn", "income tax", "mytax", "e-invoice"],
+      "keywords": [
+        "tax",
+        "lhdn",
+        "income tax",
+        "mytax",
+        "e-invoice"
+      ],
       "who_needs_it": "Sole proprietors declare business income in their personal income tax return (Form B).",
-      "where": [{"name": "MyTax portal (LHDN)", "url": "https://mytax.hasil.gov.my", "mode": "online"}],
-      "steps": ["Register for an income tax number on MyTax (e-Daftar) if you do not have one.",
-                "Keep simple records of sales and expenses (BizFlow's sales.csv and expenses.csv are a start).",
-                "File Form B each year by the LHDN deadline.",
-                "Check whether e-invoicing applies to your turnover on the LHDN site."],
-      "prepare": ["MyKad", "SSM registration", "Sales and expense records"],
+      "where": [
+        {
+          "name": "MyTax portal (LHDN)",
+          "url": "https://mytax.hasil.gov.my",
+          "mode": "online"
+        }
+      ],
+      "steps": [
+        "Register for an income tax number on MyTax (e-Daftar) if you do not have one.",
+        "Keep simple records of sales and expenses (BizFlow's sales.csv and expenses.csv are a start).",
+        "File Form B each year by the LHDN deadline.",
+        "Check whether e-invoicing applies to your turnover on the LHDN site."
+      ],
+      "prepare": [
+        "MyKad",
+        "SSM registration",
+        "Sales and expense records"
+      ],
       "cost": "Registration is free.",
       "time": "Online registration usually within days.",
-      "sources": ["https://mytax.hasil.gov.my"]
+      "sources": [
+        "https://mytax.hasil.gov.my"
+      ]
     },
     {
       "id": "pay-supplier-po",
       "title": "Pay a supplier for a purchase order (owner does it)",
       "category": "BizFlow actions",
-      "keywords": ["mark-paid", "pay", "purchase order", "po-", "restock", "reorder", "order from"],
+      "keywords": [
+        "mark-paid",
+        "pay",
+        "purchase order",
+        "po-",
+        "restock",
+        "reorder",
+        "order from"
+      ],
       "who_needs_it": "When you approve a PO in BizFlow. BizFlow never pays — you pay the supplier yourself, then record it.",
-      "where": [{"name": "The supplier's own product page (link on the PO)", "url": "", "mode": "online"},
-                {"name": "The supplier's shop (see Suppliers → Offline → map)", "url": "", "mode": "offline"}],
-      "steps": ["Open the PO and check the supplier link: price, pack size, 'Klang Valley only' or other limits.",
-                "Choose how to buy: Online (order on their page, give your delivery address there) or Offline (visit or self-collect).",
-                "Pay the supplier directly through their own checkout or at their counter — never share bank details with BizFlow.",
-                "Record 'paid' in BizFlow (approve the PO item), then 'received' when the goods arrive.",
-                "Keep the receipt for your expenses record."],
-      "prepare": ["The PO (data/output/po/…)", "Your delivery address (online) or travel plan (offline)", "Payment method of your choice"],
+      "where": [
+        {
+          "name": "The supplier's own product page (link on the PO)",
+          "url": "",
+          "mode": "online"
+        },
+        {
+          "name": "The supplier's shop (see Suppliers → Offline → map)",
+          "url": "",
+          "mode": "offline"
+        }
+      ],
+      "steps": [
+        "Open the PO and check the supplier link: price, pack size, 'Klang Valley only' or other limits.",
+        "Choose how to buy: Online (order on their page, give your delivery address there) or Offline (visit or self-collect).",
+        "Pay the supplier directly through their own checkout or at their counter — never share bank details with BizFlow.",
+        "Record 'paid' in BizFlow (approve the PO item), then 'received' when the goods arrive.",
+        "Keep the receipt for your expenses record."
+      ],
+      "prepare": [
+        "The PO (data/output/po/…)",
+        "Your delivery address (online) or travel plan (offline)",
+        "Payment method of your choice"
+      ],
       "cost": "The PO total shown in BizFlow (listed price at retrieval — recheck on the page).",
       "time": "Depends on the supplier's delivery time.",
       "sources": []
@@ -153,32 +374,110 @@
       "id": "recount-stock",
       "title": "Recount stock",
       "category": "BizFlow actions",
-      "keywords": ["recount", "stock count", "stale", "inventory"],
+      "keywords": [
+        "recount",
+        "stock count",
+        "stale",
+        "inventory"
+      ],
       "who_needs_it": "When a stock count is older than 7 days — BizFlow will not compute a reorder from a stale count.",
-      "where": [{"name": "Your storage / stall", "url": "", "mode": "offline"}],
-      "steps": ["Count the units on hand for the product.", "Update stock_on_hand and last_count_date in data/sample/inventory.csv.", "Re-run the BizFlow brief so the reorder quantity is recomputed."],
-      "prepare": ["10 minutes", "The product list"],
-      "cost": "None.", "time": "Minutes.", "sources": []
+      "where": [
+        {
+          "name": "Your storage / stall",
+          "url": "",
+          "mode": "offline"
+        }
+      ],
+      "steps": [
+        "Count the units on hand for the product.",
+        "Update stock_on_hand and last_count_date in data/sample/inventory.csv.",
+        "Re-run the BizFlow brief so the reorder quantity is recomputed."
+      ],
+      "prepare": [
+        "10 minutes",
+        "The product list"
+      ],
+      "cost": "None.",
+      "time": "Minutes.",
+      "sources": []
     },
     {
       "id": "post-campaign",
       "title": "Post a social media campaign (owner posts)",
       "category": "BizFlow actions",
-      "keywords": ["campaign", "tiktok", "instagram", "post", "promo", "marketing"],
+      "keywords": [
+        "campaign",
+        "tiktok",
+        "instagram",
+        "post",
+        "promo",
+        "marketing"
+      ],
       "who_needs_it": "When you approve a BizFlow campaign draft. BizFlow never posts for you.",
-      "where": [{"name": "TikTok", "url": "https://www.tiktok.com", "mode": "online"}, {"name": "Instagram", "url": "https://www.instagram.com", "mode": "online"}],
-      "steps": ["Open the approved drafts in data/output/social_posts/.", "Check the claims (no health or 'best' claims you cannot prove; halal only if certified).", "Take your own photo/video of the real product.", "Post from your own account and note the date to compare sales the following week."],
-      "prepare": ["Phone camera", "Your social media account"], "cost": "Free (organic posting).", "time": "15–30 minutes per post.", "sources": []
+      "where": [
+        {
+          "name": "TikTok",
+          "url": "https://www.tiktok.com",
+          "mode": "online"
+        },
+        {
+          "name": "Instagram",
+          "url": "https://www.instagram.com",
+          "mode": "online"
+        }
+      ],
+      "steps": [
+        "Open the approved drafts in data/output/social_posts/.",
+        "Check the claims (no health or 'best' claims you cannot prove; halal only if certified).",
+        "Take your own photo/video of the real product.",
+        "Post from your own account and note the date to compare sales the following week."
+      ],
+      "prepare": [
+        "Phone camera",
+        "Your social media account"
+      ],
+      "cost": "Free (organic posting).",
+      "time": "15–30 minutes per post.",
+      "sources": []
     },
     {
       "id": "hire-helper",
       "title": "Hire a part-time helper",
       "category": "BizFlow actions",
-      "keywords": ["jobad", "helper", "hire", "part-time", "staff", "recruit"],
+      "keywords": [
+        "jobad",
+        "helper",
+        "hire",
+        "part-time",
+        "staff",
+        "recruit"
+      ],
       "who_needs_it": "When you approve the BizFlow job ad.",
-      "where": [{"name": "Campus job board / student groups", "url": "", "mode": "offline"}, {"name": "MYFutureJobs (government job portal)", "url": "https://myfuturejobs.gov.my", "mode": "online"}],
-      "steps": ["Post the approved job ad yourself (BizFlow never posts).", "Interview with the hiring kit questions.", "Make sure the helper gets the food handler course and typhoid vaccination before handling food.", "Agree pay and hours in writing (owner-set MYR 12–15/hour)."],
-      "prepare": ["Job ad (data/output/job_ad_part_time_campus_snack_assistant.md)", "Hiring kit"], "cost": "Wages as agreed.", "time": "About a week.", "sources": []
+      "where": [
+        {
+          "name": "Campus job board / student groups",
+          "url": "",
+          "mode": "offline"
+        },
+        {
+          "name": "MYFutureJobs (government job portal)",
+          "url": "https://myfuturejobs.gov.my",
+          "mode": "online"
+        }
+      ],
+      "steps": [
+        "Post the approved job ad yourself (BizFlow never posts).",
+        "Interview with the hiring kit questions.",
+        "Make sure the helper gets the food handler course and typhoid vaccination before handling food.",
+        "Agree pay and hours in writing (owner-set MYR 12–15/hour)."
+      ],
+      "prepare": [
+        "Job ad (data/output/job_ad_part_time_campus_snack_assistant.md)",
+        "Hiring kit"
+      ],
+      "cost": "Wages as agreed.",
+      "time": "About a week.",
+      "sources": []
     }
   ]
 }

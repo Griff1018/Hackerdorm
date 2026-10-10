@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parents[1]
 STORE = ROOT / "data" / "workspace" / "inbox.json"
 TZ = timezone(timedelta(hours=8))
 LOCK = threading.RLock()
-CHANNELS = {"whatsapp": "WhatsApp", "instagram": "Instagram", "linkedin": "LinkedIn"}
+CHANNELS = {"whatsapp": "WhatsApp", "instagram": "Instagram", "linkedin": "LinkedIn", "shop": "Online shop"}
 DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
 SEED_CANDIDATES = [  # SYNTHETIC people for the demo until the demo LinkedIn pushes real demo profiles

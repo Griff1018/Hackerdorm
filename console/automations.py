@@ -145,9 +145,10 @@ def set_stock(bid: str, material: str, patch: dict) -> dict:
             s["qty"], s["counted_at"], s["synthetic"] = max(0, float(patch["qty"])), iso(), False
         if patch.get("threshold") is not None:
             s["threshold"] = max(0, float(patch["threshold"]))
-        for k in ("supplier_url", "phone"):
+        for k in ("supplier_url", "phone", "unit", "supplier", "planned_by"):
             if patch.get(k) is not None:
                 s[k] = str(patch[k])[:500]
+        s.setdefault("added_at", iso())
         STOCKF.write_text(json.dumps(d, indent=2, ensure_ascii=False), encoding="utf-8")
         return s
 
@@ -388,6 +389,68 @@ def create_rule(business_id: str, material: str, listing: dict | None, product_i
         log(d, f"Auto-reorder turned on for {material}", "info", rule_id=rid)
         save(d)
         return rule
+
+
+def remove_stock(bid: str, material: str) -> dict | None:
+    with LOCK:
+        d = stock_all()
+        hit = d.get(bid, {}).pop(material, None)
+        STOCKF.write_text(json.dumps(d, indent=2, ensure_ascii=False), encoding="utf-8")
+        return hit
+
+
+# ---------------------------------------------------------------- auto-posting (AI writes and posts on a schedule)
+
+AUTOPOST_DEFAULT = {"enabled": False, "every_days": 2, "time": "12:30", "focus": "rotate", "platforms": ["Instagram"], "last_at": None, "count": 0}
+
+
+def autopost(bid: str) -> dict:
+    cfg = {**AUTOPOST_DEFAULT, **load().get("autopost", {}).get(bid, {})}
+    cfg["next_at"] = _autopost_next(cfg)
+    return cfg
+
+
+def _autopost_next(cfg) -> str | None:
+    if not cfg.get("enabled"):
+        return None
+    hh, mm = (int(x) for x in str(cfg.get("time") or "12:30").split(":")[:2])
+    base = datetime.fromisoformat(cfg["last_at"]) + timedelta(days=int(cfg.get("every_days") or 1)) if cfg.get("last_at") else now()
+    nxt = base.replace(hour=hh, minute=mm, second=0, microsecond=0)
+    if not cfg.get("last_at") and nxt < now():
+        nxt += timedelta(days=1)
+    return iso(nxt)
+
+
+def set_autopost(bid: str, patch: dict) -> dict:
+    with LOCK:
+        d = load()
+        cfg = {**AUTOPOST_DEFAULT, **d.setdefault("autopost", {}).get(bid, {})}
+        if "enabled" in patch:
+            cfg["enabled"] = bool(patch["enabled"])
+        if patch.get("every_days") not in (None, ""):
+            cfg["every_days"] = max(1, min(14, int(patch["every_days"])))
+        if patch.get("time"):
+            cfg["time"] = str(patch["time"])[:5]
+        if patch.get("focus") in ("rotate", "best_seller", "slow_seller"):
+            cfg["focus"] = patch["focus"]
+        if isinstance(patch.get("platforms"), list):
+            cfg["platforms"] = [p for p in patch["platforms"] if p in ("Instagram", "Facebook", "TikTok")] or ["Instagram"]
+        for k in ("last_at", "count", "last_post_id", "last_error"):
+            if k in patch:
+                cfg[k] = patch[k]
+        d["autopost"][bid] = cfg
+        log(d, f"Auto-post {'on' if cfg['enabled'] else 'off'} for {bid}: every {cfg['every_days']} day(s) at {cfg['time']}", "post")
+        save(d)
+    return autopost(bid)
+
+
+def autopost_due() -> list[str]:
+    out = []
+    for bid in list(load().get("autopost", {})):
+        cfg = autopost(bid)
+        if cfg["enabled"] and cfg["next_at"] and datetime.fromisoformat(cfg["next_at"]) <= now():
+            out.append(bid)
+    return out
 
 
 def publish_now(post_id: str) -> dict:

@@ -269,6 +269,28 @@ def cmd_full(_):
     return run_engine(["--customer-demo", "--marketplace", "--campaign", "--people"], "Run the full BizFlow pipeline for the owner's request.")
 
 
+def cmd_appdata(args):
+    """Read-only: any BizFlow app data (dashboard numbers, orders, customers, reviews, menu, connections) as a table."""
+    sys.path.insert(0, str(ROOT / "console"))
+    import appdata  # noqa: E402  (console module: workspace JSON + dashboard)
+    if args.name == "summary":
+        print(appdata.snapshot(args.business))
+        return 0
+    try:
+        d = appdata.dataset(args.business, args.name)
+    except ValueError as exc:
+        print(exc)
+        return 2
+    print(f"{d['title']} — {args.business} (as of {d['as_of']}){' — ' + d['note'] if d['note'] else ''}")
+    cols = d["columns"]
+    if cols:
+        print(" | ".join(c[1] for c in cols))
+        for r in d["rows"][:80]:
+            print(" | ".join(str(r.get(c[0], "")) for c in cols))
+    print(f"[dataset] {args.name} — show it in chat with app_actions: {{\"type\": \"show\", \"dataset\": \"{args.name}\"}}")
+    return 0
+
+
 def build_parser():
     p = argparse.ArgumentParser(prog="python -m app.bizflow_cli", description="BizFlow WorkBuddy deterministic toolkit")
     sub = p.add_subparsers(dest="command", required=True)
@@ -292,6 +314,7 @@ def build_parser():
     q = sub.add_parser("guide"); q.add_argument("topic"); q.set_defaults(func=cmd_guide)
     sub.add_parser("prices").set_defaults(func=cmd_prices)
     sub.add_parser("full").set_defaults(func=cmd_full)
+    q = sub.add_parser("appdata"); q.add_argument("name"); q.add_argument("--business", default="campus-crumb"); q.set_defaults(func=cmd_appdata)
     return p
 
 
