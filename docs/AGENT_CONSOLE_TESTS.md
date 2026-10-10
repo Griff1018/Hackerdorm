@@ -202,3 +202,8 @@ Not yet run through the console: tests 2–8 (order, butter, afford-restock, Tik
 - Fix 1 (rules): never fill in a missing fact from other records — ask with Claude-style options; identical items ≠ same customer; ask if an identical waiting order is a new order.
 - Fix 2 (console guard): a record_order whose customer the owner did not name is held and turned into choice questions ("Who is this order for?" — recent customers + Walk-in customer, with a note about identical waiting orders); a named customer with an identical waiting order gets "Is this a new, separate order?". Unit-tested: unnamed → QC, Nadia + duplicate → QD, Ali → records.
 - Re-run of the exact message → 15 s, nothing recorded, two questions (new order? / whose order?). Answered "Yes, new order" + "Aisyah" → recorded O0d6391 for Aisyah, Nadia's O991813 untouched.
+
+## 2026-10-11 — 22 sample WhatsApp customers
+- console/wa_seed.py: the 22 sample clients from the team's demoWhatsapp (names, phones, orders, complaints, suggestions, questions), rewritten for Campus Crumb's menu.csv prices and business_policies.md (Mon–Fri 08:00–18:00 campus pickup/delivery, refunds above MYR 10 go to the owner, allergies escalated, no halal claim). All SYNTHETIC.
+- Seeded once into the inbox (flag wa_sample_clients_v1) inside the server's lock; also runs on a fresh install / Render deploy.
+- Result: 25 WhatsApp chats for Campus Crumb (22 samples + Hafiz, Nadia, e-Petani); 5 confirmed sample orders with menu-correct totals (Aisyah 15.00 pending; Siti 11.00, Chloe 10.50, Amirul 25.50, Zulkifli 9.00 done); no chat ends on an unanswered customer message, so auto-reply does not fire on load.

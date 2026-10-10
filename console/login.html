@@ -72,6 +72,9 @@ function enter(session) {
   location.replace("/");
 }
 try { if (localStorage.getItem(KEY)) location.replace("/"); } catch (e) {}
+// Shareable link: /login?email=you@example.com pre-fills the email (never put a password in a link)
+{ const pre = (new URLSearchParams(location.search).get("email") || "").replace(/^["']+|["']+$/g, "").trim();
+  if (pre) { document.getElementById("email").value = pre; document.getElementById("password").focus(); } }
 document.getElementById("form").onsubmit = e => {
   e.preventDefault();
   const email = document.getElementById("email").value.trim(), pw = document.getElementById("password").value;

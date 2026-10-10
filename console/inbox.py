@@ -71,6 +71,11 @@ def load():
                 th["unread"] = len(th["messages"])
             d["candidates"] = [dict(c, source="synthetic seed", profile_url=f"/linkedin/in/{c['handle']}") for c in SEED_CANDIDATES]
             save(d)
+        if not d.get("wa_sample_clients_v1"):  # 22 sample WhatsApp customers for the demo, added once
+            import wa_seed
+            wa_seed.seed(d, "campus-crumb", TZ)
+            d["wa_sample_clients_v1"] = True
+            save(d)
         return d
 
 

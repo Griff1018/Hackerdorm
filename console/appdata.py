@@ -323,6 +323,84 @@ def dataset(bid: str, name: str) -> dict:
     return _t(name, [], [])
 
 
+# ---------------------------------------------------------------- suggested prompts for the empty chat
+
+FOOD = re.compile(r"chicken|food|kuih|snack|cake|cookie|muffin|bun|drink|tea|coffee|kopi|nasi|bakery|cafe|café|bake|dessert|burger|noodle|mee|roti|satay|juice", re.I)
+INGREDIENT_GUESS = [(r"chicken|ayam", "chicken and cooking oil"), (r"cookie|muffin|cake|bake|bun", "flour and butter"), (r"coffee|kopi|cafe|café", "coffee beans and milk"),
+                    (r"kuih", "glutinous rice flour and coconut milk"), (r"nasi", "rice and cooking oil"), (r"tea|drink|juice", "tea and plastic cups"), (r"burger", "burger buns and patties")]
+
+
+def suggestions(bid: str) -> list[str]:
+    """Up to 6 prompts that fit THIS business and what is happening in it right now (deterministic, from BizFlow data)."""
+    if bid == ws.ALL:
+        out = ["Which business needs my attention first?", "Compare my businesses: where should I focus this week?"]
+        try:
+            for p in dash.all_dashboard()["top_problems"][:3]:
+                out.append(f"{p['business']}: {p['title']} — what should I do?")
+        except Exception:
+            pass
+        return out[:6]
+    b = ws.business(bid) or {}
+    btype = str(b.get("type") or "").strip().rstrip(".")
+    parts = re.split(r"\s+[—–-]\s+", btype)
+    names = [x.strip() for x in re.split(r",|and", parts[1] if len(parts) > 1 else parts[0]) if x.strip()]
+    kind = " and ".join(names[:2]) if names else ""
+    kind = kind[:1].lower() + kind[1:]
+    area = str(b.get("area") or "").split(",")[0].strip()
+    near, at = (f" near {area}", f" at {area}") if area else ("", "")
+    menu = appset.shop_menu(bid)
+    food = bool(FOOD.search(btype))
+    if not btype:  # nothing known yet: help the owner describe the business first
+        return [f"Help me describe {b.get('name', 'my business')} so you can plan for it", "What could I sell" + (near or " on campus") + " with a small budget?",
+                "What do I need to start a small business as a student?", "Help me set a realistic goal for this month"]
+    out = []
+    add = lambda s: s and s not in out and out.append(s)
+    try:
+        d = dash.business_dashboard(bid)
+    except Exception:
+        d = {"problems": [], "orders": {"pending": 0}, "kpis": None, "products": [], "progress": {}}
+    pend = (d.get("orders") or {}).get("pending", 0)
+    if pend:
+        add(f"Which of my {pend} waiting order{'s' if pend > 1 else ''} should I prepare first?")
+    low = [m for m, s_ in auto.stock_all().get(bid, {}).items() if float(s_.get("qty") or 0) <= float(s_.get("threshold") or -1)]
+    if low:
+        add(f"{low[0]} is running low — where can I buy it cheapest{near}?")
+    crit = next((p for p in d.get("problems", []) if p.get("level") == "critical" and p.get("ask")), None)
+    if crit and not (pend and "order" in crit["title"].lower()):
+        add(crit["ask"])
+    if (d.get("progress") or {}).get("approvals_waiting"):
+        add("Which supplier orders are waiting for my OK, and should I approve them?")
+    prods = d.get("products") or []
+    item = (menu[0]["item"] if menu else prods[0]["name"] if prods else kind)
+    if d.get("kpis"):
+        add("Show my revenue by day as a chart")
+        if len(prods) >= 2:
+            add(f"Is {prods[0]['name']} or {prods[1]['name']} making me more profit?")
+        add("Which day of the week is my busiest?")
+    else:
+        add(f"Record a sale: 5 {menu[0]['item']} at RM{menu[0]['price']:.2f} each" if menu else f"Help me set my {'menu' if food else 'product list'} and prices for {kind}")
+        add(f"Who sells {kind}{near}, and at what price?")
+    if food:
+        add(f"What permits do I need to sell {kind}{at}?")
+        guess = next((g for pat, g in INGREDIENT_GUESS if re.search(pat, btype, re.I)), None)
+        if guess:
+            add(f"Find the cheapest suppliers for {guess}{near}")
+    if re.search(r"shopee|lazada|online|shop", btype, re.I):
+        con = {c["id"]: c["connected"] for c in appset.connections(bid)}
+        add("Show my Shopee reviews" if con.get("shopee") else "Connect my Shopee shop and show my reviews")
+        add(f"How can I get more online orders for my {item}?")
+    add(f"Write an Instagram post for my {item}")
+    try:
+        many = len(customers(bid)) >= 3
+    except Exception:
+        many = False
+    if many:
+        add("Who are my best customers, and how do I bring them back?")
+    goal = b.get("goal")
+    add(f"Am I on track for my goal: {goal}?" if goal else "Help me set a realistic goal for this month")
+    return out[:6]
+
+
 # ---------------------------------------------------------------- the snapshot every prompt gets
 
 def snapshot(bid: str) -> str:

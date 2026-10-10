@@ -68,7 +68,15 @@
       "budget_already_used": "0.00",
       "budget_remaining_after_this": "773.20",
       "over_budget": false,
-      "status": "draft"
+      "status": "paid",
+      "paid_at": "2026-10-10T23:32:54.309223+08:00",
+      "status_history": [
+        {
+          "status": "paid",
+          "at": "2026-10-10T23:32:54.309223+08:00",
+          "simulated": true
+        }
+      ]
     },
     {
       "order_id": "PO-2026-09-30-03",
@@ -146,9 +154,9 @@
     }
   ],
   "last_event": {
-    "action": "mark_received",
-    "po_id": "PO-2026-09-30-01",
-    "at": "2026-10-10T16:04:18.659988+08:00",
+    "action": "mark_paid",
+    "po_id": "PO-2026-09-30-02",
+    "at": "2026-10-10T23:32:54.309223+08:00",
     "simulated": true
   }
 }

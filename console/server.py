@@ -808,6 +808,11 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_json(whatsapp_chats(qs.get("business_id", "campus-crumb")))
         if path == "/api/autopost":
             return self.send_json(auto.autopost(qs.get("business_id", "campus-crumb")))
+        if path == "/api/suggestions":
+            try:
+                return self.send_json({"suggestions": appdata.suggestions(qs.get("business_id", "campus-crumb"))})
+            except Exception as exc:  # the welcome screen falls back to generic prompts
+                return self.send_json({"suggestions": [], "error": str(exc)})
         if path == "/api/appdata":
             try:
                 return self.send_json(appdata.dataset(qs.get("business_id", "campus-crumb"), qs.get("name", "")))
@@ -985,6 +990,7 @@ class Handler(BaseHTTPRequestHandler):
             res = winback(bid, send=bool(body.get("send")), only=body.get("only"), days=int(body.get("days") or 7))
             res["auto"] = bool(ws._read(WINBACK, {}).get("_auto", {}).get(bid))
             return self.send_json(res)
+        if path == "/api/ask":
             text = str(body.get("text", "")).strip()[:2000]
             cid = str(body.get("conversation_id") or "")
             conv = None

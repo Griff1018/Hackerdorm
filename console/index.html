@@ -41,7 +41,8 @@ a{color:var(--blue)}
 .conv:hover{background:#ececee}
 .conv.on{background:var(--side2);color:#fff}
 .conv .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}
-.conv .acts{display:none}
+.conv .acts{display:none;align-items:center}
+.conv .acts button{display:inline-flex;align-items:center}
 .conv:hover .acts,.conv.on .acts{display:flex}
 .conv .acts button{padding:2px 6px;font-size:11.5px;background:transparent;color:#52525b}
 .sidefoot{padding:10px 12px;border-top:1px solid #e7e7ea;font-size:11.5px;color:#a1a1aa;display:flex;flex-direction:column;gap:6px}
@@ -199,8 +200,10 @@ details.more>summary{cursor:pointer;color:var(--blue);font-weight:600;font-size:
 .composer{border-top:1px solid var(--line);background:var(--panel);padding:12px 22px 16px}
 .cbox{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
 .cbox textarea{width:100%;min-height:58px;max-height:200px;resize:vertical;font-size:15px;border-radius:8px;padding:12px 14px}
-.crow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.crow .hint{font-size:11.5px;color:var(--muted);margin-right:auto}
+.crow{display:flex;gap:8px;align-items:center;flex-wrap:nowrap;justify-content:flex-end}
+.crow .hint{font-size:11.5px;color:var(--muted);margin-right:auto;flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crow .modechip,.crow #send{flex:none;white-space:nowrap}
+@media (max-width:640px){.crow .hint{display:none}.crow .modechip{max-width:55vw;overflow:hidden;text-overflow:ellipsis}}
 /* dashboard */
 .bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
 .bcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:8px}
@@ -456,7 +459,7 @@ details.fold ol{font-size:13px;padding-left:20px}
   .side{width:220px}.brand{padding:10px 12px 4px}.scope button{font-size:11.5px;padding:6px 4px}
   .top{padding:6px 12px;gap:8px}.top .who .em{font-size:19.5px}.top .who b{font-size:14px}.top .who span{display:none}
   .navmenu{margin-left:0}.navlist{left:0;right:auto}.sim{display:none}
-  .composer{padding:8px 12px}.cbox textarea{min-height:42px}.crow .hint{display:none}
+  .composer{padding:8px 12px}.cbox textarea{min-height:42px}
   .inner{padding:14px}.desc,.facts,.visual,.cardacts,details.more{margin-left:0}
 }
 
@@ -1034,7 +1037,7 @@ async function loadConvs() {
     const acts = el("span", "acts");
     const rn = el("button", null, "✎"); rn.title = "Rename";
     rn.onclick = async e => { e.stopPropagation(); const t = prompt("Rename chat", c.title); if (t) { await api(`/api/conversations/${c.id}/rename`, { title: t }); loadConvs(); } };
-    const del = el("button", null, ""); del.title = "Delete";
+    const del = el("button"); del.title = "Delete chat"; del.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg>';
     del.onclick = async e => { e.stopPropagation(); if (!confirm("Delete this chat?")) return; await api(`/api/conversations/${c.id}/delete`, {}); if (S.cid === c.id) { S.cid = null; renderThread(null); } loadConvs(); };
     acts.append(rn, del); row.append(acts);
     row.onclick = () => openConv(c.id);
@@ -1188,6 +1191,22 @@ function radioGroup(name, opts, value, onchange) {
   });
   return g;
 }
+async function deleteBusiness(b) {
+  const f = el("div", "form");
+  f.append(el("div", "inj", "This permanently deletes " + b.name + " and all of its chats. Orders, money records and inventory saved for it will no longer be shown. This cannot be undone."));
+  const lab = el("label", null, "Type the business name to confirm: " + b.name), inp = el("input"); lab.append(inp); f.append(lab);
+  const go = el("button", "bad", "Delete permanently"), msg = el("div", "err"); go.disabled = true;
+  inp.oninput = () => { go.disabled = inp.value.trim() !== b.name; };
+  go.onclick = async () => {
+    if (!confirm("Last check: delete " + b.name + " and all its chats for good?")) return;
+    try { await api("/api/businesses/" + encodeURIComponent(b.id) + "/delete", {}); }
+    catch (e) { msg.textContent = e.message; return; }
+    $("#dlg").close(); await loadBusinesses();
+    S.scope = "single"; S.bid = (BUSINESSES[0] || {}).id; S.cid = null; store.set("scope", "single"); store.set("bid", S.bid);
+    renderSide(); showTab("chat");
+  };
+  f.append(go, msg); dialog("Delete business", f); inp.focus();
+}
 function openSettings(focus) { SET_CAT = { conn: "connections", shop_menu: "shop", money: "connections" }[focus] || focus || SET_CAT; showTab("settings"); }
 let SET_CAT = "assistant";
 const SET_CATS = [["assistant", "Assistant"], ["connections", "Connected apps"], ["shop", "Online shop"], ["portals", "Demo pages"], ["data", "Data"]];
@@ -1246,6 +1265,11 @@ async function renderSettings() {
      ["LinkedIn", "Job posts and candidates for hiring.", () => window.open("/linkedin/", "_blank")]].forEach(([t, dsc, fn]) => { const bt = el("button", "sm soft", "Open"); bt.onclick = fn; row(g, t, dsc, bt); });
   }
   if (SET_CAT === "data") {
+    if (single && b) {
+      const gd = group("Delete this business", "Permanently removes " + b.name + " and all of its chats from BizFlow. This cannot be undone.");
+      if (b.uses_sample_data) row(gd, "Not available", "The sample business (" + b.name + ") is needed for the demo and cannot be deleted.", el("span", "small", "Protected"));
+      else { const del = el("button", "sm bad", "Delete " + b.name + "…"); del.onclick = () => deleteBusiness(b); row(gd, "Delete business", "You'll be asked to type the name to confirm.", del); }
+    }
     const g = group("Demo data", "Everything is synthetic and every payment is simulated.");
     const rs = el("button", "sm bad", "Reset demo data"); rs.onclick = () => $("#reset").click();
     row(g, "Reset", "Purchase orders, customer orders and buying choices go back to the start. Chats are kept.", rs);
@@ -1824,7 +1848,10 @@ function renderThread(conv) {
     w.append(el("h1", null, all ? "Ask about all your businesses" : "How can I help " + b.name + " today?"),
       el("p", "muted", "Ask anything, or tell me what to do — record an order, log money in or out, add ingredients, show a chart. Bigger jobs get a plan you approve first."));
     const chips = el("div", "chips");
-    (all ? EXAMPLES_ALL : [...EXAMPLES_APP, ...(b.uses_sample_data ? EXAMPLES_SAMPLE.slice(0, 3) : EXAMPLES_NEW.slice(0, 3))]).forEach(t => { const c = el("button", "chip", t); c.onclick = () => { $("#q").value = t; send(); }; chips.append(c); });
+    const fill = list => { chips.replaceChildren(); list.forEach(t => { const c = el("button", "chip", t); c.onclick = () => { $("#q").value = t; send(); }; chips.append(c); }); };
+    const bidNow = curBid();
+    api("/api/suggestions?business_id=" + encodeURIComponent(bidNow)).then(r => { if (bidNow === curBid() && (r.suggestions || []).length) fill(r.suggestions); })
+      .catch(() => fill(all ? EXAMPLES_ALL : (b.uses_sample_data ? EXAMPLES_SAMPLE : EXAMPLES_NEW).slice(0, 4)));
     w.append(chips); box.append(w); return;
   }
   conv.runs.forEach(r => box.append(renderTurn(r)));

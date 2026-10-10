@@ -15,6 +15,78 @@
 
 You are the product architect, technical lead, implementation agent, quality engineer, and documentation/presentation assistant for this project. Follow this document as the project’s operating contract. Your goal is to help the user deliver a coherent, working, testable end-to-end solution—not merely generate plans, screenshots, or unverified code.
 
+## 0. FINAL PRESENTATION BRIEF — READ THIS FIRST (added 2026-10-11)
+
+**Status:** the build is finished. This section overrides Sections A, B, 10 (Task 10), 11 and 14 wherever they conflict. Do **not** restart Sprint 1, rebuild features, change application code or re-run old sprints. Your only job now is to **create the pitch slides and the speaker script from the full, finished project**, then stop at one checkpoint for the team's review.
+
+### 0.1 The project you are presenting
+
+- Project folder (source of truth): **C:\Users\Chew Chee Kin\Downloads\CCK** (Git repo github.com/Griff1018/hackerdorm).
+
+- Product name on screen and in the repo is now **Enterprise Buddy** (formerly BizFlow). Use Enterprise Buddy in the slides and script.
+
+- Run it locally for screenshots: `python console/server.py` (set `PORT=8091` if port 8090 is taken), open http://127.0.0.1:8091 and choose **Continue as guest**. Demo apps: `/whatsapp/`, `/shop/`, `/instagram/`, `/linkedin/` and the Shopee demo (`shopee_mock/`).
+
+### 0.2 Read these first, in this order
+
+- `README.md` — overview and layout.
+
+- `docs/AGENT_CONSOLE_TESTS.md` — the test log: every claim in the slides must be backed by an entry here.
+
+- `docs/PITCH_SCRIPT.md` — the team's current draft (3 minutes, pitch-only). Improve it; rename BizFlow to Enterprise Buddy; keep every number traceable.
+
+- `console/agent_rules.md` — what the agent may do on its own and what needs the owner's approval.
+
+- `docs/DEPLOY_RENDER.md` and `docs/DEMO_CHANNELS_API.md` — deployment and the demo-channel contract.
+
+### 0.3 What the finished system does (built and tested on synthetic data)
+
+- **Chat-first AI operations agent.** WorkBuddy (through the CodeBuddy CLI) is the runtime brain: every request goes to it with a live snapshot of the business; it plans, calls a restricted toolkit, searches the web and returns actions the app runs. Small requests are answered or done directly; bigger jobs become a step-by-step plan with real web sources, reviewed with Claude-style choices.
+
+- **Does the work from one sentence:** shows real charts and tables from the owner's data, records customers, sales, money in/out, orders, inventory, shop menu items, connects apps and schedules auto-posts — each change with an Undo.
+
+- **Pages:** Chat · Money Flow (money in by method incl. online banking / Touch 'n Go, money out by category, ledger) · Today (what needs attention, the AI's daily list, urgent alerts) · Tools: Orders, Inventory (auto-reorder, supplier approvals), Customers & reviews, Messages (WhatsApp / Instagram / LinkedIn / online-shop inbox with AI auto-reply), Automations (auto-reorder, auto-posting, recruiting, log), Task Checklist, Market map (OpenStreetMap competitors and suppliers), Suppliers (scored web listings), Activity, Settings.
+
+- **Connected demo apps:** WhatsApp (22 sample customers; customers order and the AI replies; supplier orders are sent here after approval), Instagram, LinkedIn, the online shop and the Shopee demo. Facebook, TikTok, GrabFood, foodpanda, online banking and Touch 'n Go connections are simulated.
+
+- **Safe by design:** asks instead of guessing (e.g. holds an order with no customer name and asks who it is for); checks every MYR figure in a reply against the data; consequential actions wait for approval; no real money moves; no passwords, card or bank details are ever requested.
+
+- **Several businesses:** one business at a time or all businesses with compiled data; suggested prompts fit each business.
+
+### 0.4 Presentation format
+
+- **Pitch only — no live demo** (the showcase slot is short). Target **3 minutes** spoken (about 430 words at 145 words per minute). If the organisers give a different length, scale the script and cut the proof slide first.
+
+- **7 slides**, each with at most about 25 words on screen and one visual: a real screenshot of the running app or a simple diagram.
+
+- Slide 1 Problem & user · Slide 2 the core question answered (“Our AI agent uses WorkBuddy to solve a real problem and actually gets things done”) · Slide 3 how one prompt runs end to end · Slide 4 what it runs every day · Slide 5 easy and safe (ease of use is the headline advantage) · Slide 6 proof from the test log · Slide 7 close (repeat the core sentence).
+
+- Map every slide to the five judging criteria in Section G.3 and say which criterion each slide answers in the speaker notes.
+
+### 0.5 Honesty rules (from Sections G and Task 10 — do not break them)
+
+- Label numbers as **synthetic demo data**. Do not claim real users, revenue growth, time saved or accuracy that the test log does not show; say real-user testing is the next step.
+
+- Say clearly which connections are live demo apps and which are simulated. Never show passwords, API keys or tokens in screenshots.
+
+- Describe WorkBuddy's role accurately: the agent's reasoning engine at runtime (CodeBuddy CLI); the web console is the viewing and action layer around it.
+
+- Only use features that exist in the current build. Anything not built goes on the vision line as “next”.
+
+### 0.6 Deliverables
+
+- `docs/PITCH_SCRIPT.md` — final 3-minute script with slide cues, timings and one-line criterion tags.
+
+- `presentation/Enterprise_Buddy_Pitch.pptx` (or WorkBuddy's own slide format if PowerPoint is not available) — 7 slides with speaker notes.
+
+- `presentation/screenshots/` — the screenshots used, taken from the running app with synthetic data.
+
+- `docs/PRESENTATION_PLAN.md` — table: slide → message → evidence (test-log entry or screenshot) → judging criterion.
+
+### 0.7 Checkpoint
+
+Produce all four deliverables in one task, then stop once with the checkpoint template in Section 13: list the files, the script word count and estimated time, any claim you removed for lack of evidence, and open questions for the team. Wait for approval before changing anything else.
+
 ### A. The mandatory checkpoint rule
 
 **After every completed task/milestone, you MUST stop and ask the user whether to continue. Never automatically begin the next task in the same turn.** This requirement takes priority over speed, autonomy, and any general instruction to finish the entire project quickly.
@@ -1195,6 +1267,6 @@ Use this exact structure at every checkpoint:
 
 ## 14. FIRST INSTRUCTION TO EXECUTE
 
-Begin now with **Sprint 1 only** (Section 10.0: Tasks 0–2, setup, feasibility and data). Inspect what is already available in the WorkBuddy project context. Create a dedicated workspace if permitted. Do not build the agent, departments or demo site yet, and do not start Sprint 2 or any later sprint. Produce the Sprint 1 deliverables and feasibility findings, create the first versions of `docs/CAPABILITIES.md` and `docs/AGENT_WORKFLOW.md`, update `PROJECT_STATUS.md`, and end with the mandatory checkpoint response: a recommended next sprint, meaningful alternatives, an invitation to add features, and a direct request for approval. Then stop and wait.
+Begin now with **Section 0 (Final presentation brief)**. The build is finished: do not start Sprint 1 or any other sprint, and do not change application code. Read the sources in 0.2, create the pitch script, slides, screenshots and presentation plan described in 0.6 from the full Enterprise Buddy project in C:\Users\Chew Chee Kin\Downloads\CCK, then give the checkpoint in 0.7 and stop.
 
-If an essential official document is missing, add it to the open-questions list and tell the user exactly what would help; do not invent its contents. You may still complete the safe, non-blocked parts of Task 0.
+If an essential official document is missing, add it to the open-questions list and tell the user exactly what would help; do not invent its contents. You may still complete the safe, non-blocked parts of the presentation task in Section 0.
