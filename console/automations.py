@@ -145,7 +145,7 @@ def set_stock(bid: str, material: str, patch: dict) -> dict:
             s["qty"], s["counted_at"], s["synthetic"] = max(0, float(patch["qty"])), iso(), False
         if patch.get("threshold") is not None:
             s["threshold"] = max(0, float(patch["threshold"]))
-        for k in ("supplier_url", "phone", "unit", "supplier", "planned_by"):
+        for k in ("supplier_url", "phone", "unit", "supplier", "planned_by", "price_note"):
             if patch.get(k) is not None:
                 s[k] = str(patch[k])[:500]
         s.setdefault("added_at", iso())
@@ -401,12 +401,14 @@ def remove_stock(bid: str, material: str) -> dict | None:
 
 # ---------------------------------------------------------------- auto-posting (AI writes and posts on a schedule)
 
-AUTOPOST_DEFAULT = {"enabled": False, "every_days": 2, "time": "12:30", "focus": "rotate", "platforms": ["Instagram"], "last_at": None, "count": 0}
+AUTOPOST_DEFAULT = {"enabled": True, "every_days": 2, "time": "12:30", "focus": "rotate", "platforms": ["Instagram"], "last_at": None, "count": 0}
 
 
 def autopost(bid: str) -> dict:
-    cfg = {**AUTOPOST_DEFAULT, **load().get("autopost", {}).get(bid, {})}
-    cfg["next_at"] = _autopost_next(cfg)
+    d = load()
+    cfg = {**AUTOPOST_DEFAULT, **d.get("autopost", {}).get(bid, {})}
+    nxt = sorted(s["at"] for s in d.get("autopost_plan", {}).get(bid, []) if s["status"] == "planned" and s["at"] >= now().isoformat(timespec="minutes"))
+    cfg["next_at"] = (nxt[0] if nxt else _autopost_next(cfg)) if cfg["enabled"] else None
     return cfg
 
 

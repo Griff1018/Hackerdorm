@@ -136,6 +136,7 @@
       }); // 'feed' | 'messages' | 'profile'
       // Posts come from Enterprise Buddy (served by console/server.py at /instagram/); likes/saves stay local
       const [posts, setPosts] = useState([]);
+      const [upNext, setUpNext] = useState(undefined);  // next planned post from Enterprise Buddy
       const [seller, setSeller] = useState(INITIAL_SELLER);
       const [newPostId, setNewPostId] = useState(null);
       const mainRef = useRef(null);
@@ -154,6 +155,7 @@
           try {
             const r = await fetch("/api/instagram/feed" + location.search).then(res => res.json());
             if (r.seller) setSeller(s => ({ ...s, ...r.seller }));
+            setUpNext(r.next_post ? { ...r.next_post, on: r.autopost_on } : { on: r.autopost_on });
             setPosts(prev => r.posts.map(p => {
               const old = prev.find(x => x.id === p.id);
               return old ? { ...p, likes: old.likes, isLiked: old.isLiked, isSaved: old.isSaved } : p;
@@ -347,6 +349,17 @@
                 </div>
 
                 {/* Posts Stream */}
+                {posts.length === 0 && upNext !== undefined && (
+                  <div className="bg-neutral-950 border border-neutral-900 rounded-xl p-6 text-center">
+                    <div className="text-lg font-semibold">No posts yet</div>
+                    <p className="text-sm text-neutral-400 mt-2">
+                      {upNext.at
+                        ? <>Enterprise Buddy will publish the first post <b className="text-neutral-200">{new Date(upNext.at).toLocaleString([], { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</b> — featuring <b className="text-neutral-200">{upNext.topic}</b>.</>
+                        : upNext.on ? "Enterprise Buddy is planning the first post." : "Auto-posting is off for this business."}
+                    </p>
+                    <p className="text-xs text-neutral-500 mt-2">To post right away: Enterprise Buddy → Automations → Social posts → Post now.</p>
+                  </div>
+                )}
                 {posts.map(post => (
                   <article key={post.id} className={`bg-neutral-950 border border-neutral-900 rounded-xl overflow-hidden ${post.id === newPostId ? "pop-in" : ""}`}>
                     {/* Header */}

@@ -129,6 +129,15 @@ def delete_checkpoint(cid: str):
     _write(CHECKPOINTS, [c for c in _read(CHECKPOINTS, []) if c["id"] != cid])
 
 
+def set_todo_due(tid: str, due: str) -> dict | None:
+    rows = _read(TODOS, [])
+    hit = next((t for t in rows if t["id"] == tid), None)
+    if hit:
+        hit["due"] = str(due or "")[:10] or None
+        _write(TODOS, rows)
+    return hit
+
+
 def toggle_todo(tid: str, done: bool | None = None, delete: bool = False):
     rows = _read(TODOS, [])
     if delete:

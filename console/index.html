@@ -363,7 +363,10 @@ div.todo input{margin-top:4px;width:18px;height:18px}div.todo.done{opacity:.6}di
 .rq{display:flex;gap:10px;align-items:center;padding:10px;border-radius:8px;cursor:pointer;margin-bottom:4px}
 .rq:hover{background:#f4f4f5}.rq.on{background:var(--green2)}.rq.unread b{font-weight:600}
 .rqch{font-size:19.5px}.rqlast{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rqpane{display:flex;flex-direction:column;min-height:0}
+.rqpane{display:flex;flex-direction:column;min-height:0;flex:1}
+.rqright{display:flex;flex-direction:column;min-height:0;min-width:0}
+.rqapps{display:flex;justify-content:flex-end;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--line);background:#fff}
+.rqapps .small{margin-right:auto}
 .rqhead{display:flex;gap:8px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap;background:var(--panel)}
 .rqhead a{margin-left:auto;font-size:12.5px}
 .rqmsgs{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:8px}
@@ -647,6 +650,31 @@ input,select,textarea{border-color:#d9d2c3}
 .toast b{display:block;margin:2px 0}.toast .row{margin-top:6px}
 @keyframes tin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .bizlbl{font-size:11.5px;color:#71717a}
+/* list / calendar */
+.viewtog{display:flex;justify-content:flex-end;padding:14px 32px 0}
+.calbox{background:#fff;border:1px solid #e4ddcf;border-radius:10px;padding:12px}
+.calhead{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.calhead b{font-size:16px;min-width:150px}
+.calgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid #ece6da;border-left:1px solid #ece6da}
+.calgrid .dow{font-size:11.5px;font-weight:600;color:#71717a;padding:6px;border-right:1px solid #ece6da;border-bottom:1px solid #ece6da;background:#faf8f3}
+.calcell{min-height:96px;padding:4px;border-right:1px solid #ece6da;border-bottom:1px solid #ece6da;cursor:pointer;display:flex;flex-direction:column;gap:2px;min-width:0}
+.calcell:hover{background:#fbfaf6}.calcell.out{background:#fafafa;color:#a1a1aa}.calcell.today .dn{background:#243b32;color:#fff;border-radius:999px;padding:0 6px}
+.calcell.sel{outline:2px solid #243b32;outline-offset:-2px}
+.dn{font-size:12px;font-weight:600;align-self:flex-start}
+.cev{font-size:11px;border-radius:4px;padding:1px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
+.cev.cancelled,.cev.done{opacity:.55;text-decoration:line-through}
+.cmore{font-size:11px;color:#71717a}
+.callegend{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:#52525b;margin:8px 0}
+.callegend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px}
+.dayl{margin-top:12px}.dayl .row{border-top:1px solid #f0ece2;padding:7px 0}
+.slotrow{display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid #f0ece2}
+.slotrow.cancelled .st2{text-decoration:line-through;opacity:.6}
+.duein{font-size:12px;padding:3px 6px;width:130px}
+@media (max-width:760px){.calcell{min-height:64px}.cev{font-size:10px}.viewtog{padding:10px 16px 0}.slotrow{grid-template-columns:1fr}}
+.postprev{display:grid;grid-template-columns:180px 1fr;gap:14px;background:#fff;border:1px solid #e4ddcf;border-radius:10px;padding:10px;align-items:start}
+.postprev img{width:180px;height:180px;object-fit:cover;border-radius:8px}
+.pcap2{white-space:pre-wrap;font-size:14px;margin:6px 0}.ptags{font-size:13px;color:#1d4ed8}
+@media (max-width:640px){.postprev{grid-template-columns:1fr}.postprev img{width:100%;height:auto}}
 /* tools dropdown */
 .navtools{display:flex;align-items:center;gap:8px;width:100%;background:transparent;font-weight:600;font-size:13.5px;padding:7px 10px;border-radius:6px;text-align:left;margin-top:6px}
 .navtools .lab{flex:1}.navtools .car{font-size:11px;opacity:.7;transition:transform .15s}.navtools.open .car{transform:rotate(90deg)}
@@ -798,7 +826,8 @@ div.todo.done{opacity:1}div.todo.done b{text-decoration:line-through;color:#7171
 
 <section class="view" id="v-requests"><div class="rqwrap">
     <div class="rqside"><h3 style="margin:4px 0 8px">Online Requests</h3><div class="rqchips" id="rqchips"></div><div id="rqlist"></div></div>
-    <div class="rqpane" id="rqpane"><div class="empty" style="padding:30px">Pick a conversation.</div></div>
+    <div class="rqright"><div class="rqapps" id="rqapps"></div>
+    <div class="rqpane" id="rqpane"><div class="empty" style="padding:30px">Pick a conversation.</div></div></div>
   </div></section>
 
   <section class="view" id="v-orders"><div class="scroll"><div class="inner" id="ordpage"></div></div></section>
@@ -1106,6 +1135,7 @@ function showTab(id) {
   if (id === "inventory") renderInventory();
   if (id === "settings") renderSettings();
   if (id === "chat" && !S.cid) renderThread(null);
+  mountViewToggle(id);
 }
 
 $("#wspick").onchange = () => { const v = $("#wspick").value; S.scope = v === "all" ? "all" : "single"; if (v !== "all") { S.bid = v; store.set("bid", v); } store.set("scope", S.scope); S.cid = null;
@@ -1506,13 +1536,78 @@ async function sendSupplier(m) {
     window.open(r.url, "_blank"); rerenderIng(); } catch (e) { alert(e.message); }
 }
 
+// ---------------- List / Calendar views for everything with a date
+const CAL_KINDS = { daily: null, orders: ["order"], money: ["money"], roadmap: ["todo", "checkpoint"], automations: ["post", "event", "reorder"], inventory: ["reorder"] };
+const KIND_STYLE = { post: ["Posts", "#7c3aed"], event: ["Events", "#d97706"], order: ["Orders", "#2563eb"], money: ["Money", "#16a34a"],
+  todo: ["Tasks", "#475569"], reorder: ["Supplier orders", "#b91c1c"], checkpoint: ["Checkpoints", "#0f766e"] };
+let CALM = new Date(); CALM.setDate(1);
+const ymd = d => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+function mountViewToggle(tab) {
+  if (!(tab in CAL_KINDS)) return;
+  const scroll = document.querySelector("#v-" + tab + " .scroll"); if (!scroll) return;
+  let bar = scroll.querySelector(":scope > .viewtog"), host = scroll.querySelector(":scope > .calhost");
+  if (!bar) { bar = el("div", "viewtog"); scroll.prepend(bar); }
+  if (!host) { host = el("div", "inner calhost"); bar.after(host); }
+  const mode = store.get("view." + tab, "list");
+  const seg = el("div", "seg"); [["list", "List"], ["calendar", "Calendar"]].forEach(([v, t]) => {
+    const b = el("button", mode === v ? "on" : "", t); b.onclick = () => { store.set("view." + tab, v); mountViewToggle(tab); }; seg.append(b); });
+  bar.replaceChildren(seg);
+  [...scroll.children].forEach(c => { if (c !== bar && c !== host) c.hidden = mode === "calendar"; });
+  host.hidden = mode !== "calendar";
+  if (mode === "calendar") renderCalendar(host, CAL_KINDS[tab]);
+}
+async function renderCalendar(host, kinds) {
+  host.replaceChildren(el("div", "empty", "Loading calendar…"));
+  let evs = []; try { evs = (await api("/api/calendar?business_id=" + encodeURIComponent(curBid()))).events; } catch (e) { host.replaceChildren(el("div", "err", e.message)); return; }
+  if (kinds) evs = evs.filter(e => kinds.includes(e.kind));
+  const byDay = {}; evs.forEach(e => (byDay[e.date] = byDay[e.date] || []).push(e));
+  const box = el("div", "calbox"), head = el("div", "calhead");
+  const prev = el("button", "sm soft", "‹"), next = el("button", "sm soft", "›"), today = el("button", "sm ghost", "Today");
+  prev.onclick = () => { CALM.setMonth(CALM.getMonth() - 1); renderCalendar(host, kinds); };
+  next.onclick = () => { CALM.setMonth(CALM.getMonth() + 1); renderCalendar(host, kinds); };
+  today.onclick = () => { CALM = new Date(); CALM.setDate(1); renderCalendar(host, kinds); };
+  head.append(prev, el("b", null, CALM.toLocaleDateString(undefined, { month: "long", year: "numeric" })), next, today);
+  const inMonth = evs.filter(e => e.date.slice(0, 7) === ymd(CALM).slice(0, 7)).length;
+  head.append(el("span", "small", inMonth + " item" + (inMonth === 1 ? "" : "s") + " this month"));
+  box.append(head);
+  const leg = el("div", "callegend"); [...new Set(evs.map(e => e.kind))].forEach(k => { const s = el("span"); const i = el("i"); i.style.background = KIND_STYLE[k][1]; s.append(i, KIND_STYLE[k][0]); leg.append(s); });
+  box.append(leg);
+  const grid = el("div", "calgrid"); ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].forEach(d => grid.append(el("div", "dow", d)));
+  const start = new Date(CALM); start.setDate(1 - ((start.getDay() + 6) % 7));
+  const dayList = el("div", "dayl"), todayS = ymd(new Date());
+  const showDay = (ds, cell) => {
+    grid.querySelectorAll(".calcell.sel").forEach(c => c.classList.remove("sel")); if (cell) cell.classList.add("sel");
+    const list = byDay[ds] || [];
+    dayList.replaceChildren(el("b", null, new Date(ds + "T00:00:00").toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" }) + " · " + list.length + " item" + (list.length === 1 ? "" : "s")));
+    if (!list.length) dayList.append(el("div", "empty", "Nothing on this day."));
+    list.forEach(e => { const r = el("div", "row"), tag = el("span", "tag2"); tag.textContent = KIND_STYLE[e.kind][0]; tag.style.background = KIND_STYLE[e.kind][1] + "22"; tag.style.color = KIND_STYLE[e.kind][1];
+      r.append(tag, el("span", "small", e.time || ""), el("span", null, (S.scope === "all" ? e.business + " · " : "") + e.title), e.status ? el("span", "small", e.status) : "");
+      if (e.tab) { const go = el("button", "sm ghost", "Open"); go.onclick = () => calOpen(e); r.append(go); } dayList.append(r); });
+  };
+  for (let i = 0; i < 42; i++) {
+    const d = new Date(start); d.setDate(start.getDate() + i); const ds = ymd(d), list = byDay[ds] || [];
+    const c = el("div", "calcell" + (d.getMonth() !== CALM.getMonth() ? " out" : "") + (ds === todayS ? " today" : ""));
+    c.append(el("span", "dn", String(d.getDate())));
+    list.slice(0, 3).forEach(e => { const x = el("div", "cev " + (e.status || ""), (e.time ? e.time + " " : "") + e.title); x.style.background = KIND_STYLE[e.kind][1]; x.title = (S.scope === "all" ? e.business + " · " : "") + e.title; c.append(x); });
+    if (list.length > 3) c.append(el("span", "cmore", "+" + (list.length - 3) + " more"));
+    c.onclick = () => showDay(ds, c); grid.append(c);
+    if (i >= 35 && d.getMonth() !== CALM.getMonth() && d.getDate() > 7) break;
+  }
+  box.append(grid, dayList); host.replaceChildren(box);
+  const firstToday = byDay[todayS] ? todayS : null; showDay(firstToday && todayS.slice(0, 7) === ymd(CALM).slice(0, 7) ? todayS : ymd(CALM), null);
+}
+function calOpen(e) {
+  if (S.scope === "all" && e.business_id) { S.scope = "single"; S.bid = e.business_id; store.set("scope", "single"); store.set("bid", e.business_id); renderSide(); }
+  store.set("view." + e.tab, "list"); if (e.tab === "automations") { AU_SUB = "social"; } showTab(e.tab);
+}
+
 // ---------------- auto-posting card (Automations → Social posts)
 async function autopostCard() {
   const bid = curBid(), c = el("div", "panel");
   if (S.scope === "all") return c;
   let a; try { a = await api("/api/autopost?business_id=" + encodeURIComponent(bid)); } catch (e) { c.append(el("div", "err", e.message)); return c; }
   const head = el("div", "row"); head.style.justifyContent = "space-between";
-  const t = el("div"); t.append(el("h3", null, "Auto-posting"), el("div", "small", "Enterprise Buddy's AI writes a post about one of your items and publishes it on a schedule (simulated). It uses your latest uploaded photo."));
+  const t = el("div"); t.append(el("h3", null, "Auto-posting"), el("div", "small", "Enterprise Buddy's AI writes a post about one of your items and publishes it on a schedule (simulated). On by default — abort any planned post below."));
   const sw = switchEl(!!a.enabled, async on => { await api("/api/autopost", { business_id: bid, enabled: on }); renderSocialAuto(); }); head.append(t, sw); c.append(head);
   const g = el("div", "fgrid"); g.style.marginTop = "10px"; const fld = (lab, inp) => { const x = el("label", null, lab); x.append(inp); g.append(x); return inp; };
   const ev = fld("Every", el("select")); [[1, "day"], [2, "2 days"], [3, "3 days"], [7, "week"]].forEach(([v, tx]) => { const o = el("option", null, tx); o.value = v; ev.append(o); }); ev.value = a.every_days;
@@ -1529,6 +1624,36 @@ async function autopostCard() {
     const t0 = Date.now(); const poll = setInterval(async () => { const x = await api("/api/autopost?business_id=" + encodeURIComponent(bid)); if (x.count !== a.count || x.last_error !== a.last_error || Date.now() - t0 > 180000) { clearInterval(poll); renderAutomations(); } }, 4000); };
   const ig = el("button", "sm ghost", "Open Instagram"); ig.onclick = () => window.open(igLink(a.last_post_id), "_blank");
   st.append(now, ig); c.append(st);
+  // coming up: the content plan — every planned post can be aborted before it goes out
+  const plan = (a.plan || []).filter(p => p.status !== "posted" || p.posted_at);
+  const cu = el("div"); cu.style.marginTop = "14px";
+  cu.append(el("h3", null, "Coming up"), el("div", "small", "BizFlow plans these posts and writes each caption when it is due. New menu items, price changes and events add a post automatically, 30 minutes ahead. Images are generated by an image API if one is set up, otherwise a branded poster is used."));
+  if (!plan.length) cu.append(el("div", "empty", a.enabled ? "Planning the next posts…" : "Auto-posting is off."));
+  plan.sort((x, y) => x.at.localeCompare(y.at)).forEach(p => {
+    const r = el("div", "slotrow " + p.status), when = new Date(p.at);
+    r.append(el("div", "small", when.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" }) + " " + p.at.slice(11, 16)));
+    const mid = el("div", "st2"); mid.append(el("b", null, p.topic), el("span", "tag2" + (p.kind === "event" ? " warn" : " blue"), p.kind === "event" ? (p.reason || "event") : "scheduled"));
+    mid.lastChild.style.marginLeft = "8px"; if (p.status !== "planned") { const t = el("span", "tag2", p.status); t.style.marginLeft = "6px"; mid.append(t); }
+    if (p.context) mid.append(el("div", "small", p.context));
+    const acts = el("div", "row nowrap"), act = async (action) => { try { await api("/api/autopost/slot/" + p.id, { business_id: bid, action }); } catch (e) { alert(e.message); } renderSocialAuto(); };
+    if (p.status === "planned") { const ab = el("button", "sm bad", "Abort"); ab.onclick = () => act("cancel"); const pn = el("button", "sm ghost", "Post now"); pn.onclick = () => act("now"); acts.append(pn, ab); }
+    else if (p.status === "cancelled") { const rs = el("button", "sm soft", "Restore"); rs.onclick = () => act("restore"); acts.append(rs); }
+    else if (p.status === "posted" && p.post_id) { const v = el("button", "sm ghost", "View"); v.onclick = () => window.open(igLink(p.post_id), "_blank"); acts.append(v); }
+    r.append(mid, acts); cu.append(r);
+  });
+  c.append(cu);
+  // events: announce them automatically
+  const evbox = el("div"); evbox.style.marginTop = "14px";
+  evbox.append(el("h3", null, "Events"), el("div", "small", "Add a sale, opening day or stall event — BizFlow posts an announcement and a reminder the day before."));
+  const g2 = el("div", "fgrid"); g2.style.marginTop = "8px"; const f2 = (lab, inp) => { const x = el("label", null, lab); x.append(inp); g2.append(x); return inp; };
+  const et = f2("Event", el("input")), ed = f2("Date", el("input")), etm = f2("Time", el("input")), en = f2("Details (optional)", el("input"));
+  et.placeholder = "e.g. Grand opening weekend"; ed.type = "date"; etm.type = "time"; en.placeholder = "e.g. free drink with every set";
+  const addE = el("button", "sm", "Add event"), emsg = el("span", "small");
+  addE.onclick = async () => { try { await api("/api/events", { business_id: bid, title: et.value, date: ed.value, time: etm.value, note: en.value }); renderSocialAuto(); } catch (e) { emsg.textContent = e.message; } };
+  const er = el("div", "row"); er.style.marginTop = "8px"; er.append(addE, emsg); evbox.append(g2, er);
+  (a.events || []).forEach(e => { const r = el("div", "slotrow"); r.append(el("div", "small", e.date + (e.time ? " " + e.time : "")), el("div", null, e.title + (e.note ? " — " + e.note : "")));
+    const del = el("button", "sm ghost", "Delete"); del.onclick = async () => { if (!confirm("Delete this event and its planned posts?")) return; await api("/api/events/" + e.id + "/delete", {}); renderSocialAuto(); }; r.append(del); evbox.append(r); });
+  c.append(evbox);
   return c;
 }
 async function renderSocialAuto() { const host = $("#au-social"); const old = host.querySelector(".autopost"); const c = await autopostCard(); c.classList.add("autopost"); if (old) old.replaceWith(c); else host.prepend(c); }
@@ -1597,8 +1722,23 @@ function dataView(d) {   // d = a Enterprise Buddy dataset; numbers come from th
 }
 function appResults(run) {
   const box = el("div", "appres");
+  const waiting = run.plan.app_results.map((r, i) => [r, i]).filter(([r]) => r.pending);
+  if (waiting.length >= 2) {  // one click for all the suggested changes
+    const all = el("button", "sm", "Do all " + waiting.length);
+    all.onclick = async () => { all.disabled = true; all.textContent = "Saving…";
+      for (const [, i] of waiting) { try { run.plan.app_results[i] = await api("/api/runs/" + run.run_id + "/app/" + i + "/run", {}); } catch (e) { /* keep going */ } }
+      renderThread(S.cid); pollPulse(); };
+    const r = el("div", "row"); r.append(all, el("span", "small", waiting.length + " changes are waiting for your OK")); box.append(r);
+  }
   run.plan.app_results.forEach((r, i) => {
     if (r.type === "show") { if (r.ok) box.append(dataView(r.data)); else box.append(el("div", "actchip bad", "" + r.text)); return; }
+    if (r.type === "create_post" && r.ok && r.post && !r.undone) {
+      const pc = el("div", "postprev"), im = el("img"); im.src = r.post.image; im.alt = "Post image";
+      const body = el("div", "pbody"); body.append(el("div", "small", (r.post.scheduled_for ? "Scheduled " + String(r.post.scheduled_for).slice(0, 16).replace("T", " ") : "Posted") + " · " + (r.post.platforms || []).join(", ") + " · " + (r.post.image_source || "")));
+      body.append(el("div", "pcap2", r.post.caption)); if ((r.post.hashtags || []).length) body.append(el("div", "ptags", r.post.hashtags.join(" ")));
+      const acts = el("div", "row"), op = el("button", "sm soft", "Open Instagram ↗"); op.onclick = () => window.open(igLink(r.post.id), "_blank"); acts.append(op); body.append(acts);
+      pc.append(im, body); box.append(pc);
+    }
     const c = el("div", "actchip " + (r.pending ? "wait" : r.undone ? "undone" : r.ok ? "ok" : "bad"));
     c.append(el("span", "t", (r.pending ? "Waiting for your OK: " : r.undone ? "↩ Undone: " : r.ok ? "" : "") + r.text));
     const act = async (what) => { try { run.plan.app_results[i] = await api("/api/runs/" + run.run_id + "/app/" + i + "/" + what, {}); renderThread(S.cid); pollPulse(); loadOrders(); } catch (e) { alert(e.message); } };
@@ -2034,6 +2174,7 @@ function planCard(run, it, executed, dec) {
   const vis = el("div", "visual"); c.append(vis); attachVisual(run, it, vis);
   guideBlock(guidesForTitle(it), c);
   sourcesBlock(run, it, c);
+  const sb = supplierBtn(run, it); if (sb) c.append(sb);
   const ev = [];
   if (ev.length) { const m = el("details", "more"); m.append(el("summary", null, "Sources (" + ev.length + ")")); const s = el("div", "srcs"); ev.forEach(p => { const a = el("a", null, p.split("/").pop()); a.onclick = () => viewFile(p); s.append(a); }); m.append(s); c.append(m); }
   if (!executed && REV.rid === run.run_id) {
@@ -2050,6 +2191,21 @@ function planCard(run, it, executed, dec) {
     acts.append(a, r, ask, n); c.append(acts);
   }
   return c;
+}
+
+// steps about buying get a one-click "find and save suppliers" request to the agent
+const BUY_RE = /\b(buy|shop|purchase|ingredient|supplier|stock up|order from|wholesale|packaging|equipment|fryer|container|restock)\b/i;
+function supplierBtn(run, it) {
+  if (!(it.category === "stock" || BUY_RE.test((it.title || "") + " " + (it.details || "")))) return null;
+  const w = el("div", "cardacts"), b = el("button", "sm soft", "Find & add suppliers");
+  b.title = "BizFlow searches real sellers for the items in this step, compares prices and saves them to Inventory and Suppliers";
+  b.onclick = () => {
+    const area = (biz() || {}).area || "my area";
+    const text = "Find suppliers for the step \"" + it.title + "\": " + String(it.details || "").replace(/\s+/g, " ").slice(0, 500) +
+      "\nSearch real online sellers and shops near " + area + " for each item, compare the price per unit with sources, save the best product pages to my Suppliers, and add every item to my Inventory with its best supplier, link and price.";
+    S.bypass = true; showTab("chat"); $("#q").value = text; send();
+  };
+  w.append(b, el("span", "small", "Searches real sellers and saves them to Inventory and Suppliers")); return w;
 }
 
 function refreshTurn(rid) {
@@ -2457,6 +2613,9 @@ function todoRow(t) {
   cb.onchange = async () => { await api("/api/todos/" + t.id + "/toggle", { done: cb.checked }); c.classList.toggle("done", cb.checked); t.done = cb.checked;
     if (cb.checked) { const n = el("div", "cpnote"); n.append(el("span", "spin"), " Enterprise Buddy is checking if this is a milestone…"); $("#rmsecs").prepend(n); setTimeout(() => { n.remove(); if (S.tab === "roadmap") renderRoadmap(); }, 15000); } };
   const tx = el("div"); tx.style.flex = "1"; tx.append(el("b", null, t.title)); if (t.details) tx.append(el("div", "tiny", t.details.slice(0, 200)));
+  const due = el("input", "duein"); due.type = "date"; due.value = t.due || ""; due.title = "Due date (shows on the calendar)";
+  due.onchange = async () => { await api("/api/todos/" + t.id + "/due", { due: due.value }); t.due = due.value; };
+  const dl = el("label", "small"); dl.append("Due ", due); tx.append(dl);
   const go = el("button", "sm ghost", "↗"); go.title = "Go to the chat"; go.onclick = () => jumpTo({ conversation_id: t.conversation_id, run_id: t.run_id, item_id: t.item_id, kind: "item" });
   const del = el("button", "sm ghost", "Remove"); del.title = "Remove"; del.onclick = async () => { await api("/api/todos/" + t.id + "/delete", {}); renderRoadmap(); };
   if (t.done) { const pin = el("button", "sm ghost", "Checkpoint"); pin.title = "Save as a checkpoint yourself"; pin.onclick = async () => { await api("/api/checkpoints/add", { business_id: curBid(), title: t.title, summary: t.details || "", ref: "todo:" + t.id }); renderRoadmap(); }; c.append(cb, tx, go, pin, del); return c; }
@@ -2831,6 +2990,24 @@ async function renderRequests() {
   REQ.timer = setInterval(() => { if (S.tab === "requests") drawRequests(true); else clearInterval(REQ.timer); }, 4000);
   drawRequests();
 }
+const APP_OPEN = {
+  whatsapp: ["WhatsApp", t => "/whatsapp/?business_id=" + encodeURIComponent(curBid() === "all" ? "campus-crumb" : curBid()) + (t && t.channel === "whatsapp" ? "&chat=" + t.id : "")],
+  instagram: ["Instagram", t => t && t.channel === "instagram" ? "/instagram/?as=" + encodeURIComponent(t.contact.handle) + "&name=" + encodeURIComponent(t.contact.name) + "#messages" : igLink()],
+  linkedin: ["LinkedIn", () => "/linkedin/"],
+  shop: ["Online shop", () => shopLink()],
+  shopee: ["Shopee", () => "/shopee/"],
+};
+function drawAppButtons(threads) {
+  const bar = $("#rqapps"); bar.replaceChildren();
+  const cur = (threads || []).find(t => t.id === REQ.tid);
+  const keys = REQ.filter ? [REQ.filter] : Object.keys(APP_OPEN);
+  bar.append(el("span", "small", REQ.filter ? "Messages from " + (APP_OPEN[REQ.filter] || [REQ.filter])[0] : "Open a demo app to message as a customer"));
+  keys.filter(k => APP_OPEN[k]).forEach(k => {
+    const b = el("button", "sm" + (REQ.filter ? "" : " soft"), "Open " + APP_OPEN[k][0] + " ↗");
+    b.onclick = () => window.open(APP_OPEN[k][1](cur && (!REQ.filter || cur.channel === k) ? cur : null), "_blank");
+    bar.append(b);
+  });
+}
 async function drawRequests(quiet) {
   const r = await refreshBadge(); if (!r) return;
   const chips = $("#rqchips"); chips.replaceChildren();
@@ -2839,7 +3016,14 @@ async function drawRequests(quiet) {
   });
   const list = $("#rqlist"); list.replaceChildren();
   const rows = r.threads.filter(t => !REQ.filter || t.channel === REQ.filter);
-  if (!rows.length) list.append(el("div", "empty", "No messages yet. Customer DMs from your demo Instagram, WhatsApp and LinkedIn appear here."));
+  if (REQ.tid && !rows.some(t => t.id === REQ.tid)) REQ.tid = null;  // the open chat isn't on this platform
+  drawAppButtons(r.threads);
+  if (!rows.length) {
+    const name = REQ.filter ? (APP_OPEN[REQ.filter] || [REQ.filter])[0] : "your demo apps";
+    list.append(el("div", "empty", "No messages yet from " + name + ". Use the Open button at the top right to message this business as a customer — it appears here."));
+    $("#rqpane").replaceChildren(el("div", "empty", "No " + name + " conversations yet."));
+    $("#rqpane").firstChild.style.padding = "30px";
+  }
   rows.forEach(t => {
     const d = el("div", "rq" + (t.id === REQ.tid ? " on" : "") + (t.unread ? " unread" : ""));
     d.append(el("span", "rqch", CH[t.channel][0]));
@@ -3187,6 +3371,7 @@ async function drawReview() {
     const vis = el("div", "visual rvvis"); card.append(vis); attachVisual(run, it, vis);
     guideBlock(it.guide_ids, card);
     sourcesBlock(run, it, card);
+    { const sb = supplierBtn(run, it); if (sb) { sb.style.marginLeft = "0"; card.append(sb); } }
     box.append(card);
     const opts = el("div", "rvopts");
     OPTS.forEach(([k, ic, label], n) => {

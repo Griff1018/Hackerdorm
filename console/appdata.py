@@ -56,7 +56,8 @@ DATASETS = {
     "inventory": ("Inventory — ingredients", "table"),
 }
 ACTIONS = {"record_customer", "update_customer", "delete_customer", "record_sale", "set_menu_item", "connect_app", "disconnect_app",
-           "complete_order", "set_goal", "record_money", "add_ingredient", "set_stock", "remove_ingredient", "record_order", "set_autopost"}
+           "complete_order", "set_goal", "record_money", "add_ingredient", "set_stock", "remove_ingredient", "record_order", "set_autopost",
+           "create_post"}
 CUSTOMER_FIELDS = ("name", "phone", "email", "notes", "tags", "birthday", "favourite")
 FORBIDDEN = re.compile(r"\b(ic|nric|mykad|passport|bank|account no|card|cvv|password|pin|otp)\b", re.I)
 
@@ -535,6 +536,7 @@ def execute(bid: str, act: dict) -> dict:
             auto.set_stock(bid, mat, {"qty": act.get("qty") if act.get("qty") not in (None, "") else (None if before else 0),
                                       "threshold": act.get("threshold") if act.get("threshold") not in (None, "") else None,
                                       "unit": act.get("unit"), "supplier": act.get("supplier"), "phone": act.get("phone"),
+                                      "supplier_url": act.get("supplier_url"), "price_note": act.get("price_note"),
                                       "planned_by": "agent" if act.get("_by") == "agent" else act.get("planned_by")})
             s_ = auto.stock_of(bid, mat)
             return {"ok": True, "text": f"{'Updated' if before else 'Added'} {mat} in Inventory: {s_.get('qty'):g} {s_.get('unit', '')}" +
@@ -568,9 +570,20 @@ def execute(bid: str, act: dict) -> dict:
                                  "source": "manual entry", "status": "done" if act.get("done") else "pending"})
             return {"ok": True, "text": f"Recorded order {o['id']} for {o['customer']}: " + ", ".join(f"{i['qty']}× {i['item']}" for i in items) +
                     f" = MYR {total:.2f}" + (f" (skipped unknown: {', '.join(unknown)})" if unknown else ""), "undo": {"type": "order_status", "id": o["id"], "status": "cancelled"}}
+        if t == "create_post":
+            import social
+            r = social.create_post(bid, act)
+            p = r["post"]
+            when = "Scheduled for " + str(p.get("scheduled_for"))[:16].replace("T", " ") if p.get("scheduled_for") else "Posted"
+            return {"ok": True, "text": f"{when} on {', '.join(p.get('platforms', []))}: {p['caption'][:80]}" + ("…" if len(p["caption"]) > 80 else ""),
+                    "post": {"id": p["id"], "caption": p["caption"], "hashtags": p.get("hashtags", []), "image": r["image"], "status": p["status"],
+                             "scheduled_for": p.get("scheduled_for"), "platforms": p.get("platforms"), "image_source": r["image_source"]},
+                    "undo": {"type": "delete_post", "id": p["id"]}}
         if t == "set_autopost":
             before = auto.autopost(bid)
             cfg = auto.set_autopost(bid, act)
+            import social
+            social.replan(bid)
             return {"ok": True, "text": ("Auto-posting ON: every " + str(cfg["every_days"]) + f" day(s) at {cfg['time']} on {', '.join(cfg['platforms'])}, featuring "
                                          + {"rotate": "each menu item in turn", "best_seller": "your best seller", "slow_seller": "your slowest seller"}[cfg["focus"]] +
                                          f" — next post {str(cfg['next_at'])[:16].replace('T', ' ')}") if cfg["enabled"] else "Auto-posting turned off",
@@ -610,6 +623,9 @@ def undo(bid: str, u: dict) -> str:
             auto.remove_stock(bid, u["material"])
     elif t == "autopost":
         auto.set_autopost(bid, u["cfg"])
+    elif t == "delete_post":
+        import social
+        social.delete_post(u["id"])
     else:
         raise ValueError("nothing to undo")
     return "undone"

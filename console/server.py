@@ -35,6 +35,7 @@ import dashboard as dash  # noqa: E402
 import settings as appset  # noqa: E402
 import appdata  # noqa: E402
 import money as mon  # noqa: E402
+import social  # noqa: E402
 import tasks as tk  # noqa: E402
 sys.path.insert(0, str(ROOT / "shopee_mock"))
 import sim as shopee_sim  # noqa: E402  (mock Shopee marketplace world)
@@ -426,7 +427,8 @@ def run_agent(run):
             "The agent did not return a structured plan; its answer is shown in the timeline."]}
         push(run, "adapt", "No structured plan JSON was returned; showing the answer only (no actions to approve).")
     plan = enrich_plan(run, raw)
-    plan["app_results"] = run_app_actions(run, raw.get("app_actions") or [], propose=bool(plan["plan_items"]))
+    asked = run["request"].startswith("Find suppliers for the step")
+    plan["app_results"] = run_app_actions(run, raw.get("app_actions") or [], propose=bool(plan["plan_items"]) and not asked)
     if plan["app_results"] and not plan["plan_items"]:
         plan["answer_only"] = True
     run["plan"] = plan
@@ -448,6 +450,27 @@ def run_agent(run):
 
 
 CHARTS = {"line", "bar", "hbar", "table"}
+
+
+def describe_action(a: dict) -> str:
+    """Plain words for an app action that waits for the owner's 'Do it'."""
+    t = a.get("type")
+    if t in ("add_ingredient", "set_stock"):
+        return (f"Add {a.get('material')} to Inventory" + (f" — supplier {a.get('supplier')}" if a.get("supplier") else "") +
+                (f" ({a.get('price_note')})" if a.get("price_note") else ""))
+    if t == "record_money":
+        return f"Record money {a.get('direction', 'out')}: MYR {a.get('amount')} · {a.get('category', '')} {a.get('note', '')}".strip()
+    if t == "record_order":
+        return f"Record an order for {a.get('customer') or '?'}: " + ", ".join(f"{i.get('qty')}× {i.get('item')}" for i in a.get("items") or [])
+    if t == "set_menu_item":
+        return f"Put {a.get('item')} on the shop menu" + (f" at MYR {a.get('price')}" if a.get("price") not in (None, "") else "")
+    if t == "record_customer":
+        return f"Save customer {a.get('name')}"
+    if t == "connect_app":
+        return f"Connect {a.get('app')}" + (f" ({a.get('handle')})" if a.get("handle") else "")
+    if t == "set_autopost":
+        return "Turn auto-posting " + ("on" if a.get("enabled", True) else "off")
+    return str(t or "").replace("_", " ")
 
 
 def _items_key(items) -> list:
@@ -557,7 +580,7 @@ def run_app_actions(run, acts: list, propose: bool = False) -> list[dict]:
             out.append({"type": "show", "ok": True, "text": d["title"], "data": d})
             push(run, "tool", f"Enterprise Buddy app → showing {d['title']} ({len(d['rows'])} rows) as a {d['chart']}")
         elif t in appdata.ACTIONS:
-            spec = {k: v for k, v in a.items() if k != "label"}
+            spec = dict({k: v for k, v in a.items() if k != "label"}, _by="agent")
             if t == "record_order":
                 held = order_questions(run, spec)
                 if held:
@@ -566,7 +589,7 @@ def run_app_actions(run, acts: list, propose: bool = False) -> list[dict]:
                     push(run, "adapt", "Order held: " + "; ".join(q["question"] for q in held))
                     continue
             if run.get("mode") == "ask_me" or propose:  # part of a plan: suggest the change, the owner clicks Do it
-                out.append({"type": t, "ok": None, "pending": True, "spec": spec, "text": a.get("label") or t.replace("_", " ")})
+                out.append({"type": t, "ok": None, "pending": True, "spec": spec, "text": a.get("label") or describe_action(spec)})
                 push(run, "tool", f"Enterprise Buddy app → waiting for your OK: {a.get('label') or t}")
                 continue
             r = appdata.execute(bid, spec)
@@ -807,7 +830,13 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/whatsapp/chats":
             return self.send_json(whatsapp_chats(qs.get("business_id", "campus-crumb")))
         if path == "/api/autopost":
-            return self.send_json(auto.autopost(qs.get("business_id", "campus-crumb")))
+            bid = qs.get("business_id", "campus-crumb")
+            if bid != ws.ALL:
+                social.ensure_plan(bid)
+            return self.send_json(dict(auto.autopost(bid), plan=[s for s in social.plan(bid) if s["status"] != "posted" or s.get("posted_at", "") >= auto.iso()[:10]][-12:],
+                                       events=social.events(bid)))
+        if path == "/api/calendar":
+            return self.send_json({"events": social.calendar(qs.get("business_id", "campus-crumb"))})
         if path == "/api/suggestions":
             try:
                 return self.send_json({"suggestions": appdata.suggestions(qs.get("business_id", "campus-crumb"))})
@@ -1138,9 +1167,33 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/autopost":
             bid = str(body.get("business_id") or "campus-crumb")
             try:
-                return self.send_json(auto.set_autopost(bid, body))
+                cfg = auto.set_autopost(bid, body)
+                social.replan(bid)
+                return self.send_json(auto.autopost(bid))
             except (ValueError, TypeError) as exc:
                 return self.send_json({"error": str(exc)}, 400)
+        m_sl = re.fullmatch(r"/api/autopost/slot/(PS[\w]+)", path)
+        if m_sl:
+            bid, act = str(body.get("business_id") or "campus-crumb"), str(body.get("action"))
+            try:
+                if act == "now":
+                    s = social.set_slot(bid, m_sl.group(1), status="planned")
+                    threading.Thread(target=run_autopost, args=(bid, s), daemon=True).start()
+                    return self.send_json(s)
+                return self.send_json(social.set_slot(bid, m_sl.group(1), status="cancelled" if act == "cancel" else "planned"))
+            except ValueError as exc:
+                return self.send_json({"error": str(exc)}, 400)
+        if path == "/api/events":
+            try:
+                return self.send_json(social.add_event(str(body.get("business_id") or "campus-crumb"), body.get("title", ""), body.get("date", ""), body.get("time", ""), body.get("note", "")))
+            except ValueError as exc:
+                return self.send_json({"error": str(exc)}, 400)
+        m_ev = re.fullmatch(r"/api/events/(EV[\w]+)/delete", path)
+        if m_ev:
+            return self.send_json({"deleted": social.delete_event(m_ev.group(1))})
+        m_due = re.fullmatch(r"/api/todos/([\w-]+)/due", path)
+        if m_due:
+            return self.send_json(ws.set_todo_due(m_due.group(1), body.get("due")) or {"error": "unknown task"})
         if path == "/api/autopost/run":
             bid = str(body.get("business_id") or "campus-crumb")
             threading.Thread(target=run_autopost, args=(bid,), daemon=True).start()
@@ -1216,6 +1269,13 @@ class Handler(BaseHTTPRequestHandler):
         if m16b:
             b = ws.remember(m16b.group(1), body.get("answers") or {})
             return self.send_json(b or {"error": "unknown business"}, 200 if b else 404)
+        if path == "/api/linkedin/profile":
+            bid = str(body.get("business_id") or "campus-crumb")
+            if not ws.business(bid):
+                return self.send_json({"error": "unknown business"}, 404)
+            appset.save_linkedin_profile(bid, body.get("company") or {})
+            audit({"action": "linkedin_profile", "business_id": bid})
+            return self.send_json(li_bootstrap(bid))
         if path == "/api/linkedin/apply":
             c = {"handle": re.sub(r"[^a-z0-9]+", "-", str(body.get("email") or body.get("name") or "applicant").lower()).strip("-")[:40],
                  "name": str(body.get("name", ""))[:80], "headline": "Applied via Easy Apply" + (" · " + str(body.get("headline"))[:80] if body.get("headline") else ""),
@@ -1809,13 +1869,15 @@ def send_to_demo_whatsapp(msg_id: str) -> dict:
 AUTOPOST_BUSY = set()
 
 
-def run_autopost(bid: str):
-    """AI writes a post about one product and publishes it (simulated) — used by the schedule and 'Post one now'."""
+def run_autopost(bid: str, slot: dict | None = None):
+    """AI writes a post and publishes it (simulated) — a planned slot when due, or the next item for 'Post one now'."""
     if bid in AUTOPOST_BUSY:
         return
     AUTOPOST_BUSY.add(bid)
     try:
         cfg = auto.autopost(bid)
+        if slot:
+            social.set_slot(bid, slot["id"], status="writing")
         menu = appset.shop_menu(bid)
         names = [m["item"] for m in menu]
         try:
@@ -1829,19 +1891,33 @@ def run_autopost(bid: str):
         else:
             pool = names or [p["name"] for p in prods] or [(ws.business(bid) or {}).get("type", "our menu")]
             item = pool[int(cfg.get("count") or 0) % len(pool)]
+        if slot:
+            item = slot["topic"]
         price = next((m["price"] for m in menu if m["item"] == item), None)
-        media = [m for m in auto.load().get("media", []) if m.get("business_id") == bid][-1:]
         b = ws.business(bid) or {}
         ctx = (f"Scheduled auto-post #{int(cfg.get('count') or 0) + 1} for {b.get('name')}: feature {item}" + (f" (MYR {price:.2f})" if price else "") +
                f". Pickup/selling area: {b.get('area')}. Invite people to order through DM or the online shop.")
+        if slot and slot.get("context"):
+            ctx = f"{b.get('name')} ({b.get('area')}): {slot['context']} Invite people to order through DM or the online shop."
+        try:  # image: generated by an image API if configured, otherwise a preset branded poster
+            ev = slot and slot["kind"] == "event"
+            img = social.image_for(bid, item, (f"MYR {price:.2f}" if price else "") if not ev else slot.get("context", "")[:80],
+                                   ("New" if ev and "menu" in slot.get("reason", "") else "Event" if ev else "Today's pick"))
+            media = [img]
+        except Exception:
+            media = [m for m in auto.load().get("media", []) if m.get("business_id") == bid][-1:]
         out = generate_post({"business_id": bid, "context": ctx, "media_ids": [m["id"] for m in media], "platforms": cfg["platforms"]})
         if out.get("error"):
             auto.set_autopost(bid, {"last_error": out["error"], "last_at": auto.iso()})
+            if slot:
+                social.set_slot(bid, slot["id"], status="error", error=out["error"][:200])
             return
         post = auto.add_post({"business_id": bid, "media_ids": [m["id"] for m in media], "caption": out.get("caption"), "hashtags": out.get("hashtags"),
                               "seo_keywords": out.get("seo_keywords"), "alt_text": out.get("alt_text"), "platforms": cfg["platforms"], "auto": True,
                               "topic": item})
         auto.set_autopost(bid, {"last_at": auto.iso(), "count": int(cfg.get("count") or 0) + 1, "last_post_id": post["id"], "last_error": None})
+        if slot:
+            social.set_slot(bid, slot["id"], status="posted", post_id=post["id"], posted_at=auto.iso())
         audit({"action": "autopost", "business_id": bid, "post": post["id"], "topic": item})
     finally:
         AUTOPOST_BUSY.discard(bid)
@@ -1851,8 +1927,12 @@ def autopost_loop():
     while True:
         time.sleep(60)
         try:
-            for bid in auto.autopost_due():
-                run_autopost(bid)
+            for b in ws.businesses():  # auto-posting is on by default for every business
+                if not auto.autopost(b["id"]).get("enabled"):
+                    continue
+                social.ensure_plan(b["id"])
+                for s in social.due(b["id"])[:1]:
+                    run_autopost(b["id"], s)
         except Exception as exc:  # keep the scheduler alive
             audit({"action": "autopost_error", "error": str(exc)})
 
@@ -1953,7 +2033,9 @@ def instagram_feed(bid: str) -> dict:
     seller = {"username": handle(b["name"]), "name": b["name"], "avatar": avatar(b.get("emoji", "🏪")),
               "bio": f"{b.get('type', '')}\n📍 {b.get('area', '')}\n📩 DM to order", "postsCount": len(posts),
               "followersCount": "1.2K", "followingCount": 180, "verified": False}
-    return {"seller": seller, "posts": posts}
+    nxt = next((s for s in social.plan(b["id"]) if s["status"] == "planned"), None)
+    return {"seller": seller, "posts": posts, "autopost_on": bool(auto.autopost(b["id"]).get("enabled")),
+            "next_post": {"at": nxt["at"], "topic": nxt["topic"]} if nxt else None}
 
 
 def ingredients(bid: str) -> dict:
@@ -2431,14 +2513,21 @@ def li_post_for(job: dict) -> dict:
 
 
 def li_bootstrap(bid: str) -> dict:
+    """The business's LinkedIn company page: sensible defaults from its profile, overridden by what the owner edited."""
     b = ws.business(bid) or ws.business("campus-crumb") or {}
-    return {"business_id": b.get("id"), "company": {
-        "name": b.get("name", "Campus Crumb"), "tagline": b.get("type", ""), "industry": "Food & Beverages",
-        "location": b.get("area", ""), "hq": b.get("area", ""), "followers": 1240, "size": "1-10 employees", "onLinkedIn": 3,
-        "website": "", "founded": 2026,
-        "overview": (b.get("description") or b.get("type") or "") + "\n\nRecruiting and messages on this page are managed by Enterprise Buddy.",
-        "specialties": ["Snacks", "Campus food", "Student-run"], "industryTags": ["Food & Beverages", "Retail"]},
-        "viewer": {"name": "Owner of " + b.get("name", "the shop"), "headline": "Founder at " + b.get("name", "the shop")}}
+    btype = str(b.get("type") or "")
+    food = bool(re.search(r"food|chicken|ayam|kuih|snack|cake|cookie|drink|tea|coffee|nasi|bakery|cafe|café", btype, re.I))
+    parts = [x.strip() for x in re.split(r",|\band\b|[—–-]", btype) if x.strip()][:4]
+    company = {
+        "name": b.get("name", "Campus Crumb"), "tagline": btype, "industry": "Food & Beverages" if food else "Retail",
+        "location": b.get("area", ""), "hq": b.get("area", ""), "followers": 120, "size": "1-10 employees", "onLinkedIn": 1,
+        "website": "", "founded": int(str(b.get("created_at") or "2026")[:4] or 2026),
+        "overview": (b.get("description") or btype or "") + "\n\nRecruiting and messages on this page are managed by Enterprise Buddy.",
+        "specialties": parts or ["Small business"], "industryTags": ["Food & Beverages", "Retail"] if food else ["Retail", "E-commerce"]}
+    company.update(appset.linkedin_profile(b.get("id", bid)))
+    return {"business_id": b.get("id"), "company": company, "editable": list(appset.LI_FIELDS),
+            "accounts": [{"id": x["id"], "name": x["name"], "type": x.get("type", "")} for x in ws.businesses()],
+            "viewer": {"name": "Owner of " + b.get("name", "the shop"), "headline": "Founder at " + b.get("name", "the shop")}}
 
 
 FEATURES = ("Enterprise Buddy features the owner can use: Automations → Social posts (upload photos, AI captions/hashtags/SEO, post now or schedule "

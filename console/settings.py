@@ -101,6 +101,38 @@ def set_connection(bid: str, app_id: str, on: bool, handle: str = "") -> dict:
     return next(c for c in connections(bid) if c["id"] == app_id)
 
 
+# ---------------------------------------------------------------- LinkedIn company page (owner-edited fields)
+
+LI_FIELDS = ("tagline", "industry", "location", "hq", "website", "size", "founded", "overview", "specialties", "industryTags", "followers")
+
+
+def linkedin_profile(bid: str) -> dict:
+    return _load().get("linkedin_profile", {}).get(bid, {})
+
+
+def save_linkedin_profile(bid: str, patch: dict) -> dict:
+    clean = {}
+    for k in LI_FIELDS:
+        if k not in patch:
+            continue
+        v = patch[k]
+        if k in ("specialties", "industryTags"):
+            v = [str(x).strip()[:40] for x in (v if isinstance(v, list) else str(v).split(",")) if str(x).strip()][:10]
+        elif k in ("founded", "followers"):
+            try:
+                v = max(0, int(v))
+            except (TypeError, ValueError):
+                continue
+        else:
+            v = str(v).strip()[:1500 if k == "overview" else 160]
+        clean[k] = v
+    with LOCK:
+        d = _load()
+        d.setdefault("linkedin_profile", {}).setdefault(bid, {}).update(clean)
+        ws._write(SETTINGS, d)
+        return d["linkedin_profile"][bid]
+
+
 # ---------------------------------------------------------------- shop menu (what the online shop sells)
 
 def _sample_menu() -> list[dict]:
@@ -134,10 +166,16 @@ def save_shop_menu(bid: str, rows: list[dict]) -> list[dict]:
             except (TypeError, ValueError):
                 item["cost"] = None
             clean.append(item)
+    before = shop_menu(bid)
     with LOCK:
         d = _load()
         d["shop_menu"][bid] = clean
         ws._write(SETTINGS, d)
+    try:  # auto-posting: new items and price changes get an announcement post (owner can abort it)
+        import social
+        social.menu_changed(bid, before, clean)
+    except Exception:
+        pass
     return clean
 
 
