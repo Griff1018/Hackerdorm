@@ -37,6 +37,7 @@ import appdata  # noqa: E402
 import money as mon  # noqa: E402
 import tasks as tk  # noqa: E402
 import base64  # noqa: E402
+import hmac  # noqa: E402
 import hashlib  # noqa: E402
 import csv  # noqa: E402
 import urllib.parse  # noqa: E402
@@ -47,7 +48,9 @@ RUNS_DIR = OUTPUT / "console_runs"
 AUDIT = OUTPUT / "console_audit.jsonl"
 BASELINE = CONSOLE / "_baseline"
 TZ = timezone(timedelta(hours=8))
-PORT = int(os.environ.get("BIZFLOW_CONSOLE_PORT", "8090"))
+PORT = int(os.environ.get("BIZFLOW_CONSOLE_PORT") or os.environ.get("PORT") or "8090")  # PORT is set by Render
+HOST = os.environ.get("BIZFLOW_HOST", "127.0.0.1")  # 0.0.0.0 in the Docker image
+PASSWORD = os.environ.get("BIZFLOW_PASSWORD", "")  # required for public deployments; empty = no login (local use)
 TIMEOUT_S = int(os.environ.get("BIZFLOW_AGENT_TIMEOUT", "300"))
 MAX_TURNS = os.environ.get("BIZFLOW_AGENT_MAX_TURNS", "30")
 CLI = os.environ.get("BIZFLOW_AGENT_CLI") or shutil.which("codebuddy") or shutil.which("cbc")
@@ -711,8 +714,31 @@ class Handler(BaseHTTPRequestHandler):
         except json.JSONDecodeError:
             return {}
 
+    def authorised(self) -> bool:
+        """When BIZFLOW_PASSWORD is set (any public deployment), every request needs it via HTTP Basic auth.
+        The browser asks once and then sends it with every fetch, stream and page on this site."""
+        if not PASSWORD or urlparse(self.path).path == "/healthz":
+            return True
+        head = self.headers.get("Authorization", "")
+        if head.startswith("Basic "):
+            try:
+                pw = base64.b64decode(head[6:]).decode("utf-8", "replace").split(":", 1)[-1]
+            except ValueError:
+                pw = ""
+            if hmac.compare_digest(pw.encode(), PASSWORD.encode()):
+                return True
+        self.send_response(401)
+        self.send_header("WWW-Authenticate", 'Basic realm="BizFlow", charset="UTF-8"')
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+        return False
+
     def do_GET(self):
+        if not self.authorised():
+            return
         path = urlparse(self.path).path
+        if path == "/healthz":
+            return self.send_json({"ok": True, "cli": bool(CLI)})
         if path in ("/", "/index.html"):
             return self.send_file(CONSOLE / "index.html")
         if path == "/api/status":
@@ -922,6 +948,8 @@ class Handler(BaseHTTPRequestHandler):
             return
 
     def do_POST(self):
+        if not self.authorised():
+            return
         path = urlparse(self.path).path
         body = self.read_json()
         if path == "/api/ask":
@@ -2360,9 +2388,11 @@ def main():
                     pass
             time.sleep(600)
     threading.Thread(target=daily_loop, daemon=True).start()
-    srv = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
+    if HOST not in ("127.0.0.1", "localhost") and not PASSWORD:
+        print("WARNING: listening publicly without BIZFLOW_PASSWORD — anyone with the URL can run the agent.", flush=True)
+    srv = ThreadingHTTPServer((HOST, PORT), Handler)
     srv.daemon_threads = True
-    print(f"BizFlow Agent Console on http://127.0.0.1:{PORT}  (WorkBuddy CLI: {CLI or 'NOT FOUND'})")
+    print(f"BizFlow Agent Console on http://{HOST}:{PORT}  (WorkBuddy CLI: {CLI or 'NOT FOUND'}; login {'ON' if PASSWORD else 'off'})", flush=True)
     srv.serve_forever()
 
 

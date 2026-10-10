@@ -1,0 +1,16 @@
+.git
+.claude
+.workbuddy-ai
+.env
+.env.*
+**/__pycache__
+*.pyc
+planning_docs
+# runtime state — the container recreates it (or keeps it on the persistent disk)
+data/workspace
+data/output/console_runs
+data/output/plans
+data/output/console_audit.jsonl
+data/output/media
+data/output/scraped
+data/output/supplier_order_choices.json

@@ -1,0 +1,19 @@
+# Render Blueprint: Dashboard → New → Blueprint → pick this repo. Render asks for the two secret values.
+services:
+  - type: web
+    name: bizflow
+    runtime: docker
+    plan: starter            # paid: stays awake (auto-reply, daily list, automations keep running) and allows a disk
+    region: singapore        # closest to Malaysia
+    healthCheckPath: /healthz
+    envVars:
+      - key: CODEBUDDY_API_KEY
+        sync: false          # paste your CodeBuddy API key when Render asks
+      - key: BIZFLOW_PASSWORD
+        sync: false          # the password people type to open the console
+      - key: DATA_DIR
+        value: /var/data
+    disk:
+      name: bizflow-data
+      mountPath: /var/data
+      sizeGB: 1
