@@ -41,6 +41,7 @@ import hmac  # noqa: E402
 import hashlib  # noqa: E402
 import csv  # noqa: E402
 import urllib.parse  # noqa: E402
+import urllib.request  # noqa: E402
 CONSOLE = ROOT / "console"
 OUTPUT = ROOT / "data" / "output"
 PLANS = OUTPUT / "plans"
@@ -2388,6 +2389,21 @@ def main():
                     pass
             time.sleep(600)
     threading.Thread(target=daily_loop, daemon=True).start()
+
+    # Render's free instances sleep after ~15 min without inbound requests, which would stop auto-reply, the daily
+    # list and the automations. Render sets RENDER_EXTERNAL_URL; pinging our own public /healthz every 10 min counts
+    # as inbound traffic and keeps the instance awake. Turn off with BIZFLOW_KEEPALIVE=0.
+    public = os.environ.get("RENDER_EXTERNAL_URL", "").rstrip("/")
+    if public and os.environ.get("BIZFLOW_KEEPALIVE", "1") != "0":
+        def keepalive():
+            while True:
+                time.sleep(600)
+                try:
+                    urllib.request.urlopen(public + "/healthz", timeout=30).read()
+                except Exception as exc:
+                    print(f"keep-alive ping failed: {exc}", flush=True)
+        threading.Thread(target=keepalive, daemon=True).start()
+        print(f"Keep-alive: pinging {public}/healthz every 10 min", flush=True)
     if HOST not in ("127.0.0.1", "localhost") and not PASSWORD:
         print("WARNING: listening publicly without BIZFLOW_PASSWORD — anyone with the URL can run the agent.", flush=True)
     srv = ThreadingHTTPServer((HOST, PORT), Handler)

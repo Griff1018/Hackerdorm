@@ -28,6 +28,13 @@ on its own port — only the console is public, behind a password.
 | `PORT` | set by Render |
 | `BIZFLOW_HOST` | `0.0.0.0` in the image (local default `127.0.0.1`) |
 
+## Free instance instead of Starter
+- Pick the **Free** instance, add **no disk**, and **do not set `DATA_DIR`**.
+- The server pings its own `RENDER_EXTERNAL_URL/healthz` every 10 minutes (Render sets that variable), so the instance
+  does not fall asleep and auto-reply, the daily list and automations keep running. `BIZFLOW_KEEPALIVE=0` turns it off.
+- Free has no persistent disk: chats, orders and plans reset to the repo's demo data on every deploy or restart.
+- 0.1 CPU makes page loads and tool runs slower; the agent itself mostly waits on the CodeBuddy API.
+
 ## Notes
 - The disk keeps `data/` across restarts and redeploys. It is seeded from the repo on the **first** boot only — later
   changes to committed files in `data/` are not copied over. To start fresh, use "Reset demo data" in the console or
