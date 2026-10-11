@@ -3351,6 +3351,10 @@ async function drawReview() {
   const decided = items.filter(i => REV.dec[i.item_id]).length;
   const head = el("div", "rvhead");
   head.append(el("b", null, "Review the plan" + (/^REVISE PLAN/.test(run.request) ? " (revised steps)" : "")), el("span", "small", " · " + decided + " of " + items.length + " decided"));
+  const doall = el("button", "sm", "Do it all — skip review"); doall.title = "Carry out every step now (purchases are simulated) and get a report of what was done and bought";
+  doall.onclick = async () => { if (!confirm("Skip the review and carry out all " + (run.plan.plan_items || []).length + " steps now? Payments stay within your budget, and you get a report at the end.")) return;
+    doall.disabled = true; try { await api("/api/approve", { run_id: run.run_id, auto: true }); run.state = "executing"; REV.rid = null; maybeReview(); refreshTurn(run.run_id); follow(run.run_id); } catch (e) { alert(e.message); doall.disabled = false; } };
+  head.append(doall);
   const later = el("button", "sm ghost", "Review later ↓"); later.onclick = () => { REV.hidden[run.run_id] = true; maybeReview(); }; head.append(later);
   box.append(head);
   // all steps, including ones already approved in earlier rounds

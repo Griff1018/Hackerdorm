@@ -1197,6 +1197,9 @@ class Handler(BaseHTTPRequestHandler):
                 decisions = body.get("decisions") or {}
                 if body.get("all"):
                     decisions = {i: "approve" for i in items}
+                if body.get("auto"):  # "Do it all": skip the review, same as full auto (budget guard + report)
+                    run["auto_run"] = True
+                    decisions = auto_decisions(run)
                 decisions = {i: ("approve" if decisions.get(i) == "approve" else "reject") for i in items}
             with STATE["lock"]:
                 if run["state"] != "planned":
