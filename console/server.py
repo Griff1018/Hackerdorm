@@ -61,6 +61,8 @@ TIMEOUT_S = int(os.environ.get("ENTERPRISE_BUDDY_AGENT_TIMEOUT", "300"))
 MAX_TURNS = os.environ.get("ENTERPRISE_BUDDY_AGENT_MAX_TURNS", "30")
 CLI = os.environ.get("ENTERPRISE_BUDDY_AGENT_CLI") or shutil.which("codebuddy") or shutil.which("cbc")
 TOOLKIT = "python -m app.enterprise_buddy_cli"
+# How many agent runs (CodeBuddy CLIs) work at the same time; more requests wait in a queue and start automatically.
+MAX_PARALLEL = max(1, int(os.environ.get("ENTERPRISE_BUDDY_MAX_PARALLEL", "4")))
 
 # Files the console may change through approved actions; restored by "Reset demo state".
 RESETTABLE = [
@@ -100,7 +102,27 @@ EXEC_PATTERNS = [
     (["shopee-approve", r"SP[0-9a-f]{8}"]),
 ]
 
-STATE = {"lock": threading.Lock(), "runs": {}, "busy": None}
+STATE = {"lock": threading.Lock(), "runs": {}, "active": set(), "slots": threading.BoundedSemaphore(MAX_PARALLEL)}
+ACTION_LOCK = threading.Lock()  # app actions from parallel runs change the owner's data one at a time
+EXEC_LOCK = threading.Lock()    # approved toolkit commands run one at a time (they write shared files)
+
+
+def busy_id():
+    """The oldest active run, or None when the agent is idle."""
+    with STATE["lock"]:
+        act = sorted(STATE["active"])
+    return act[0] if act else None
+
+
+def release(run):
+    if run.pop("has_slot", False):
+        STATE["slots"].release()
+    with STATE["lock"]:
+        STATE["active"].discard(run["run_id"])
+
+
+def live_runs():
+    return [r for r in list(list(STATE["runs"].values())) if r.get("state") in ("planning", "executing")]
 INJECTION_RE = re.compile(r"ignore (all |your |the )?(previous |prior )?(rules|instructions)|approve everything|pay (the )?suppliers? now|skip (the )?approval|you are now|system prompt", re.I)
 
 
@@ -329,6 +351,93 @@ def describe_tool(name, inp):
 
 
 def run_agent(run):
+    if not STATE["slots"].acquire(blocking=False):
+        run["queued"] = True
+        push(run, "status", f"Queued: {MAX_PARALLEL} tasks are already running. This one starts by itself as soon as one finishes.")
+        while not STATE["slots"].acquire(timeout=1):
+            if run.get("stopped"):
+                return finish(run, error="Stopped by you. Nothing was changed.")
+        run.pop("queued", None)
+    run["has_slot"] = True
+    if run.get("stopped"):
+        return finish(run, error="Stopped by you. Nothing was changed.")
+    try:
+        _run_agent(run)
+        if run.get("state") == "executing" and run.get("auto_run"):
+            execute(run, auto_decisions(run), {})
+    except Exception as exc:  # never leave a run (or its slot) hanging
+        if run.get("state") in ("planning", "executing"):
+            finish(run, error=f"The agent failed: {exc}")
+    finally:
+        release(run)
+
+
+def auto_go(run) -> bool:
+    """Full auto: carry the plan out without review — unless the request looked like an injection."""
+    plan = run.get("plan") or {}
+    return run.get("mode") == "auto" and bool(plan.get("plan_items")) and not plan.get("injection_attempt") and not plan.get("needs_input")
+
+
+def auto_decisions(run) -> dict:
+    """Approve every step; a payment is skipped only if it would go over the purchasing budget."""
+    by_id, budget, paid = budget_facts()
+    left, dec = budget - paid, {}
+    for it in run["plan"]["plan_items"]:
+        m = re.match(r"po mark-paid (\S+)", it.get("execute_command") or "")
+        if m and m.group(1) in by_id:
+            cost = float(by_id[m.group(1)]["total"])
+            if cost > left:
+                dec[it["item_id"]] = "reject"
+                it["risk_or_note"] = (it.get("risk_or_note") or "") + f" [auto: skipped, MYR {cost:.2f} is over the MYR {left:.2f} left in the budget]"
+                continue
+            left -= cost
+        dec[it["item_id"]] = "approve"
+    audit({"action": "auto_approved", "run_id": run["run_id"], "decisions": dec})
+    return dec
+
+
+def auto_report(run, results, remaining):
+    """What full auto did — appended to the chat answer so the owner sees it at the end."""
+    by_id = budget_facts()[0]
+    items = {it["item_id"]: it for it in run["plan"]["plan_items"]}
+    done, buys, todo, skipped = [], [], [], []
+    for r in results:
+        it = items.get(r["item_id"], {})
+        title = plain(it.get("title") or r["item_id"])
+        cmd = it.get("execute_command") or ""
+        if r["status"] == "done" and cmd.startswith("po mark-paid"):
+            po = by_id.get(cmd.split()[-1], {})
+            buys.append((po.get("supplier") or po.get("supplier_name") or "supplier", cmd.split()[-1], float(po.get("total") or 0), title))
+        elif r["status"] == "done":
+            done.append(title)
+        elif r["status"] == "approved_manual":
+            todo.append(title)
+        else:
+            skipped.append(f"{title} ({r.get('why') or it.get('risk_or_note') or r['status']})".strip())
+    if todo:
+        ws.add_todos(run.get("business_id", "campus-crumb"), run.get("conversation_id") or "",
+                     [dict(items[r["item_id"]], run_id=run["run_id"]) for r in results if r["status"] == "approved_manual"])
+    out = ["", "", "**Done automatically (full auto)**"]
+    out += [f"- {t}" for t in done] or ["- No app steps needed running."]
+    if buys:
+        out += ["", "**Purchases made** (simulated payment, no real money)"]
+        out += [f"- {s}: MYR {amt:.2f} — {po} ({t})" for s, po, amt, t in buys]
+        out.append(f"- **Total MYR {sum(b[2] for b in buys):.2f}** · budget left MYR {remaining:.2f}")
+    else:
+        out += ["", "**Purchases made:** none."]
+    if todo:
+        out += ["", "**Added to your Task Checklist** (things only you can do in person)"] + [f"- {t}" for t in todo]
+    if skipped:
+        out += ["", "**Not done**"] + [f"- {t}" for t in skipped]
+    run["answer"] = (run.get("answer") or "") + "\n".join(out)
+    run["auto_report"] = {"done": done, "purchases": [{"supplier": s, "po": po, "myr": a} for s, po, a, _ in buys], "checklist": todo, "skipped": skipped}
+
+
+def plain(t: str) -> str:
+    return re.sub(r"\s+", " ", str(t)).strip()[:120]
+
+
+def _run_agent(run):
     # The CLI launcher on Windows rejects multi-line/special-character arguments, so the rules and the
     # owner's request go in through stdin; only plain flags are passed as arguments.
     rules = (CONSOLE / "agent_rules.md").read_text(encoding="utf-8")
@@ -428,7 +537,8 @@ def run_agent(run):
         push(run, "adapt", "No structured plan JSON was returned; showing the answer only (no actions to approve).")
     plan = enrich_plan(run, raw)
     asked = run["request"].startswith("Find suppliers for the step")
-    plan["app_results"] = run_app_actions(run, raw.get("app_actions") or [], propose=bool(plan["plan_items"]) and not asked)
+    with ACTION_LOCK:
+        plan["app_results"] = run_app_actions(run, raw.get("app_actions") or [], propose=bool(plan["plan_items"]) and not asked and run.get("mode") != "auto")
     if plan["app_results"] and not plan["plan_items"]:
         plan["answer_only"] = True
     run["plan"] = plan
@@ -643,14 +753,32 @@ def finish(run, error=None):
         push(run, "error", error)
         audit({"action": "plan_failed", "run_id": run["run_id"], "error": error})
     run["state"] = "error" if error else "planned"
+    if not error and auto_go(run):
+        run["state"], run["auto_run"] = "executing", True
+        push(run, "phase", "Full auto: carrying out every step now, no review needed")
+        save_run(run)
+        return
     push(run, "done", run["state"])
     save_run(run)
-    STATE["busy"] = None
+    release(run)
 
 
 # ---------------------------------------------------------------- EXECUTE phase (deterministic, approved only)
 
 def execute(run, decisions: dict, edits: dict):
+    try:
+        with EXEC_LOCK:
+            _execute(run, decisions, edits)
+    except Exception as exc:
+        push(run, "error", f"Execution failed: {exc}")
+        run["state"] = "error"
+        push(run, "done", "error")
+        save_run(run)
+    finally:
+        release(run)
+
+
+def _execute(run, decisions: dict, edits: dict):
     plan = run["plan"]
     run["state"] = "executing"
     push(run, "phase", "Execution started — only approved items run")
@@ -710,12 +838,13 @@ def execute(run, decisions: dict, edits: dict):
     verdict = "PASSED" if all(c["ok"] for c in checks) else "FAILED"
     plan["execution"] = {"results": results, "verifier": verdict, "verifier_checks": checks, "at": now(),
                          "budget_remaining_myr": f"{budget - paid:.2f}"}
+    if run.get("auto_run"):
+        auto_report(run, results, budget - paid)
     push(run, "verifier", f"Verifier after execution: {verdict} — budget remaining MYR {budget - paid:.2f}", checks=checks)
     (PLANS / f"PLAN-{run['run_id']}.json").write_text(json.dumps(plan, indent=2, ensure_ascii=False), encoding="utf-8")
     run["state"] = "executed"
     push(run, "done", "executed")
     save_run(run)
-    STATE["busy"] = None
 
 
 # ---------------------------------------------------------------- HTTP
@@ -775,8 +904,12 @@ class Handler(BaseHTTPRequestHandler):
         if path in ("/login", "/login.html"):
             return self.send_file(CONSOLE / "login.html")
         if path == "/api/status":
-            busy = STATE["runs"].get(STATE["busy"] or "") or {}
-            return self.send_json({"cli": bool(CLI), "cli_path": CLI and Path(CLI).name, "busy": STATE["busy"], "elapsed_s": busy.get("elapsed_s")})
+            bid_ = busy_id()
+            busy = STATE["runs"].get(bid_ or "") or {}
+            live = live_runs()
+            return self.send_json({"cli": bool(CLI), "cli_path": CLI and Path(CLI).name, "busy": bid_, "elapsed_s": busy.get("elapsed_s"),
+                                   "active": [r["run_id"] for r in live], "running": sum(1 for r in live if not r.get("queued")),
+                                   "queued": sum(1 for r in live if r.get("queued")), "max_parallel": MAX_PARALLEL})
         qs = {k: v[0] for k, v in parse_qs(urlparse(self.path).query).items()}
         if path == "/api/businesses":
             return self.send_json({"businesses": [overview(b) for b in ws.businesses()]})
@@ -892,7 +1025,10 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/activity":
             return self.send_json({"rows": activity(qs.get("business_id", "campus-crumb"))})
         if path == "/api/conversations":
-            return self.send_json({"conversations": ws.conversations(qs.get("business_id"))})
+            live = {}
+            for r in live_runs():
+                live[r.get("conversation_id")] = live.get(r.get("conversation_id"), 0) + 1
+            return self.send_json({"conversations": [dict(c, running=live.get(c["id"], 0)) for c in ws.conversations(qs.get("business_id"))]})
         m2 = re.fullmatch(r"/api/conversations/([\w-]+)", path)
         if m2:
             try:
@@ -942,7 +1078,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send_json({"error": str(exc)}, 502)
             return self.send_json(g or {"error": "not found"}, 200 if g else 404)
         if path == "/api/runs":
-            runs = sorted(STATE["runs"].values(), key=lambda r: r["created_at"], reverse=True)
+            runs = sorted(list(STATE["runs"].values()), key=lambda r: r["created_at"], reverse=True)
             return self.send_json([{k: r.get(k) for k in ("run_id", "request", "mode", "state", "created_at")} for r in runs])
         m = re.fullmatch(r"/api/(stream|plan|run)/([\w-]+)", path)
         if m:
@@ -1038,17 +1174,16 @@ class Handler(BaseHTTPRequestHandler):
             if not CLI:
                 return self.send_json({"error": "WorkBuddy CLI (codebuddy) is not installed or not on PATH."}, 503)
             with STATE["lock"]:
-                if STATE["busy"]:
-                    return self.send_json({"error": "The agent is busy with another request. Please wait for it to finish.", "busy": STATE["busy"]}, 409)
                 rid = datetime.now(TZ).strftime("%H%M%S") + "-" + uuid.uuid4().hex[:4]
                 run = {"run_id": rid, "request": text, "mode": mode, "style": style, "state": "planning", "created_at": now(),
                        "events": [], "steps": [], "conversation_id": conv["id"], "business_id": conv["business_id"]}
                 STATE["runs"][rid] = run
-                STATE["busy"] = rid
+                STATE["active"].add(rid)
+                waiting = len(STATE["active"]) > MAX_PARALLEL
             ws.add_turn(conv["id"], rid, text)
             save_run(run)
             threading.Thread(target=run_agent, args=(run,), daemon=True).start()
-            return self.send_json({"run_id": rid, "conversation_id": conv["id"]})
+            return self.send_json({"run_id": rid, "conversation_id": conv["id"], "queued": waiting})
         if path in ("/api/approve", "/api/reject"):
             run = STATE["runs"].get(str(body.get("run_id")))
             if not run or not run.get("plan"):
@@ -1064,9 +1199,10 @@ class Handler(BaseHTTPRequestHandler):
                     decisions = {i: "approve" for i in items}
                 decisions = {i: ("approve" if decisions.get(i) == "approve" else "reject") for i in items}
             with STATE["lock"]:
-                if STATE["busy"]:
-                    return self.send_json({"error": "The agent is busy. Please wait."}, 409)
-                STATE["busy"] = run["run_id"]
+                if run["state"] != "planned":
+                    return self.send_json({"error": f"run is {run['state']}"}, 409)
+                run["state"] = "executing"
+                STATE["active"].add(run["run_id"])
             audit({"action": "owner_decisions", "run_id": run["run_id"], "decisions": decisions})
             threading.Thread(target=execute, args=(run, decisions, body.get("edits") or {}), daemon=True).start()
             return self.send_json({"ok": True})
@@ -1504,7 +1640,7 @@ class Handler(BaseHTTPRequestHandler):
             audit({"action": "supplier_choice", "material": rec["material"], "supplier": rec["supplier"], "mode": mode})
             return self.send_json({"ok": True, "choice": rec})
         if path == "/api/reset":
-            if STATE["busy"]:
+            if live_runs():
                 return self.send_json({"error": "busy"}, 409)
             return self.send_json({"restored": reset_demo()})
         self.send_json({"error": "not found"}, 404)
@@ -1512,7 +1648,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def overview(b: dict) -> dict:
     convs = ws.conversations(b["id"])
-    runs = [r for r in STATE["runs"].values() if r.get("business_id") == b["id"]]
+    runs = [r for r in list(STATE["runs"].values()) if r.get("business_id") == b["id"]]
     waiting = sum(1 for r in runs if r.get("state") == "planned" for it in (r.get("plan") or {}).get("plan_items", []) if it.get("requires_approval"))
     out = dict(b, conversations=len(convs), last_activity=(convs[0]["updated_at"] if convs else b.get("created_at")),
                awaiting_approval=waiting, collected_count=len(b.get("collected", [])))
@@ -1557,7 +1693,7 @@ def roadmap_with_auto(bid: str) -> dict:
         "firstorder": any(o["status"] == "paid_simulated" and o.get("business_id") == bid for o in a["orders"]) or (bool(b.get("uses_sample_data")) and paid > 0),
         "launch": any(pp["status"] == "posted_simulated" and pp.get("business_id") == bid for pp in a["posts"]),
         "autopilot": any(r.get("enabled") and r.get("business_id") == bid for r in a["rules"]),
-        "today": any(r.get("business_id") == bid and "attention" in r.get("request", "").lower() for r in STATE["runs"].values()),
+        "today": any(r.get("business_id") == bid and "attention" in r.get("request", "").lower() for r in list(STATE["runs"].values())),
     }
     manual = b.get("roadmap_status", {})
     for st in rm["steps"]:
@@ -1569,7 +1705,7 @@ def roadmap_with_auto(bid: str) -> dict:
 
 def activity(bid: str) -> list[dict]:
     rows = []
-    for r in STATE["runs"].values():
+    for r in list(STATE["runs"].values()):
         if bid != ws.ALL and r.get("business_id") != bid:
             continue
         for e in r.get("events", []):
@@ -1600,7 +1736,7 @@ def _sig(x) -> str:
 def pulse(bid: str) -> dict:
     """A cheap fingerprint per menu page, so the page can show a notification when something changed there.
     n = things waiting for the owner (shown as a count); sig changes whenever the page's content changes."""
-    runs = [r for r in STATE["runs"].values() if bid == ws.ALL or r.get("business_id") == bid]
+    runs = [r for r in list(STATE["runs"].values()) if bid == ws.ALL or r.get("business_id") == bid]
     latest = {}
     for r in runs:
         if r.get("created_at", "") >= latest.get(r.get("conversation_id"), {}).get("created_at", ""):

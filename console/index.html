@@ -675,6 +675,7 @@ input,select,textarea{border-color:#d9d2c3}
 .postprev img{width:180px;height:180px;object-fit:cover;border-radius:8px}
 .pcap2{white-space:pre-wrap;font-size:14px;margin:6px 0}.ptags{font-size:13px;color:#1d4ed8}
 @media (max-width:640px){.postprev{grid-template-columns:1fr}.postprev img{width:100%;height:auto}}
+.convspin{width:10px;height:10px;margin-left:6px;flex:none}
 /* tools dropdown */
 .navtools{display:flex;align-items:center;gap:8px;width:100%;background:transparent;font-weight:600;font-size:13.5px;padding:7px 10px;border-radius:6px;text-align:left;margin-top:6px}
 .navtools .lab{flex:1}.navtools .car{font-size:11px;opacity:.7;transition:transform .15s}.navtools.open .car{transform:rotate(90deg)}
@@ -761,7 +762,7 @@ div.todo.done{opacity:1}div.todo.done b{text-decoration:line-through;color:#7171
       <textarea id="q" placeholder="Ask Enterprise Buddy anything about your business…"></textarea>
       <div class="crow">
         <span class="hint">Enter to send · Shift+Enter for a new line · nothing happens until you approve</span>
-        <select id="mode" aria-label="Involvement" hidden><option value="approve_at_end">I approve at the end</option><option value="ask_me">Ask me along the way</option><option value="auto">Auto (drafts pre-approved)</option></select>
+        <select id="mode" aria-label="Involvement" hidden><option value="approve_at_end">I approve at the end</option><option value="ask_me">Ask me along the way</option><option value="auto">Full auto (do it all)</option></select>
         <button class="sm ghost modechip" id="modechip" title="Change in Settings"></button>
         <button id="send">Send </button>
       </div>
@@ -953,7 +954,7 @@ function plainCommand(cmd) {
 
 // ================================================================ state
 let S = { scope: store.get("scope", "single"), bid: store.get("bid", "campus-crumb"), cid: null, tab: "chat" };
-let BUSINESSES = [], RUNS = {}, decisions = {}, es = null, activeRun = null, GUIDES = null, LISTINGS = null;
+let BUSINESSES = [], RUNS = {}, decisions = {}, STREAMS = {}, activeRun = null, GUIDES = null, LISTINGS = null;
 const biz = () => BUSINESSES.find(b => b.id === S.bid) || BUSINESSES[0];
 const curBid = () => S.scope === "all" ? "all" : (biz() || {}).id;
 
@@ -1063,6 +1064,7 @@ async function loadConvs() {
   list.forEach(c => {
     const row = el("div", "conv" + (c.id === S.cid ? " on" : ""));
     row.append(el("span", "t", c.title));
+    if (c.running) { const sp = el("span", "spin convspin"); sp.title = c.running + " task" + (c.running > 1 ? "s" : "") + " working"; row.append(sp); }
     const acts = el("span", "acts");
     const rn = el("button", null, "✎"); rn.title = "Rename";
     rn.onclick = async e => { e.stopPropagation(); const t = prompt("Rename chat", c.title); if (t) { await api(`/api/conversations/${c.id}/rename`, { title: t }); loadConvs(); } };
@@ -1192,7 +1194,7 @@ $("#dlgx").onclick = () => $("#dlg").close();
 let APPSET = { mode: "approve_at_end", answer_style: "smart" };
 const MODE_TXT = { approve_at_end: ["I approve at the end", "Enterprise Buddy researches and plans; nothing happens until you approve each step."],
   ask_me: ["Ask me along the way", "Enterprise Buddy asks before each bigger decision."],
-  auto: ["Auto (drafts pre-approved)", "Drafts and to-dos are pre-approved; payments, posts and orders still need your OK."] };
+  auto: ["Full auto (do it all)", "Enterprise Buddy plans and carries out every step itself, purchases included (simulated), then tells you what it did and bought."] };
 const STYLE_TXT = { smart: ["Just help me (recommended)", "Small questions and how-tos get a direct answer with one-click buttons. Bigger jobs get a step-by-step plan."],
   plan: ["Always make a plan", "Every request becomes a plan you review step by step."] };
 function shopLink(bid) { const b = bid || (curBid() === "all" ? "campus-crumb" : curBid()); return "/shop/?business_id=" + encodeURIComponent(b); }
@@ -1976,8 +1978,7 @@ async function openConv(cid) {
   const c = await api("/api/conversations/" + cid);
   c.runs.forEach(r => RUNS[r.run_id] = r);
   renderThread(c);
-  const live = c.runs.find(r => r.state === "planning" || r.state === "executing");
-  if (live) follow(live.run_id);
+  c.runs.filter(r => r.state === "planning" || r.state === "executing").forEach(r => follow(r.run_id));
 }
 
 function renderThread(conv) {
@@ -2035,7 +2036,7 @@ function fillTurn(run, body) {
     const lastTool = [...planEvents].reverse().find(e => e.kind === "tool");
     const live = el("div", "livebar");
     const now = el("span", "small livenow"); now.dataset.rid = run.run_id; now.dataset.since = lastTool ? lastTool.t : run.created_at || "";
-    now.dataset.what = lastTool ? (lastTool.department ? lastTool.department + ": " : "") + lastTool.text.slice(0, 90) : "starting the agent";
+    now.dataset.what = lastTool ? (lastTool.department ? lastTool.department + ": " : "") + lastTool.text.slice(0, 90) : ((run.events || []).some(e => e.kind === "status" && /^Queued/.test(e.text)) && !(run.events || []).some(e => e.kind === "status" && /agent started/.test(e.text)) ? "queued — starts when another task finishes" : "starting the agent");
     const stop = el("button", "sm bad", "Stop"); stop.onclick = async e => { e.stopPropagation(); if (!confirm("Stop this run? Nothing will be changed.")) return; try { await api("/api/runs/" + run.run_id + "/stop", {}); } catch (x) { alert(x.message); } };
     live.append(now, stop); th.append(live);
   }
@@ -2309,6 +2310,7 @@ async function send() {
     RUNS[r.run_id] = { run_id: r.run_id, request: text, state: "planning", events: [], business_id: curBid(), conversation_id: r.conversation_id, created_at: new Date().toISOString() };
     if (isNew) $("#threadInner").replaceChildren();
     $("#threadInner").append(renderTurn(RUNS[r.run_id])); scrollDown();
+    $("#send").disabled = false;
     loadConvs(); follow(r.run_id);
   } catch (e) { alert(e.message); $("#send").disabled = false; }
 }
@@ -2316,20 +2318,20 @@ $("#send").onclick = send;
 $("#q").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } });
 
 function follow(rid) {
-  if (es) es.close();
-  activeRun = rid; $("#send").disabled = true;
+  if (STREAMS[rid]) return;  // already following this run
+  activeRun = rid;
   const run = RUNS[rid]; let seen = (run.events || []).length - 1;
   if (!run.created_at) run.created_at = new Date().toISOString();
-  es = new EventSource("/api/stream/" + rid);
+  const es = STREAMS[rid] = new EventSource("/api/stream/" + rid);
   let pending = false;
   es.onmessage = m => {
     const ev = JSON.parse(m.data); if (ev.seq <= seen) return; seen = ev.seq;
     run.events.push(ev);
-    if (ev.kind === "done") { es.close(); finishRun(rid); return; }
+    if (ev.kind === "done") { es.close(); delete STREAMS[rid]; finishRun(rid); return; }
     if (!pending) { pending = true; requestAnimationFrame(() => { pending = false; refreshTurn(rid); const t = $("#thread"); if (t.scrollHeight - t.scrollTop - t.clientHeight < 400) scrollDown(); }); }
   };
   es.onerror = () => {
-    es.close();
+    es.close(); delete STREAMS[rid];
     setTimeout(async () => {
       try {
         const r = await api("/api/run/" + rid);
@@ -2337,14 +2339,14 @@ function follow(rid) {
         else finishRun(rid);
       } catch (e) {
         RUNS[rid] = Object.assign(RUNS[rid] || {}, { state: "missing", message: "This run was interrupted (the server restarted). Nothing was changed — press Retry." });
-        refreshTurn(rid); $("#send").disabled = false; activeRun = null;
+        refreshTurn(rid);
       }
     }, 2000);
   };
 }
 async function finishRun(rid) {
   try { const full = await api("/api/run/" + rid); RUNS[rid] = Object.assign(full, { _edits: (RUNS[rid] || {})._edits }); } catch {}
-  refreshTurn(rid); $("#send").disabled = false; activeRun = null; loadConvs();
+  refreshTurn(rid); loadConvs();
   const fr = RUNS[rid];
   if (fr && /^REVISE PLAN/.test(fr.request || "") && fr.state === "planned" && !(fr.plan && (fr.plan.plan_items || []).length)) celebrate(0);
   maybeReview();
@@ -3434,7 +3436,7 @@ async function finishReview(run) {
   try {
     await api("/api/approve", { run_id: run.run_id, decisions, edits });
     if (approved.length) await api("/api/todos/add", { business_id: curBid(), conversation_id: S.cid, items: approved.map(i => ({ run_id: run.run_id, item_id: i.item_id, title: i.title, details: i.details, department: i.department, category: i.category, guide_ids: i.guide_ids })) });
-    for (let k = 0; k < 60; k++) { const st = await api("/api/status"); if (!st.busy) break; await new Promise(r => setTimeout(r, 1000)); }
+    for (let k = 0; k < 60; k++) { const st = await api("/api/run/" + run.run_id); if (st.state !== "executing") break; await new Promise(r => setTimeout(r, 1000)); }
     RUNS[run.run_id] = Object.assign(await api("/api/run/" + run.run_id), {}); refreshTurn(run.run_id);
   } catch (e) { alert(e.message); }
   REV = { rid: null, idx: 0, dec: {}, final: "", hidden: REV.hidden }; pollPulse();

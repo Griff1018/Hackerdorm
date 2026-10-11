@@ -6,7 +6,9 @@ data/workspace/conversations/<id>.json — one chat; each turn points at a conso
 from __future__ import annotations
 
 import json
+import functools
 import re
+import threading
 import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -38,6 +40,18 @@ def _read(path: Path, default):
         return default
 
 
+LOCK = threading.RLock()
+
+
+def _locked(fn):
+    """Read-modify-write helpers run one at a time (parallel agent runs share these files)."""
+    @functools.wraps(fn)
+    def wrap(*a, **k):
+        with LOCK:
+            return fn(*a, **k)
+    return wrap
+
+
 def _write(path: Path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(".tmp")
@@ -59,6 +73,7 @@ def business(bid: str) -> dict | None:
     return next((b for b in businesses() if b["id"] == bid), None)
 
 
+@_locked
 def add_business(name: str, btype: str, area: str, description: str = "", emoji: str = "🏪") -> dict:
     rows = businesses()
     base = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")[:40] or "business"
@@ -72,6 +87,7 @@ def add_business(name: str, btype: str, area: str, description: str = "", emoji:
     return b
 
 
+@_locked
 def set_goal(bid: str, goal: str) -> dict | None:
     rows = businesses()
     hit = None
@@ -92,6 +108,7 @@ def todos(bid: str) -> list[dict]:
     return [t for t in _read(TODOS, []) if bid == ALL or t.get("business_id") == bid]
 
 
+@_locked
 def add_todos(bid: str, cid: str, items: list[dict]) -> list[dict]:
     rows = _read(TODOS, [])
     have = {(t.get("run_id"), t.get("item_id")) for t in rows}
@@ -116,6 +133,7 @@ def checkpoints(bid: str) -> list[dict]:
     return sorted(rows, key=lambda c: c.get("at", ""), reverse=True)
 
 
+@_locked
 def add_checkpoint(bid: str, cp: dict) -> dict:
     rows = _read(CHECKPOINTS, [])
     c = {"id": "C" + uuid.uuid4().hex[:6], "business_id": bid, "at": now(),
@@ -125,10 +143,12 @@ def add_checkpoint(bid: str, cp: dict) -> dict:
     return c
 
 
+@_locked
 def delete_checkpoint(cid: str):
     _write(CHECKPOINTS, [c for c in _read(CHECKPOINTS, []) if c["id"] != cid])
 
 
+@_locked
 def set_todo_due(tid: str, due: str) -> dict | None:
     rows = _read(TODOS, [])
     hit = next((t for t in rows if t["id"] == tid), None)
@@ -138,6 +158,7 @@ def set_todo_due(tid: str, due: str) -> dict | None:
     return hit
 
 
+@_locked
 def toggle_todo(tid: str, done: bool | None = None, delete: bool = False):
     rows = _read(TODOS, [])
     if delete:
@@ -149,6 +170,7 @@ def toggle_todo(tid: str, done: bool | None = None, delete: bool = False):
     _write(TODOS, rows)
 
 
+@_locked
 def set_owner_type(bid: str, owner_type: str) -> dict | None:
     rows = businesses()
     hit = None
@@ -164,6 +186,7 @@ SELL_FIELDS = ["product", "category", "style", "customers", "channel", "area", "
                "start_when", "experience", "special"]
 
 
+@_locked
 def set_selling_profile(bid: str, prof: dict) -> dict | None:
     rows = businesses()
     hit = None
@@ -175,6 +198,7 @@ def set_selling_profile(bid: str, prof: dict) -> dict | None:
     return hit
 
 
+@_locked
 def remember(bid: str, answers: dict) -> dict | None:
     """Save answers the owner gave to the agent's questions: owner_type, goal, or selling-profile fields (merged)."""
     rows = businesses()
@@ -204,6 +228,7 @@ def selling_text(p: dict) -> str:
     return "\n".join(f"- {labels[k]}: {p[k]}" for k in SELL_FIELDS if p.get(k))
 
 
+@_locked
 def remove_business(bid: str) -> bool:
     rows = businesses()
     keep = [b for b in rows if b["id"] != bid or b.get("uses_sample_data")]
@@ -215,6 +240,7 @@ def remove_business(bid: str) -> bool:
     return True
 
 
+@_locked
 def add_collected(bid: str, paths: list[str]):
     rows = businesses()
     for b in rows:
@@ -313,6 +339,7 @@ def roadmap(bid: str) -> dict:
     return {"business_id": bid, "journey": "Run and grow" if b.get("uses_sample_data") else "Start your business", "steps": steps}
 
 
+@_locked
 def set_step(bid: str, step_id: str, state: str):
     rows = businesses()
     for b in rows:
@@ -321,6 +348,7 @@ def set_step(bid: str, step_id: str, state: str):
     _write(BUSINESSES, rows)
 
 
+@_locked
 def add_steps(bid: str, items: list[dict]):
     rows = businesses()
     for b in rows:
@@ -343,6 +371,7 @@ def pins(bid: str) -> list[dict]:
     return [p for p in rows if bid == ALL or p.get("business_id") == bid][::-1]
 
 
+@_locked
 def add_pin(p: dict) -> dict:
     rows = _read(PINS, [])
     pin = {"id": "N" + uuid.uuid4().hex[:6], "at": now(), **{k: str(p.get(k) or "")[:600] for k in
@@ -352,6 +381,7 @@ def add_pin(p: dict) -> dict:
     return pin
 
 
+@_locked
 def edit_pin(pid: str, note: str | None = None, delete: bool = False):
     rows = _read(PINS, [])
     if delete:
@@ -384,6 +414,7 @@ def conversation(cid: str) -> dict | None:
     return _read(conv_path(cid), None)
 
 
+@_locked
 def new_conversation(bid: str, title: str = "") -> dict:
     c = {"id": datetime.now(TZ).strftime("%m%d%H%M%S") + "-" + uuid.uuid4().hex[:4], "business_id": bid,
          "title": title or "New chat", "created_at": now(), "updated_at": now(), "turns": []}
@@ -391,11 +422,13 @@ def new_conversation(bid: str, title: str = "") -> dict:
     return c
 
 
+@_locked
 def save_conversation(c: dict):
     c["updated_at"] = now()
     _write(conv_path(c["id"]), c)
 
 
+@_locked
 def add_turn(cid: str, run_id: str, request: str):
     c = conversation(cid)
     if c is None:
@@ -406,6 +439,7 @@ def add_turn(cid: str, run_id: str, request: str):
     save_conversation(c)
 
 
+@_locked
 def rename(cid: str, title: str):
     c = conversation(cid)
     if c:
@@ -414,6 +448,7 @@ def rename(cid: str, title: str):
     return c
 
 
+@_locked
 def delete(cid: str):
     p = conv_path(cid)
     if p.exists():
